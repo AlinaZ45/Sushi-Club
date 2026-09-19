@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sushi Club · Menu & Reservation</title>
+<style>
+:root{
+  --ivory:#f7f2ea;
+  --paper:#fffdf9;
+  --ink:#171513;
+  --muted:#6f675e;
+  --gold:#9a6a2d;
+  --gold-soft:#c8aa7b;
+  --line:#ded2c1;
+  --success:#eef3ea;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#e7e1d8;
+  color:var(--ink);
+  font-family:"Avenir Next","Helvetica Neue",Arial,sans-serif;
+}
+.phone{
+  max-width:430px;
+  min-height:100vh;
+  margin:auto;
+  background:var(--ivory);
+  box-shadow:0 0 40px #00000018;
+}
+.hero{
+  padding:36px 26px 25px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,.85), rgba(255,255,255,0) 56%),
+    var(--ivory);
+}
+.brand{
+  font-size:11px;
+  letter-spacing:3.2px;
+  line-height:1.7;
+  font-weight:700;
+}
+.brand .hotel{
+  display:block;
+  font-size:17px;
+  letter-spacing:4px;
+  margin-bottom:2px;
+}
+.gold{color:var(--gold)}
+h1{
+  font-family:Baskerville,"Palatino Linotype","Book Antiqua",Georgia,serif;
+  font-weight:400;
+  font-size:48px;
+  line-height:.93;
+  letter-spacing:.5px;
+  margin:31px 0 11px;
+}
+.tagline{
+  color:var(--gold);
+  letter-spacing:2.7px;
+  font-size:12px;
+  font-weight:700;
+}
+.intro{
+  max-width:310px;
+  margin:16px auto 0;
+  font-family:Baskerville,"Palatino Linotype",Georgia,serif;
+  font-size:18px;
+  line-height:1.5;
+  color:#3f3933;
+}
+.hours{
+  margin:22px auto 0;
+  max-width:330px;
+  padding:13px 15px;
+  border-top:1px solid var(--gold-soft);
+  border-bottom:1px solid var(--gold-soft);
+  font-size:12px;
+  line-height:1.7;
+  letter-spacing:.3px;
+}
+.content{padding:0 24px 34px}
+.lang{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  margin:18px 0 20px;
+}
+.lang button{
+  border:1px solid var(--line);
+  background:#fffaf3;
+  border-radius:22px;
+  padding:7px 10px;
+  font-size:11px;
+}
+.choice{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+  margin:12px 0;
+  box-shadow:0 10px 28px #3c2d1d0a;
+}
+.choice h2{
+  font-family:Baskerville,"Palatino Linotype",Georgia,serif;
+  font-size:25px;
+  font-weight:400;
+  margin:0 0 6px;
+}
+.choice p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+  margin:0 0 15px;
+}
+.btn{
+  width:100%;
+  border:0;
+  border-radius:9px;
+  padding:15px 16px;
+  font-size:13px;
+  letter-spacing:1.1px;
+  font-weight:800;
+  cursor:pointer;
+}
+.btn.dark{background:#191714;color:white}
+.btn.goldbtn{background:var(--gold);color:white}
+.btn.light{background:#f3ece2;color:#231f1b;border:1px solid var(--line)}
+.location{
+  text-align:center;
+  margin-top:22px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.65;
+}
+.location b{color:var(--gold);letter-spacing:.8px}
+.section{display:none}.section.active{display:block}
+.inner{padding:28px 24px 38px}
+.back{
+  border:0;background:none;padding:0 0 18px;color:var(--gold);
+  font-weight:700;cursor:pointer
+}
+.eyebrow{
+  color:var(--gold);
+  letter-spacing:1.8px;
+  font-size:10px;
+  font-weight:800;
+}
+.section h2{
+  font-family:Baskerville,"Palatino Linotype",Georgia,serif;
+  font-weight:400;
+  font-size:31px;
+  margin:5px 0 8px;
+}
+.desc{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+  margin:0 0 18px;
+}
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px;
+}
+label{
+  display:block;
+  margin:14px 0 6px;
+  font-size:11px;
+  letter-spacing:.5px;
+  font-weight:800;
+}
+input,select,textarea{
+  width:100%;
+  border:1px solid #d8ccbb;
+  border-radius:9px;
+  background:white;
+  padding:13px;
+  font:inherit;
+  font-size:14px;
+}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.times{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+}
+.time{
+  border:1px solid var(--line);
+  background:white;
+  padding:10px 5px;
+  border-radius:8px;
+  font-size:12px;
+  cursor:pointer;
+}
+.time.active{background:#1b1916;color:white;border-color:#1b1916}
+.smallnote{
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+  margin:12px 5px 0;
+}
+.menu-card{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  padding:13px 0;
+  border-bottom:1px solid #eee4d8;
+}
+.menu-card:last-child{border-bottom:0}
+.menu-card b{font-family:Baskerville,Georgia,serif;font-size:17px;font-weight:400}
+.qty{display:flex;gap:8px;align-items:center}
+.qty button{
+  width:29px;height:29px;border-radius:50%;border:1px solid var(--line);background:white
+}
+.delivery{
+  background:#f5ede2;
+  border-radius:12px;
+  padding:13px;
+  font-size:12px;
+  line-height:1.5;
+  margin-bottom:13px;
+}
+.success{
+  padding:46px 25px;
+  text-align:center;
+}
+.successbox{
+  background:var(--success);
+  border-radius:18px;
+  padding:26px 20px;
+}
+.check{font-size:42px;margin-bottom:10px}
+.summary{
+  text-align:left;
+  background:white;
+  padding:14px;
+  border-radius:12px;
+  margin:16px 0 0;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.featured{border-color:var(--gold-soft);background:linear-gradient(145deg,#fffdf9,#f8efe2)}
+.menu-launch{text-align:center;padding:28px 20px}
+.menu-symbol{width:62px;height:62px;margin:0 auto 16px;border:1px solid var(--gold-soft);border-radius:50%;display:grid;place-items:center;font-family:Georgia,serif;font-size:27px;color:var(--gold)}
+.menu-launch h3{font-family:Baskerville,Georgia,serif;font-size:27px;font-weight:400;margin:0 0 8px}
+.menu-launch p{color:var(--muted);font-size:13px;line-height:1.6}
+.menu-link{display:block;text-decoration:none;margin-top:18px}
+.menu-note{margin:16px 0;padding:15px;border-top:1px solid var(--gold-soft);border-bottom:1px solid var(--gold-soft);text-align:center;color:var(--muted);font-size:12px;line-height:1.6}
+
+/* v11 guest reservation management */
+.my-home-card{border:1px solid var(--gold)!important;background:#F8F4EC!important}
+.my-count{display:inline-block;min-width:20px;padding:2px 6px;margin-left:5px;border-radius:999px;background:var(--ink);color:#fff;font-size:9px;text-align:center}
+.booking-card{border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px;margin:10px 0}
+.booking-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.booking-ref{font-size:9px;color:var(--gold);font-weight:900;letter-spacing:.5px}
+.booking-name{font-family:Georgia,serif;font-size:19px;margin-top:3px}
+.booking-meta{font-size:10px;line-height:1.6;color:var(--muted);margin-top:8px}
+.booking-status{font-size:8px;font-weight:900;text-transform:uppercase;padding:5px 8px;border-radius:999px;background:#EEE9E0;white-space:nowrap}
+.booking-status.pending{background:#EEE8DC;color:#6D5C3E}
+.booking-status.confirmed{background:#E5EBE4;color:#536153}
+.booking-status.cancelled,.booking-status.late_cancelled,.booking-status.rejected,.booking-status.no_show{background:#ECE8E4;color:#766E66}
+.booking-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.booking-actions button{border:1px solid var(--line);border-radius:9px;padding:9px;background:#fff;font-size:9px;font-weight:900;cursor:pointer}
+.policyBox{margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:13px;background:#F8F5EF}
+.policyBox h3{font-family:Georgia,serif;font-size:17px;font-weight:400;margin:0 0 8px}
+.policyBox ul{margin:0;padding-left:17px;color:var(--muted);font-size:10px;line-height:1.6}
+.agreeRow{display:flex;gap:9px;align-items:flex-start;margin:12px 0;font-size:10px;color:var(--muted);line-height:1.45}
+.agreeRow input{width:auto!important;margin-top:2px}
+.find-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:480px){.find-grid{grid-template-columns:1fr}}
+
+
+/* v12 full guest edit */
+.gedit-overlay{position:fixed;inset:0;background:rgba(30,28,25,.52);display:none;align-items:center;justify-content:center;padding:16px;z-index:9999}
+.gedit-modal{width:min(560px,100%);max-height:92vh;overflow:auto;background:var(--card);border-radius:18px;padding:18px;border:1px solid var(--line);box-shadow:0 18px 60px rgba(0,0,0,.16)}
+.gedit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gedit-modal label{font-size:9px;font-weight:900;letter-spacing:.45px}
+.gedit-modal input,.gedit-modal select,.gedit-modal textarea{width:100%;box-sizing:border-box;margin-top:5px}
+.gedit-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.rules-emphasis{border:1px solid var(--gold);background:#F8F4EC}
+.rules-emphasis .rule-title{font-family:Georgia,serif;font-size:18px;margin-bottom:7px}
+@media(max-width:520px){.gedit-grid{grid-template-columns:1fr}}
+
+/* v12.2 language switcher */
+.lang{display:flex;gap:8px;flex-wrap:wrap}
+.lang button{cursor:pointer;transition:.15s}
+.lang button.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* v13.2 integrated guest experience */
+.sc-important{background:var(--body,#EAE6DE);padding:16px;margin:18px 0;font-size:11px;line-height:1.55}
+.sc-important-title{font-weight:700;letter-spacing:1.2px;margin-bottom:9px}
+.sc-rule-row{display:flex;gap:8px;margin:6px 0;align-items:flex-start}
+.sc-rule-row strong{min-width:112px;font-size:9px;letter-spacing:.6px}
+.sc-ack{display:flex!important;gap:10px;align-items:flex-start;margin:12px 0 16px!important;font-size:11px!important;line-height:1.5!important;letter-spacing:0!important;text-transform:none!important;color:var(--ink,#242321)!important}
+.sc-ack input{width:auto!important;margin:2px 0 0!important}
+.sc-external-note{background:var(--body,#EAE6DE);padding:11px 15px;margin:10px 0 16px;text-align:center;font-size:10px;line-height:1.5}
+.sc-policy-link{text-decoration:underline;cursor:pointer}
+.sc-confirm-reminder{
+  margin-top:16px;
+  padding:16px 18px;
+  border:1px solid var(--line,#DDD6CA);
+  border-radius:13px;
+  background:#F8F5EF;
+  font-size:11px;
+  line-height:1.6;
+  color:var(--muted,#777269);
+}
+.sc-confirm-reminder .sc-reminder-title{
+  font-family:Georgia,serif;
+  font-size:17px;
+  font-weight:400;
+  color:var(--ink,#242321);
+  margin:0 0 9px;
+}
+.sc-confirm-reminder ul{
+  margin:0;
+  padding-left:17px;
+}
+.sc-confirm-reminder li{margin:3px 0}
+.sc-confirm-reminder strong{color:var(--ink,#242321)}
+.sc-submit-disabled{opacity:.4!important;cursor:not-allowed!important}
+
+/* v13.8.1 — VISIBLE LIGHT LUXURY REDESIGN */
+:root{
+ --ivory:#F6F1E8;--paper:#FFFCF7;--ink:#18313B;--muted:#716C64;
+ --gold:#A77B38;--gold-soft:#D2B889;--line:#DDD3C4;--success:#F2F3ED;
+ --navy:#18313B;
+}
+body{background:#EDE8DF;color:var(--navy)}
+.phone{background:var(--ivory);box-shadow:0 0 45px rgba(24,49,59,.10)}
+.hero{
+ padding:46px 28px 32px;text-align:left;background:var(--ivory);
+ border-bottom:1px solid rgba(167,123,56,.35)
+}
+.brand{color:var(--navy);font-size:9px;letter-spacing:2.5px;line-height:1.8}
+.brand .hotel{font-size:14px;letter-spacing:3.6px}
+.hero h1{
+ font-family:Baskerville,"Palatino Linotype",Georgia,serif;
+ font-size:59px;line-height:.84;letter-spacing:1px;margin:38px 0 17px;color:var(--navy)
+}
+.tagline{font-size:10px;letter-spacing:3px;color:var(--gold)}
+.intro{
+ margin:23px 0 0;max-width:310px;font-family:Baskerville,Georgia,serif;
+ font-size:17px;line-height:1.55;color:#46545A
+}
+.hours{
+ margin:27px 0 0;max-width:none;padding:15px 0 0;border-top:1px solid var(--gold-soft);
+ border-bottom:0;font-size:10px;letter-spacing:.6px;color:var(--muted)
+}
+.hours b{color:var(--navy)}
+.content{padding:22px 25px 38px}
+.lang{justify-content:flex-start;margin:0 0 28px;gap:5px}
+.lang button{
+ background:transparent;border:0;border-bottom:1px solid transparent;border-radius:0;
+ padding:6px 7px;color:var(--muted);font-size:10px
+}
+.lang button.active{background:transparent;color:var(--navy);border:0;border-bottom:1px solid var(--gold)}
+.choice{
+ position:relative;background:transparent;border:0;border-radius:0;padding:23px 0;margin:0;
+ box-shadow:none;border-bottom:1px solid var(--line)
+}
+.choice.featured{background:transparent;border-color:var(--line)}
+.choice .eyebrow{font-size:8px;letter-spacing:2.1px;color:var(--gold);margin-bottom:7px}
+.choice h2{font-size:28px;color:var(--navy);margin:0 0 7px}
+.choice p{max-width:300px;font-size:12px;line-height:1.55;margin:0 0 15px}
+.choice .btn{width:auto;min-width:190px;padding:12px 18px;border-radius:2px}
+.btn{border-radius:3px;padding:14px 16px}
+.btn.dark{background:var(--navy);color:#FFFDF9}
+.btn.goldbtn{
+ background:transparent;color:var(--navy);border:1px solid var(--gold);
+}
+.btn.light{background:#FBF7F0;color:var(--navy);border:1px solid var(--line)}
+.my-home-card{border:0!important;border-bottom:1px solid var(--line)!important;background:transparent!important}
+.my-count{background:var(--navy);color:#fff}
+.location{
+ text-align:left;margin:29px 0 0;padding:18px 0 0;border-top:1px solid var(--gold-soft);
+ font-size:10px;line-height:1.7
+}
+.location b{color:var(--navy);font-size:10px;letter-spacing:1.1px}
+.inner{padding:32px 25px 42px}
+.back{color:var(--gold);font-size:11px;padding-bottom:25px}
+.eyebrow{color:var(--gold);font-size:9px;letter-spacing:2px}
+.section h2{font-size:34px;color:var(--navy);margin:7px 0 9px}
+.desc{font-size:12px;line-height:1.6}
+.card{
+ background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:19px;
+ box-shadow:none
+}
+label{color:var(--navy);font-size:10px}
+input,select,textarea{
+ border-radius:3px;border:1px solid #D7CCBC;background:#FFFDF9;padding:14px;color:var(--navy)
+}
+input:focus,select:focus,textarea:focus{outline:1px solid var(--gold);border-color:var(--gold)}
+.time{border-radius:3px;background:#FFFDF9;color:var(--navy)}
+.time.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.policyBox,.sc-unified-rules{
+ background:#FFFCF7;border:1px solid var(--gold-soft);border-radius:10px;padding:18px
+}
+.policyBox h3,.sc-unified-rules h3{font-size:21px;color:var(--navy)}
+.policyBox ul,.sc-unified-rules ul{font-size:10.5px;line-height:1.7}
+.policyBox li::marker,.sc-unified-rules li::marker{color:var(--gold)}
+.booking-card{
+ background:#FFFCF7;border:1px solid var(--line);border-radius:9px;padding:16px
+}
+.booking-name{color:var(--navy)}
+.booking-status{border-radius:2px;background:#F0EBE2;color:var(--navy)}
+.booking-status.confirmed{background:#F3EFE5;color:var(--navy);border:1px solid var(--gold-soft)}
+.booking-actions button{border-radius:3px;color:var(--navy)}
+.sc-confirm-reminder{
+ background:#FBF7F0;border:1px solid var(--gold-soft);border-radius:9px;color:var(--muted)
+}
+.sc-confirm-reminder .sc-reminder-title{color:var(--navy)}
+.sc-external-note{
+ background:#FBF7F0;border-top:1px solid var(--gold-soft);border-bottom:1px solid var(--gold-soft);
+ color:var(--navy)
+}
+.gedit-modal{background:var(--paper);border-radius:10px}
+@media(max-width:480px){
+ .hero h1{font-size:54px}
+ .choice .btn{width:100%}
+}
+
+</style>
+
+<style>
+:root{--cream:#f2eadf;--paper:#fffdf9;--ink:#171615;--muted:#746d64;--gold:#b08a57;--wine:#252321;--line:#ddd2c5}
+body{background:#d8d0c5}.phone{background:var(--cream)}
+.hero{padding-top:42px}.hero h1{letter-spacing:-1px}.choice,.card{box-shadow:0 14px 32px rgba(66,47,29,.055);border-color:#e4d9ca}
+.choice{padding:22px}.choice h2{font-size:29px}.choice .desc{max-width:370px}
+.btn{min-height:48px;border-radius:12px}
+.formIntro{font:400 20px/1.35 Georgia,serif;margin:3px 0 14px}
+.fieldHelp{font-size:10px;color:#958879;margin-top:4px;line-height:1.35}
+.optional{font-weight:400;color:#9a8d7d}
+.statusCard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.statusPill{display:inline-block;background:#f2e5cf;color:#6f5736;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:900;letter-spacing:.7px}
+.summaryGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.summaryCell{background:#faf6ef;border-radius:10px;padding:10px}.summaryCell small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.8px}.summaryCell b{display:block;margin-top:4px;font-size:13px}
+.langMini{display:flex;gap:5px;justify-content:flex-end;padding:4px 18px 0}.langMini button{border:0;background:transparent;color:#756a5e;font-size:10px;font-weight:800;padding:5px}.langMini button.on{color:var(--ink);text-decoration:underline}
+.staffStat{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0 16px}.staffStat div{background:#faf6ef;border:1px solid var(--line);border-radius:10px;padding:9px;text-align:center}.staffStat b{display:block;font-size:17px}.staffStat span{font-size:9px;color:var(--muted);text-transform:uppercase}
+</style>
+
+<style>
+.hero{background:linear-gradient(180deg,#f7f1e8 0%,#f2eadf 100%)}
+.choice,.card{border-color:#ddd2c5}
+.choice:first-of-type{border-top:2px solid #b08a57}
+.btn.gold{box-shadow:0 8px 22px rgba(23,22,21,.12)}
+.hours{border-color:#cbb28c}
+.tag{color:#9d7a4d}
+</style>
+
+<style id="beige-gold-final">
+:root{
+ --ivory:#DED0BC !important;
+ --cream:#DED0BC !important;
+ --paper:#F4EBDD !important;
+ --ink:#201D19 !important;
+ --muted:#70675B !important;
+ --gold:#A98345 !important;
+ --wine:#201D19 !important;
+ --line:#C9B99F !important;
+ --ok:#4E5B49 !important;
+ --bad:#6B6258 !important;
+}
+html,body{background:#CFC3B1 !important}
+.phone{background:#DED0BC !important}
+.hero{background:linear-gradient(180deg,#E9DECD 0%,#DED0BC 100%) !important}
+.choice,.card,.panel,.mini,.item{background:#F4EBDD !important;border-color:#C9B99F !important}
+input,select,textarea,.search,.time,.cats button,.mainTabs button,.langbar button{background:#F8F2E8 !important;border-color:#C9B99F !important;color:#201D19 !important}
+.tag,.eyebrow{color:#8E6C35 !important}
+.hours{border-color:#B59661 !important}
+.btn.gold{background:#A98345 !important;color:#fff !important}
+.btn.dark{background:#201D19 !important;color:#fff !important}
+.time.on,.cats button.on,.mainTabs button.on{background:#201D19 !important;color:#fff !important;border-color:#201D19 !important}
+.statusPill{background:#E8D6B7 !important;color:#654D28 !important}
+.note{background:#EEE1CD !important;border-left-color:#A98345 !important}
+.summaryCell,.staffStat div{background:#EADFCC !important}
+.bottomnav{background:rgba(244,235,221,.98) !important;border-top-color:#C9B99F !important}
+.bottomnav button.on{color:#8E6C35 !important}
+.price{color:#201D19 !important}
+</style>
+
+<style id="cool-luxury-final">
+:root{
+ --ivory:#D8D6D0 !important;
+ --cream:#D8D6D0 !important;
+ --paper:#ECEAE5 !important;
+ --ink:#252626 !important;
+ --muted:#6F706E !important;
+ --gold:#A69A7A !important;
+ --wine:#353737 !important;
+ --line:#C4C2BC !important;
+ --ok:#59625D !important;
+ --bad:#77736E !important;
+}
+html,body{background:#C8C7C2 !important}
+.phone{background:#D8D6D0 !important}
+.hero{background:linear-gradient(180deg,#E3E2DE 0%,#D8D6D0 100%) !important}
+.choice,.card,.panel,.mini,.item{background:#ECEAE5 !important;border-color:#C4C2BC !important}
+input,select,textarea,.search,.time,.cats button,.mainTabs button,.langbar button{
+ background:#F2F1ED !important;border-color:#C4C2BC !important;color:#252626 !important}
+.tag,.eyebrow{color:#81775F !important}
+.hours{border-color:#A69A7A !important}
+.btn.gold{background:#81775F !important;color:#fff !important}
+.btn.dark{background:#292A2A !important;color:#fff !important}
+.time.on,.cats button.on,.mainTabs button.on{background:#353737 !important;color:#fff !important;border-color:#353737 !important}
+.statusPill{background:#DDD8CB !important;color:#5E5848 !important}
+.note{background:#E2DFD7 !important;border-left-color:#A69A7A !important}
+.summaryCell,.staffStat div{background:#E2E0DA !important}
+.bottomnav{background:rgba(236,234,229,.98) !important;border-top-color:#C4C2BC !important}
+.bottomnav button.on{color:#686250 !important}
+.price{color:#252626 !important}
+</style>
+
+<style id="sand-gray-luxury-final">
+:root{
+ --ivory:#D8D2C6 !important;
+ --cream:#D8D2C6 !important;
+ --paper:#EEEAE1 !important;
+ --ink:#272725 !important;
+ --muted:#716E67 !important;
+ --gold:#A58D61 !important;
+ --wine:#3A3936 !important;
+ --line:#C5BDAE !important;
+ --ok:#5B625B !important;
+ --bad:#77736C !important;
+}
+html,body{background:#C8C3B9 !important}
+.phone{background:#D8D2C6 !important}
+.hero{background:linear-gradient(180deg,#E4DFD5 0%,#D8D2C6 100%) !important}
+.choice,.card,.panel,.mini,.item{background:#EEEAE1 !important;border-color:#C5BDAE !important}
+input,select,textarea,.search,.time,.cats button,.mainTabs button,.langbar button{
+ background:#F5F2EB !important;border-color:#C5BDAE !important;color:#272725 !important}
+.tag,.eyebrow{color:#8B7652 !important}
+.hours{border-color:#A58D61 !important}
+.btn.gold{background:#8B7652 !important;color:#fff !important}
+.btn.dark{background:#2E2E2B !important;color:#fff !important}
+.time.on,.cats button.on,.mainTabs button.on{
+ background:#3A3936 !important;color:#fff !important;border-color:#3A3936 !important}
+.statusPill{background:#DED5C3 !important;color:#65583F !important}
+.note{background:#E5DED1 !important;border-left-color:#A58D61 !important}
+.summaryCell,.staffStat div{background:#E3DED4 !important}
+.bottomnav{background:rgba(238,234,225,.98) !important;border-top-color:#C5BDAE !important}
+.bottomnav button.on{color:#796746 !important}
+.price{color:#272725 !important}
+</style>
+
+<style id="warm-white-luxury-final">
+:root{
+ --ivory:#F5F2EC !important;
+ --cream:#F5F2EC !important;
+ --paper:#FCFAF6 !important;
+ --ink:#242321 !important;
+ --muted:#777269 !important;
+ --gold:#A88E60 !important;
+ --wine:#343330 !important;
+ --line:#DDD6CA !important;
+ --ok:#596159 !important;
+ --bad:#77726B !important;
+}
+html,body{background:#EAE6DE !important}
+.phone{background:#F5F2EC !important}
+.hero{background:linear-gradient(180deg,#FCFAF6 0%,#F5F2EC 100%) !important}
+.choice,.card,.panel,.mini,.item{background:#FCFAF6 !important;border-color:#DDD6CA !important}
+input,select,textarea,.search,.time,.cats button,.mainTabs button,.langbar button{
+ background:#FFFFFF !important;border-color:#DDD6CA !important;color:#242321 !important}
+.tag,.eyebrow{color:#90784F !important}
+.hours{border-color:#B9A27B !important}
+.btn.gold{background:#A88E60 !important;color:#fff !important}
+.btn.dark{background:#292826 !important;color:#fff !important}
+.time.on,.cats button.on,.mainTabs button.on{
+ background:#343330 !important;color:#fff !important;border-color:#343330 !important}
+.statusPill{background:#EEE6D8 !important;color:#66583F !important}
+.note{background:#F2ECE2 !important;border-left-color:#A88E60 !important}
+.summaryCell,.staffStat div{background:#F3EFE8 !important}
+.bottomnav{background:rgba(252,250,246,.98) !important;border-top-color:#DDD6CA !important}
+.bottomnav button.on{color:#806B48 !important}
+.price{color:#242321 !important}
+</style>
+
+<style id="staff-demo-styles">
+.staff-head{margin-bottom:16px}.staff-head h2{margin-bottom:5px}.staff-head p{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
+.staff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
+.staff-stat{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 5px;text-align:center}
+.staff-stat b{display:block;font-size:17px}.staff-stat span{display:block;margin-top:3px;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.staff-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:14px 0}
+.staff-tabs button{border:1px solid var(--line);background:white;border-radius:9px;padding:10px 4px;font-size:9px;font-weight:800}
+.staff-tabs button.active{background:var(--ink);color:white;border-color:var(--ink)}
+.staff-filter{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.staff-request{padding:13px 0;border-bottom:1px solid var(--line)}.staff-request:last-child{border-bottom:0}
+.request-top{display:flex;justify-content:space-between;gap:10px}.request-top b{font-size:14px}.meta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:4px}
+.pill{display:inline-block;border-radius:15px;padding:5px 7px;font-size:8px;font-weight:800;text-transform:uppercase}
+.pill.pending{background:#eee8dd;color:#705f42}.pill.confirmed{background:#e5ebe4;color:#536153}.pill.rejected{background:#ece9e5;color:#766f66}
+.staff-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.staff-actions button{padding:9px;border:0;border-radius:8px;font-size:9px;font-weight:800}
+.confirmBtn{background:#586458;color:#fff}.declineBtn{background:#77726b;color:#fff}
+.slot-row{display:grid;grid-template-columns:58px 1fr auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.slot-row:last-child{border-bottom:0}.slot-time{font-weight:800}.slot-info{font-size:10px;color:var(--muted)}
+.slot-button{border:1px solid var(--line);background:#f6f1e9;border-radius:8px;padding:7px 8px;font-size:9px;font-weight:800}
+.slot-button.open{background:#e7ece5}.capacity-line{display:flex;gap:8px;align-items:end;margin-bottom:12px}.capacity-line label{flex:1;margin:0}.capacity-line .btn{width:auto;padding:12px}
+.timeline-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}
+.timeline-top{display:flex;justify-content:space-between;align-items:center}.timeline-time{font-family:Baskerville,Georgia,serif;font-size:20px}.timeline-count{font-size:10px;color:var(--muted)}
+.capacity-bar{height:6px;background:#ebe6de;border-radius:10px;overflow:hidden;margin:8px 0}.capacity-bar span{display:block;height:100%;background:var(--gold)}
+.timeline-booking{padding:7px 0;border-top:1px solid #eee8df;font-size:11px}.timeline-booking:first-of-type{border-top:0}
+.staff-note{background:#f2ede5;border-left:3px solid var(--gold);padding:10px;font-size:10px;color:var(--muted);line-height:1.5;margin:10px 0}
+</style>
+
+<style id="guest-type-and-time-fix">
+.times .time{cursor:pointer;transition:.15s ease;border:1px solid var(--line)!important}
+.times .time.active{background:#292826!important;color:#fff!important;border-color:#292826!important;box-shadow:0 0 0 2px rgba(168,142,96,.18)!important;transform:translateY(-1px)}
+.times .time:disabled{cursor:not-allowed!important;opacity:.3!important}
+.guestTypeTitle{margin-top:20px;margin-bottom:8px}
+.guestTypeGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
+.guestType{border:1px solid var(--line);background:#fff;border-radius:13px;padding:14px 11px;text-align:left;cursor:pointer;transition:.15s}
+.guestType.active{border-color:var(--gold);background:#F3EEE5;box-shadow:0 0 0 1px var(--gold)}
+.guestType b{display:block;font-size:12px;margin-bottom:4px}.guestType span{display:block;font-size:9px;color:var(--muted);line-height:1.4}
+.typePanel{background:#F8F5EF;border:1px solid var(--line);border-radius:13px;padding:13px;margin-bottom:14px}
+.typePanel .panelHint{font-size:10px;color:var(--muted);line-height:1.45;margin:0 0 10px}
+.selectedTimeInfo{font-size:10px;color:var(--muted);margin:-3px 0 12px}.selectedTimeInfo b{color:var(--ink)}
+@media(max-width:480px){.guestTypeGrid{grid-template-columns:1fr 1fr}}
+</style>
+
+<style id="final-polish">
+.btn,.time{display:flex;align-items:center;justify-content:center;text-align:center}
+.btn{min-height:48px}
+</style>
+</head>
+<body>
+<main class="phone">
+
+<section id="home" class="section active">
+  <div class="hero">
+    <div class="brand">
+      <span class="hotel">DELTA HOTELS</span>
+      MARRIOTT · ANTALYA LARA
+    </div>
+    <h1>SUSHI<br>CLUB</h1>
+    <div class="tagline">SAVOR · SHARE · SMILE</div>
+    <p class="intro">A refined Japanese dining experience at Delta Hotels by Marriott Antalya Lara.</p>
+    <div class="hours">
+      <b>RESTAURANT HOURS</b> · 17:00–22:30<br><span style="display:inline-block;margin-top:5px"><b>LAST RESERVATION</b> · 22:00</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="lang" id="languageSwitcher" aria-label="Language">
+      <button type="button" data-lang="en" onclick="setLanguage('en')">EN</button>
+      <button type="button" data-lang="tr" onclick="setLanguage('tr')">TR</button>
+      <button type="button" data-lang="ru" onclick="setLanguage('ru')">RU</button>
+      <button type="button" data-lang="de" onclick="setLanguage('de')">DE</button>
+      <button type="button" data-lang="fr" onclick="setLanguage('fr')">FR</button>
+      <button type="button" data-lang="zh" onclick="setLanguage('zh')">中文</button>
+    </div>
+
+    <div class="choice featured">
+      <div class="eyebrow">DISCOVER</div>
+      <h2>View Menu</h2>
+      <p>Explore Sushi Club selections, drinks and current prices.</p>
+      <button class="btn goldbtn" onclick="window.location.href='/menu.html'">VIEW MENU</button>
+    </div>
+
+    <div class="choice">
+      <div class="eyebrow">YOUR EVENING</div>
+      <h2>Reserve a Table</h2>
+      <p>Choose your preferred date and time. No phone call is required.</p>
+      <button class="btn dark" onclick="show('reserve')">RESERVE A TABLE</button>
+    </div>
+
+    <div class="choice my-home-card">
+      <div class="eyebrow" id="myBookingEyebrow">YOUR BOOKING</div>
+      <h2><span id="myBookingTitle">My Reservations</span> <span id="myCount" class="my-count">0</span></h2>
+      <p id="myHomeText">Already booked? View, edit or cancel your reservation here.</p>
+      <button class="btn dark" id="myBookingButton" onclick="show('myReservations')">MY RESERVATIONS</button>
+    </div>
+
+    <div class="location">
+      <b>SUSHI CLUB · 2ND FLOOR</b><br>
+      Main hotel building · External entrance on the left side.
+    </div>
+<div style="margin-top:18px;text-align:center">
+  <a id="staffAccessLink" class="back" href="/staff.html" style="display:inline-block;margin:0 auto;opacity:.65;text-decoration:none">STAFF ACCESS</a>
+</div>
+
+  </div>
+</section>
+
+
+<section id="myReservations" class="section">
+  <div class="inner">
+    <button class="back" onclick="show('home')">← Back</button>
+    <div class="eyebrow">SUSHI CLUB</div>
+    <h2>My Reservations</h2>
+    <p class="desc" id="v13MyReservationsDesc">View, edit or cancel your reservations here. If a booking is not shown, use Find a Booking below.</p>
+    <div id="myReservationList"></div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="eyebrow">FIND A BOOKING</div>
+      <h3 style="font-family:Georgia,serif;font-weight:400;margin:6px 0 8px">Reservation not shown?</h3>
+      <p class="smallnote">Enter your Reservation ID and room number, phone or e-mail.</p>
+      <div class="find-grid">
+        <input id="findRef" placeholder="Reservation ID · SC-123456">
+        <input id="findIdentity" placeholder="Room / phone / e-mail">
+      </div>
+      <button class="btn dark" style="margin-top:9px" onclick="findReservation()">FIND RESERVATION</button>
+      <div id="findResult" style="margin-top:10px"></div>
+    </div>
+  </div>
+</section>
+
+<section id="reserve" class="section">
+  <div class="inner">
+    <button class="back" onclick="show('home')">← Back</button>
+    <div class="eyebrow">SUSHI CLUB</div>
+    <h2>Table Reservation</h2>
+    <p class="desc">Reservations are available from 17:00. The last reservation is at 22:00; the restaurant closes at 22:30.</p>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <label>DATE</label>
+          <input id="rdate" type="date">
+        </div>
+        <div>
+          <label>GUESTS</label>
+          <input id="guests" type="number" min="1" inputmode="numeric" placeholder="Enter number of guests">
+        </div>
+      </div>
+      <div class="selectedTimeInfo" style="margin-top:8px">The reservation will be recorded for the exact number of guests entered above.</div>
+
+      <label>PREFERRED TIME</label>
+      <div class="times" id="reserveTimes">
+        <button class="time">17:00</button>
+        <button class="time">17:15</button>
+        <button class="time">17:30</button>
+        <button class="time">17:45</button>
+        <button class="time">18:00</button>
+        <button class="time">18:15</button>
+        <button class="time">18:30</button>
+        <button class="time">18:45</button>
+        <button class="time">19:00</button>
+        <button class="time">19:15</button>
+        <button class="time active">19:30</button>
+        <button class="time">19:45</button>
+        <button class="time">20:00</button>
+        <button class="time">20:15</button>
+        <button class="time">20:30</button>
+        <button class="time">20:45</button>
+        <button class="time">21:00</button>
+        <button class="time">21:15</button>
+        <button class="time">21:30</button>
+        <button class="time">21:45</button>
+        <button class="time">22:00</button>
+      </div>
+
+      <div id="selectedTimeInfo" class="selectedTimeInfo">Selected time: <b id="selectedTimeText">19:30</b></div>
+
+      <label>LEAD GUEST NAME</label>
+      <input id="rname" placeholder="Name under which the reservation will be held">
+
+      <label class="guestTypeTitle">I AM...</label>
+      <div class="guestTypeGrid">
+        <button type="button" id="hotelGuestBtn" class="guestType active" onclick="setGuestType('hotel')">
+          <b>HOTEL GUEST</b><span>I am staying at Delta Hotels Antalya Lara</span>
+        </button>
+        <button type="button" id="outsideGuestBtn" class="guestType" onclick="setGuestType('outside')">
+          <b>OUTSIDE GUEST</b><span>I am visiting Sushi Club without a hotel stay</span>
+        </button>
+      </div>
+
+      <div id="hotelGuestPanel" class="typePanel">
+        <p class="panelHint">Please enter your room number so our team can identify your reservation quickly.</p>
+        <label>ROOM NUMBER</label>
+        <input id="rroom" inputmode="numeric" placeholder="e.g. 512">
+        <label>WHATSAPP OR E-MAIL <span class="optional">(optional)</span></label>
+        <input id="hotelContact" type="text" placeholder="For reservation updates"><p class="smallnote" id="hotelNotifyHint"></p>
+      </div>
+
+      <div id="outsideGuestPanel" class="typePanel" style="display:none">
+        <p class="panelHint">Please leave a contact so we can send your reservation confirmation.</p>
+        <label>WHATSAPP / PHONE</label>
+        <input id="outsidePhone" type="tel" placeholder="+90 ...">
+        <label>E-MAIL <span class="optional">(optional)</span></label>
+        <input id="outsideEmail" type="email" placeholder="name@email.com"><p class="smallnote" id="outsideNotifyHint"></p>
+      </div>
+
+      <input id="contact" type="hidden">
+      <input id="remail" type="hidden">
+
+      <label>SPECIAL REQUEST <span style="font-weight:400;color:#777">(optional)</span></label>
+      <textarea id="rrequest" rows="3" placeholder="Allergy, birthday, seating preference..."></textarea>
+
+
+      <button class="btn dark" onclick="confirmReservation()">SEND RESERVATION REQUEST</button>
+      <p class="smallnote">Your request will remain pending until the Sushi Club team confirms it.</p>
+    </div>
+  </div>
+</section>
+
+<section id="menu" class="section">
+  <div class="inner">
+    <button class="back" onclick="show('home')">← Back</button>
+    <div class="eyebrow">SUSHI CLUB</div>
+    <h2>Menu</h2>
+    <p class="desc">Discover our food and beverage selection. Prices are shown in Turkish Lira.</p>
+    <div class="card menu-launch">
+      <div class="menu-symbol">お</div>
+      <h3>Our Full Menu</h3>
+      <p>The current Sushi Club menu opens in your browser. No app or phone call is required.</p>
+      <a class="btn goldbtn menu-link" href="/menu.html">OPEN FULL MENU</a>
+      <p class="smallnote">Food · Sushi · Robata · Gyoza · Beverages</p>
+    </div>
+    <div class="menu-note"><b>Prefer to dine with us?</b><br>After viewing the menu, return here to reserve your table. Reservations are available from 17:00, with the last reservation at 22:00.</div>
+    <button class="btn dark" onclick="show('reserve')">RESERVE A TABLE</button>
+  </div>
+</section>
+
+
+<section id="staff" class="section">
+  <div class="inner">
+    <button class="back" onclick="show('home')">← Back</button>
+    <div class="eyebrow">SUSHI CLUB · STAFF</div>
+    <div class="staff-head">
+      <h2>Reservations Overview</h2>
+      <p>Manage requests, availability and the flow of the evening from one screen.</p>
+    </div>
+
+    <div class="staff-note">Demo version: data is stored only in this browser. In the live system, all guest phones and staff devices will use one shared database.</div>
+
+    <div class="staff-filter">
+      <div><label>DATE</label><input id="staffDate" type="date" onchange="renderStaff()"></div>
+      <div><label>STATUS</label><select id="staffFilter" onchange="renderStaff()"><option value="all">All</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="rejected">Declined</option></select></div>
+    </div>
+
+    <div class="staff-grid" id="staffStats"></div>
+
+    <div class="staff-tabs">
+      <button id="staffTabRequests" class="active" onclick="setStaffTab('requests')">REQUESTS</button>
+      <button id="staffTabTimeline" onclick="setStaffTab('timeline')">TIMELINE</button>
+      <button id="staffTabAvailability" onclick="setStaffTab('availability')">AVAILABILITY</button>
+    </div>
+
+    <div id="staffRequestsPanel">
+      <div class="card"><div id="staffRequests"></div></div>
+    </div>
+
+    <div id="staffTimelinePanel" style="display:none">
+      <div id="staffTimeline"></div>
+    </div>
+
+    <div id="staffAvailabilityPanel" style="display:none">
+      <div class="card">
+        <div class="capacity-line">
+          <label>DEMO MAX GUESTS PER TIME SLOT<input id="slotCapacity" type="number" min="1" value="20"></label>
+          <button class="btn light" onclick="saveCapacity()">SAVE</button>
+        </div>
+        <div class="staff-note">This is only a demo capacity. Later we can replace it with the real table layout and exact restaurant capacity.</div>
+        <div id="staffSlots"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="success" class="section success">
+  <div class="successbox">
+    <div class="check">✓</div>
+    <div class="eyebrow">REQUEST RECEIVED</div>
+    <h2 id="successTitle">Thank you</h2>
+    <p id="successText" class="desc" style="margin-bottom:0"></p>
+    <div id="summary" class="summary"></div>
+  </div>
+  <button class="btn dark" style="margin-top:16px" onclick="show('home')">BACK TO SUSHI CLUB</button>
+</section>
+
+</main>
+
+<div id="guestEditOverlay" class="gedit-overlay">
+  <div class="gedit-modal">
+    <div class="eyebrow">MY RESERVATION</div>
+    <h2 style="margin-top:5px">Edit Reservation</h2>
+    <div id="guestEditRef" class="smallnote"></div>
+
+    <div class="gedit-grid" style="margin-top:12px">
+      <label>DATE<input id="geDate" type="date"></label>
+      <label>TIME<select id="geTime"></select></label>
+      <label>NUMBER OF GUESTS<input id="geGuests" type="number" min="1"></label>
+      <label>LEAD GUEST NAME<input id="geName"></label>
+      <label>ROOM NUMBER<input id="geRoom" placeholder="Hotel guests"></label>
+      <label>WHATSAPP / PHONE<input id="gePhone"></label>
+      <label style="grid-column:1/-1">E-MAIL<input id="geEmail" type="email"></label>
+      <label style="grid-column:1/-1">SPECIAL REQUEST<textarea id="geRequest" rows="3"></textarea></label>
+    </div>
+
+    <div class="smallnote" style="margin-top:10px">
+      Changes to date, time or party size require the Sushi Club team to confirm the reservation again.
+    </div>
+    <div class="gedit-actions">
+      <button class="btn" onclick="closeGuestEdit()">CLOSE</button>
+      <button class="btn dark" onclick="saveGuestEdit()">SAVE CHANGES</button>
+    </div>
+  </div>
+</div>
+
+
+<script src="/guest-core.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/guest-live.js"></script>
+<script>
+window.addEventListener('load',()=>{
+  if(location.hash==='#reserve' && typeof window.show==='function'){
+    setTimeout(()=>window.show('reserve'),100);
+  }
+});
+</script>
+</body>
+</html>
