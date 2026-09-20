@@ -1,34 +1,39 @@
-name: Deploy Sushi Club
+name: Validate Sushi Club
 
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: validate-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload site
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: .
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Check sources and build approved menu
+        run: node scripts/build.mjs
+      - name: Verify build output
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const report = JSON.parse(fs.readFileSync('dist/build-info.json','utf8'));
+          assert.equal(report.dishCount,51);
+          assert.equal(report.photoCount,51);
+          assert.equal(fs.readdirSync('dist/assets/menu').length,51);
+          const menu = fs.readFileSync('dist/menu.html','utf8');
+          assert(menu.includes('</body>'));
+          assert(menu.includes('Shrimp Crunch 8 Pcs.'));
+          assert(!menu.includes('menu-images-lite.js'));
+          for (const f of ['index.html','staff.html','guest-core.js','guest-live.js','staff.js','reliability.js']) assert(fs.statSync('dist/'+f).size>100);
+          console.log('Source and asset validation passed. This is not a production deployment.');
+          JS
