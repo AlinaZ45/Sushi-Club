@@ -627,6 +627,50 @@ input,select,textarea,.search,.time,.cats button,.mainTabs button,.langbar butto
 <style id="final-polish">
 .btn,.time{display:flex;align-items:center;justify-content:center;text-align:center}
 .btn{min-height:48px}
+
+/* Home cards: centered copy and uniform CTA buttons */
+#home .choice{
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+#home .choice .eyebrow,
+#home .choice h2,
+#home .choice p{
+  width:100%;
+  text-align:center;
+}
+#home .choice p{
+  max-width:320px;
+  margin-left:auto;
+  margin-right:auto;
+}
+#home .choice .btn{
+  width:240px !important;
+  min-width:240px !important;
+  max-width:240px !important;
+  min-height:60px;
+  padding:0 20px;
+  margin-left:auto;
+  margin-right:auto;
+}
+#home .choice h2{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:7px;
+}
+#home .choice .my-count{
+  margin-left:0;
+}
+@media(max-width:320px){
+  #home .choice .btn{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:240px !important;
+  }
+}
 </style>
 </head>
 <body>
