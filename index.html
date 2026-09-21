@@ -658,6 +658,33 @@ input,select,textarea,.search,.time,.cats button,.mainTabs button,.langbar butto
   text-align:center;
 }
 
+/* Rounded luxury treatment for home cards and CTAs */
+#home .choice{
+  border-radius:26px !important;
+  overflow:hidden;
+  border:1px solid var(--line) !important;
+  background:var(--paper) !important;
+}
+#home .choice + .choice{
+  margin-top:14px;
+}
+#home .choice .btn{
+  border-radius:16px !important;
+  border:1px solid rgba(36,35,33,.18) !important;
+  box-shadow:none;
+}
+#home .choice .btn.dark{
+  border-radius:16px !important;
+  border:1px solid #292826 !important;
+}
+#home .choice .btn:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:3px;
+}
+#home .my-count{
+  border-radius:999px !important;
+}
+
 /* Home cards: centered copy and uniform CTA buttons */
 #home .choice{
   text-align:center;
