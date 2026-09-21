@@ -73,6 +73,10 @@ for (const [name, text] of Object.entries(output)) {
 }
 fs.mkdirSync(out, {recursive:true});
 fs.mkdirSync(path.join(out, 'assets/menu'), {recursive:true});
+fs.mkdirSync(path.join(out, 'assets'), {recursive:true});
+const introHero = path.join(root, 'assets', 'sushi-intro-approved.webp');
+assert(fs.existsSync(introHero), 'Missing Sushi Club intro hero');
+fs.copyFileSync(introHero, path.join(out, 'assets', 'sushi-intro-approved.webp'));
 for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
 for (const {file,bytes} of images.values()) fs.writeFileSync(path.join(out,file),bytes);
 const report = {revision, menuSource:'approved v13.49',dishCount:51,photoCount:images.size,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
