@@ -1006,7 +1006,7 @@ input:focus,select:focus,textarea:focus{
     radial-gradient(420px 360px at 97% 76%,rgba(188,204,213,.72),transparent 72%),
     radial-gradient(520px 390px at 68% 105%,rgba(235,230,224,.58),transparent 70%),
     linear-gradient(145deg,#e9edef 0%,#cfd9de 47%,#e9e7e3 100%);
-  transition:opacity .58s ease,visibility .58s ease;
+  transition:opacity 1.35s cubic-bezier(.22,.72,.22,1),visibility 1.35s ease;
 }
 #futureIntro:before{
   content:"";
@@ -1145,10 +1145,10 @@ input:focus,select:focus,textarea:focus{
   filter:blur(.35px);
 }
 #futureIntro.is-opening #futureWave{
-  animation:fgOpen 1.55s cubic-bezier(.16,.72,.18,1) forwards;
+  animation:fgOpen 1.95s cubic-bezier(.16,.72,.18,1) forwards;
 }
 #futureIntro.is-opening .future-intro-inner{
-  animation:fgFade 1.05s ease forwards;
+  animation:fgFade 1.45s ease forwards;
 }
 #futureIntro.is-opening #futureDot{
   animation:fgDotFlash .55s ease forwards;
@@ -1485,8 +1485,8 @@ window.addEventListener('load',()=>{
     try{ if(navigator.vibrate) navigator.vibrate(28); }catch(e){}
     intro.classList.add('is-opening');
     sessionStorage.setItem('sushiFutureIntroSeen','1');
-    setTimeout(function(){intro.classList.add('is-hidden')},1520);
-    setTimeout(function(){intro.remove()},2050);
+    setTimeout(function(){intro.classList.add('is-hidden')},1850);
+    setTimeout(function(){intro.remove()},3350);
   });
 })();
 </script>
