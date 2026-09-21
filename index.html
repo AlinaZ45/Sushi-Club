@@ -729,8 +729,248 @@ input,select,textarea,.search,.time,.cats button,.mainTabs button,.langbar butto
   }
 }
 </style>
+
+<style id="future-glass-preview">
+:root{
+  --fg-milk:#f2f4f4;
+  --fg-ice:#dfe5e7;
+  --fg-ink:#243039;
+  --fg-muted:#6e777c;
+  --fg-line:rgba(255,255,255,.72);
+  --fg-glass:rgba(255,255,255,.42);
+  --fg-glass-strong:rgba(255,255,255,.60);
+}
+html,body{background:#e9edee!important;color:var(--fg-ink)!important}
+body{
+  background:
+    radial-gradient(circle at 14% 12%,rgba(255,255,255,.96),transparent 31%),
+    radial-gradient(circle at 86% 22%,rgba(199,216,224,.82),transparent 33%),
+    radial-gradient(circle at 58% 88%,rgba(224,216,209,.62),transparent 34%),
+    linear-gradient(145deg,#edf1f2 0%,#e2e7e8 46%,#f3f1ee 100%)!important;
+  min-height:100vh;
+}
+.phone{
+  position:relative;
+  overflow:hidden;
+  max-width:430px;
+  min-height:100vh;
+  background:rgba(239,243,244,.54)!important;
+  box-shadow:0 18px 70px rgba(58,73,82,.14)!important;
+  isolation:isolate;
+}
+.phone:before,.phone:after{
+  content:"";position:fixed;pointer-events:none;z-index:-1;border-radius:999px;filter:blur(42px);opacity:.58
+}
+.phone:before{width:240px;height:240px;top:8%;left:calc(50% - 225px);background:rgba(255,255,255,.86)}
+.phone:after{width:260px;height:260px;bottom:4%;left:calc(50% + 22px);background:rgba(190,208,217,.60)}
+
+#home .hero{
+  background:transparent!important;
+  border:0!important;
+  padding:42px 26px 18px!important;
+  text-align:center!important;
+}
+#home .brand{
+  color:#3e4a50!important;
+  font-size:8px!important;
+  letter-spacing:2.4px!important;
+  opacity:.82;
+}
+#home .brand .hotel{font-size:11px!important;letter-spacing:3.2px!important}
+#home .hero h1{
+  color:#243039!important;
+  font-family:"Helvetica Neue",Arial,sans-serif!important;
+  font-size:31px!important;
+  line-height:1.02!important;
+  letter-spacing:8px!important;
+  font-weight:300!important;
+  margin:25px 0 4px!important;
+}
+#home .tagline{
+  color:#6d777c!important;
+  font-size:8px!important;
+  letter-spacing:2.8px!important;
+  font-weight:500!important;
+}
+#home .intro,#home .hours{display:none!important}
+#home .content{padding:12px 22px 34px!important}
+#home .lang{
+  justify-content:center!important;
+  gap:7px!important;
+  margin:4px 0 22px!important;
+}
+#home .lang button{
+  min-width:35px;
+  height:31px;
+  padding:0 9px!important;
+  border:1px solid rgba(255,255,255,.7)!important;
+  border-radius:16px!important;
+  background:rgba(255,255,255,.28)!important;
+  color:#68757b!important;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.68);
+}
+#home .lang button.active{
+  background:rgba(255,255,255,.7)!important;color:#26343b!important
+}
+#home .choice{
+  margin:11px 0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#home .choice .eyebrow,#home .choice h2,#home .choice p{display:none!important}
+#home .choice .btn{
+  width:100%!important;max-width:none!important;min-width:0!important;height:72px!important;
+  border:1px solid rgba(255,255,255,.78)!important;
+  border-radius:28px!important;
+  background:rgba(255,255,255,.38)!important;
+  color:#27353c!important;
+  font-size:12px!important;
+  letter-spacing:2px!important;
+  font-weight:600!important;
+  box-shadow:0 16px 40px rgba(66,82,90,.10),inset 0 1px 0 rgba(255,255,255,.82)!important;
+  backdrop-filter:blur(22px)!important;
+  -webkit-backdrop-filter:blur(22px)!important;
+  transition:.28s ease!important;
+}
+#home .choice .btn:active{transform:scale(.985);background:rgba(255,255,255,.62)!important}
+#home .location{
+  text-align:center!important;
+  border:0!important;
+  margin:25px 0 0!important;
+  padding:0!important;
+  color:#7b8589!important;
+  font-size:9px!important;
+  line-height:1.7!important;
+}
+#home .location b{color:#4f5b60!important;font-size:9px!important}
+
+.inner{padding:30px 22px 42px!important}
+.back{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-height:40px!important;padding:0 15px!important;margin-bottom:16px!important;
+  border:1px solid rgba(255,255,255,.70)!important;border-radius:20px!important;
+  background:rgba(255,255,255,.32)!important;color:#3e4b51!important;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)
+}
+.section h2{color:#26353c!important;font-family:"Helvetica Neue",Arial,sans-serif!important;font-weight:300!important}
+.eyebrow{color:#7a8589!important;letter-spacing:2.2px!important}
+.desc{color:#707b80!important}
+.card,.booking-card,.policyBox,.sc-unified-rules,.sc-confirm-reminder,.typePanel,.statusCard,.gedit-modal{
+  background:rgba(255,255,255,.42)!important;
+  border:1px solid rgba(255,255,255,.76)!important;
+  border-radius:28px!important;
+  box-shadow:0 18px 48px rgba(63,78,86,.09),inset 0 1px 0 rgba(255,255,255,.75)!important;
+  backdrop-filter:blur(24px)!important;-webkit-backdrop-filter:blur(24px)!important;
+}
+.card{padding:19px!important}
+input,select,textarea{
+  border:1px solid rgba(255,255,255,.78)!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.48)!important;
+  color:#27343a!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.80)!important;
+}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:rgba(153,171,179,.9)!important}
+.btn{
+  border-radius:24px!important;
+  background:rgba(255,255,255,.46)!important;
+  color:#27353c!important;
+  border:1px solid rgba(255,255,255,.76)!important;
+  box-shadow:0 12px 30px rgba(59,74,82,.10),inset 0 1px 0 rgba(255,255,255,.78)!important;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+.btn.dark,.btn.goldbtn,.btn.light{
+  background:rgba(255,255,255,.52)!important;color:#27353c!important;border:1px solid rgba(255,255,255,.78)!important
+}
+.time{
+  border-radius:17px!important;background:rgba(255,255,255,.40)!important;
+  border:1px solid rgba(255,255,255,.68)!important;color:#536168!important
+}
+.time.active{
+  background:rgba(55,69,76,.84)!important;color:#fff!important;border-color:rgba(55,69,76,.84)!important
+}
+.guestType{border-radius:22px!important;background:rgba(255,255,255,.34)!important;border-color:rgba(255,255,255,.7)!important}
+.guestType.active{background:rgba(255,255,255,.7)!important;border-color:rgba(255,255,255,.9)!important;box-shadow:0 10px 25px rgba(54,70,78,.08)!important}
+.successbox{background:rgba(255,255,255,.48)!important;border:1px solid rgba(255,255,255,.76)!important;border-radius:30px!important;backdrop-filter:blur(22px)}
+
+#futureIntro{
+  position:fixed;inset:0;z-index:100000;
+  display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(circle at 50% 32%,rgba(255,255,255,.72),transparent 23%),
+    radial-gradient(circle at 18% 10%,rgba(255,255,255,.9),transparent 28%),
+    radial-gradient(circle at 80% 78%,rgba(190,207,215,.56),transparent 36%),
+    linear-gradient(150deg,#edf1f2 0%,#dfe5e7 52%,#f0eeeb 100%);
+  overflow:hidden;
+  transition:opacity .42s ease,visibility .42s ease;
+}
+#futureIntro.is-hidden{opacity:0;visibility:hidden}
+#futureIntro:before,#futureIntro:after{
+  content:"";position:absolute;border-radius:50%;filter:blur(46px);opacity:.54
+}
+#futureIntro:before{width:280px;height:280px;top:-55px;right:-80px;background:#fff}
+#futureIntro:after{width:290px;height:290px;bottom:-90px;left:-100px;background:#cbd8dd}
+.future-intro-inner{
+  position:relative;z-index:2;width:min(88vw,360px);text-align:center;color:#fff;
+  text-shadow:0 1px 18px rgba(54,72,81,.22)
+}
+.future-intro-brand{
+  position:absolute;top:-31vh;left:0;right:0;
+  color:rgba(255,255,255,.94);font-size:10px;letter-spacing:4px;font-weight:500
+}
+.future-intro-brand small{display:block;margin-top:7px;font-size:7px;letter-spacing:2px;opacity:.82}
+.future-intro-title{
+  margin:0 auto 18px;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:300;
+  font-size:34px;line-height:1.08;letter-spacing:.1px
+}
+.future-intro-copy{font-size:10px;letter-spacing:.5px;line-height:1.6;opacity:.90;margin-bottom:39px}
+.future-dot-wrap{position:relative;width:88px;height:88px;margin:0 auto}
+#futureDot{
+  position:absolute;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%);
+  border:1px solid rgba(255,255,255,.88);border-radius:50%;background:rgba(255,255,255,.78);
+  box-shadow:0 0 0 10px rgba(255,255,255,.10),0 0 28px rgba(255,255,255,.95);
+  cursor:pointer;z-index:3;transition:transform .2s ease,box-shadow .2s ease
+}
+#futureDot:active{transform:translate(-50%,-50%) scale(.88)}
+.future-ring{position:absolute;inset:12px;border:1px solid rgba(255,255,255,.32);border-radius:50%;animation:fgPulse 2.2s ease-in-out infinite}
+.future-ring.r2{inset:1px;animation-delay:.45s;opacity:.45}
+@keyframes fgPulse{0%,100%{transform:scale(.88);opacity:.18}50%{transform:scale(1.08);opacity:.65}}
+.future-tap{margin-top:14px;font-size:8px;letter-spacing:2.3px;text-transform:uppercase;opacity:.82}
+#futureWave{
+  position:absolute;left:50%;top:50%;width:26px;height:26px;border-radius:50%;
+  background:rgba(255,255,255,.98);transform:translate(-50%,-50%) scale(0);
+  z-index:2;pointer-events:none
+}
+#futureIntro.is-opening #futureWave{animation:fgOpen .95s cubic-bezier(.2,.76,.2,1) forwards}
+#futureIntro.is-opening .future-intro-inner{animation:fgFade .48s ease forwards}
+@keyframes fgOpen{to{transform:translate(-50%,-50%) scale(80)}}
+@keyframes fgFade{to{opacity:0;transform:scale(.985)}}
+
+@media(prefers-reduced-motion:reduce){
+  .future-ring{animation:none!important}
+  #futureIntro.is-opening #futureWave{animation-duration:.15s!important}
+}
+</style>
 </head>
 <body>
+
+<div id="futureIntro" aria-label="Sushi Club welcome">
+  <div id="futureWave"></div>
+  <div class="future-intro-inner">
+    <div class="future-intro-brand">SUSHI CLUB<small>AT DELTA HOTELS BY MARRIOTT · ANTALYA LARA</small></div>
+    <h1 class="future-intro-title">Activate Your<br>Taste Buds</h1>
+    <div class="future-intro-copy">A lighter way to enter your dining experience.</div>
+    <div class="future-dot-wrap">
+      <div class="future-ring"></div><div class="future-ring r2"></div>
+      <button id="futureDot" type="button" aria-label="Enter Sushi Club"></button>
+    </div>
+    <div class="future-tap">Tap to enter</div>
+  </div>
+</div>
 <main class="phone">
 
 <section id="home" class="section active">
@@ -1010,6 +1250,26 @@ window.addEventListener('load',()=>{
     setTimeout(()=>window.show('reserve'),100);
   }
 });
+</script>
+
+<script id="future-glass-preview-js">
+(function(){
+  var intro=document.getElementById('futureIntro');
+  var dot=document.getElementById('futureDot');
+  if(!intro||!dot)return;
+  var force=new URLSearchParams(location.search).get('intro')==='1';
+  if(!force && sessionStorage.getItem('sushiFutureIntroSeen')==='1'){
+    intro.classList.add('is-hidden');
+  }
+  dot.addEventListener('click',function(){
+    if(intro.classList.contains('is-opening'))return;
+    try{ if(navigator.vibrate) navigator.vibrate(18); }catch(e){}
+    intro.classList.add('is-opening');
+    sessionStorage.setItem('sushiFutureIntroSeen','1');
+    setTimeout(function(){intro.classList.add('is-hidden')},900);
+    setTimeout(function(){intro.remove()},1450);
+  });
+})();
 </script>
 </body>
 </html>
