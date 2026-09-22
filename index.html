@@ -1984,13 +1984,14 @@ html,body{background:#f4ebe2!important}
 #reserve .row{
   display:grid!important;
   grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-  gap:16px!important;
+  gap:12px!important;
   width:100%!important;
   align-items:start!important;
 }
 #reserve .row>div{
   min-width:0!important;
   width:100%!important;
+  overflow:hidden!important;
 }
 #reserve .row input{
   display:block!important;
@@ -1998,26 +1999,38 @@ html,body{background:#f4ebe2!important}
   max-width:100%!important;
   min-width:0!important;
   box-sizing:border-box!important;
-  overflow:hidden!important;
 }
 #reserve #rdate,
 #reserve #guests{
-  padding-left:16px!important;
-  padding-right:16px!important;
+  min-height:52px!important;
+  padding-left:14px!important;
+  padding-right:14px!important;
+  font-size:13px!important;
   text-overflow:ellipsis!important;
 }
 @media(max-width:560px){
   #reserve .row{
-    grid-template-columns:1fr!important;
-    gap:10px!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:8px!important;
   }
   #reserve .row>div{
+    min-width:0!important;
     width:100%!important;
+    overflow:hidden!important;
   }
   #reserve #rdate,
   #reserve #guests{
-    min-height:52px!important;
-    font-size:14px!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    min-height:50px!important;
+    padding-left:10px!important;
+    padding-right:10px!important;
+    font-size:12px!important;
+  }
+  #reserve .row label{
+    font-size:10px!important;
+    letter-spacing:.35px!important;
   }
 }
 </style>
