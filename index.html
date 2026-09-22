@@ -2100,6 +2100,176 @@ html,body{background:#f4ebe2!important}
     0 10px 24px rgba(128,103,84,.06)!important;
 }
 </style>
+
+<style id="guest-final-luxury-flow-v1">
+/* Final guest-flow polish: warm photo glass, no dark blocks */
+.phone>.guest-flow-photo{
+  position:absolute;inset:-10%;z-index:0;width:120%;height:120%;
+  object-fit:cover;object-position:center 48%;pointer-events:none;
+  filter:blur(31px) brightness(1.58) saturate(.52) contrast(.78);
+  opacity:.68;transform:scale(1.06);
+}
+#reserve,#myReservations,#success{
+  min-height:100svh!important;
+  color:#66584f!important;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(255,255,255,.40),transparent 34%),
+    radial-gradient(circle at 84% 72%,rgba(237,214,195,.28),transparent 40%),
+    linear-gradient(180deg,rgba(247,237,228,.30),rgba(236,218,202,.24))!important;
+}
+#reserve .inner,#myReservations .inner{position:relative;z-index:2}
+#reserve .eyebrow,#myReservations .eyebrow,#success .eyebrow{
+  color:#8d7768!important;font-size:8px!important;letter-spacing:2.7px!important;
+}
+#reserve h2,#myReservations h2,#success h2{
+  font-family:"Cormorant Garamond","Bodoni 72","Didot",Georgia,serif!important;
+  font-size:38px!important;line-height:1!important;font-weight:500!important;
+  letter-spacing:-.2px!important;color:#67574c!important;
+}
+#reserve .desc,#myReservations .desc,#success .desc{
+  color:#8b7c72!important;font-size:10px!important;line-height:1.65!important;
+}
+#reserve .card,#myReservations .card,#success .successbox{
+  padding:20px!important;border-radius:31px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.31),rgba(255,249,243,.14))!important;
+  border:1px solid rgba(255,255,255,.60)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.74),0 20px 52px rgba(119,87,65,.08)!important;
+  backdrop-filter:blur(27px) saturate(.92)!important;
+  -webkit-backdrop-filter:blur(27px) saturate(.92)!important;
+}
+#reserve label,#myReservations label,.gedit-modal label{
+  color:#817064!important;font-size:9px!important;letter-spacing:1.15px!important;font-weight:700!important;
+}
+#reserve input,#reserve select,#reserve textarea,
+#myReservations input,#myReservations select,#myReservations textarea,
+.gedit-modal input,.gedit-modal select,.gedit-modal textarea{
+  min-height:52px!important;border-radius:25px!important;
+  border:1px solid rgba(255,255,255,.60)!important;
+  background:rgba(255,255,255,.20)!important;color:#67584f!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.70),0 8px 22px rgba(116,86,66,.035)!important;
+  backdrop-filter:blur(19px)!important;-webkit-backdrop-filter:blur(19px)!important;
+}
+#reserve textarea,.gedit-modal textarea{min-height:94px!important;border-radius:23px!important;resize:vertical}
+#reserve input::placeholder,#reserve textarea::placeholder,#myReservations input::placeholder,.gedit-modal input::placeholder,.gedit-modal textarea::placeholder{
+  color:rgba(117,98,85,.58)!important;
+}
+#reserve .times{gap:8px!important}
+#reserve .times .time{
+  min-height:43px!important;border-radius:22px!important;
+  border:1px solid rgba(255,255,255,.56)!important;
+  background:rgba(255,255,255,.16)!important;color:#77675d!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.58)!important;
+  backdrop-filter:blur(17px)!important;-webkit-backdrop-filter:blur(17px)!important;
+}
+#reserve .times .time.active{
+  background:rgba(255,255,255,.48)!important;color:#5f5047!important;
+  border-color:rgba(255,255,255,.90)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.96),0 0 0 2px rgba(178,143,116,.16),0 10px 24px rgba(124,92,68,.07)!important;
+  transform:translateY(-1px)!important;
+}
+#reserve .times .time:disabled{opacity:.34!important}
+#reserve .selectedTimeInfo{
+  color:#8a796f!important;font-size:9px!important;line-height:1.55!important;
+}
+#reserve .selectedTimeInfo b{color:#6a594f!important}
+#reserve .guestTypeGrid{gap:10px!important}
+#reserve .guestType{
+  min-height:92px!important;border-radius:25px!important;padding:15px 12px!important;
+  border:1px solid rgba(255,255,255,.55)!important;
+  background:rgba(255,255,255,.14)!important;color:#67584f!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55)!important;
+}
+#reserve .guestType.active{
+  background:rgba(255,255,255,.42)!important;border-color:rgba(255,255,255,.88)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.90),0 10px 28px rgba(124,92,68,.07)!important;
+}
+#reserve .guestType b{font-size:10px!important;letter-spacing:.4px!important}
+#reserve .guestType span{color:#8b7b70!important;font-size:8.5px!important;line-height:1.5!important}
+#reserve .typePanel,#reserve .policyBox,#reserve .sc-unified-rules{
+  border-radius:27px!important;background:rgba(255,255,255,.16)!important;
+  border:1px solid rgba(255,255,255,.52)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.56)!important;
+}
+#reserve .policyBox h3{
+  font-family:"Cormorant Garamond",Georgia,serif!important;font-size:22px!important;font-weight:500!important;color:#67584f!important;
+}
+#reserve .policyBox ul{color:#85766c!important;font-size:9.5px!important;line-height:1.65!important}
+#reserve .sc-ack{color:#76665c!important;font-size:9.5px!important;line-height:1.55!important}
+#reserve .btn.dark,#myReservations .btn.dark,#success .btn.dark,.gedit-modal .btn.dark,
+#reserve .btn,#myReservations .btn,#success .btn,.gedit-modal .btn{
+  min-height:54px!important;border-radius:28px!important;
+  border:1px solid rgba(255,255,255,.70)!important;
+  background:rgba(255,255,255,.34)!important;color:#65564c!important;
+  font-size:10px!important;letter-spacing:1.25px!important;font-weight:700!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.90),0 12px 30px rgba(120,89,68,.07)!important;
+  backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;
+}
+#reserve .btn:active,#myReservations .btn:active,#success .btn:active,.gedit-modal .btn:active{transform:scale(.987)!important}
+#reserve .sc-submit-disabled{opacity:.42!important}
+
+/* My Reservations */
+#myReservations .booking-card{
+  padding:17px!important;margin:12px 0!important;border-radius:28px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.30),rgba(255,249,243,.12))!important;
+  border:1px solid rgba(255,255,255,.61)!important;
+}
+#myReservations .booking-ref{color:#9b806e!important;font-size:8px!important;letter-spacing:1.25px!important}
+#myReservations .booking-name{
+  font-family:"Cormorant Garamond",Georgia,serif!important;font-size:24px!important;font-weight:500!important;color:#66564c!important;
+}
+#myReservations .booking-meta{color:#88786e!important;font-size:9.5px!important;line-height:1.7!important}
+#myReservations .booking-status{
+  border:1px solid rgba(255,255,255,.62)!important;background:rgba(255,255,255,.26)!important;
+  color:#78685e!important;padding:6px 9px!important;border-radius:999px!important;
+}
+#myReservations .booking-status.pending{background:rgba(245,231,211,.55)!important;color:#866f5e!important}
+#myReservations .booking-status.confirmed,#myReservations .booking-status.reconfirmed{background:rgba(231,239,225,.58)!important;color:#65705f!important}
+#myReservations .booking-status.cancelled,#myReservations .booking-status.late_cancelled,#myReservations .booking-status.rejected,#myReservations .booking-status.no_show{background:rgba(239,232,228,.58)!important;color:#826f67!important}
+#myReservations .booking-actions{gap:9px!important;margin-top:13px!important}
+#myReservations .booking-actions button{
+  min-height:42px!important;border-radius:22px!important;border:1px solid rgba(255,255,255,.62)!important;
+  background:rgba(255,255,255,.22)!important;color:#6c5b51!important;font-size:8.5px!important;letter-spacing:1px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.70)!important;
+}
+#myReservations .booking-actions button:last-child{background:rgba(248,235,229,.28)!important}
+#myReservations .find-grid{gap:9px!important}
+#myReservations .smallnote{color:#8b7b71!important}
+
+/* Edit modal */
+.gedit-overlay{
+  background:rgba(111,88,72,.18)!important;
+  backdrop-filter:blur(18px) saturate(.82)!important;-webkit-backdrop-filter:blur(18px) saturate(.82)!important;
+}
+.gedit-modal{
+  background:linear-gradient(145deg,rgba(255,252,248,.78),rgba(244,229,216,.58))!important;
+  border:1px solid rgba(255,255,255,.72)!important;border-radius:31px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.91),0 24px 70px rgba(93,68,51,.15)!important;
+}
+.gedit-modal h2{
+  font-family:"Cormorant Garamond",Georgia,serif!important;font-size:34px!important;font-weight:500!important;color:#67574d!important;
+}
+.gedit-modal .smallnote{color:#88786e!important}
+
+/* Success */
+#success{padding:44px 22px!important;position:relative;z-index:8}
+#success .successbox{padding:31px 22px!important}
+#success .check{
+  width:56px;height:56px;margin:0 auto 18px!important;display:grid;place-items:center;
+  border-radius:50%;font-size:25px!important;color:#766255!important;
+  background:rgba(255,255,255,.40)!important;border:1px solid rgba(255,255,255,.78)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 10px 28px rgba(121,89,68,.08)!important;
+}
+#success .summary{
+  border-radius:24px!important;background:rgba(255,255,255,.20)!important;
+  border:1px solid rgba(255,255,255,.55)!important;color:#75655b!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.62)!important;
+}
+@media(max-width:380px){
+  #reserve h2,#myReservations h2,#success h2{font-size:34px!important}
+  #reserve .card,#myReservations .card{padding:17px!important}
+  #reserve .guestType{min-height:88px!important;padding:13px 10px!important}
+  #reserve .times{gap:6px!important}
+}
+</style>
 </head>
 <body>
 
@@ -2398,6 +2568,14 @@ window.addEventListener('load',()=>{
   var intro=document.getElementById('sushiIntroV4');
   var tap=document.getElementById('sushiIntroTap');
   if(!intro||!tap)return;
+  var phone=document.querySelector('.phone');
+  var introPhoto=intro.querySelector('.sushi-intro-photo');
+  if(phone&&introPhoto&&!document.getElementById('guestFlowPhoto')){
+    var flowPhoto=introPhoto.cloneNode(true);
+    flowPhoto.id='guestFlowPhoto';
+    flowPhoto.className='guest-flow-photo';
+    phone.insertBefore(flowPhoto,phone.firstChild);
+  }
   var force=new URLSearchParams(location.search).get('intro')==='1';
   if(!force && sessionStorage.getItem('sushiFutureMixSeen')==='1'){
     intro.remove();
