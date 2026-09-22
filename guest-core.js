@@ -553,7 +553,7 @@ function refreshMyHome(){
   const button=document.getElementById('myBookingButton');
   if(eyebrow)eyebrow.textContent=c.eyebrow;
   if(title)title.textContent=c.title;
-  if(button)button.textContent=c.button;
+  if(button)button.setAttribute('aria-label',c.button);
   if(count)count.textContent=rows.length;
   if(txt)txt.textContent=rows.length
     ? (rows.length===1?msg('activeCountOne'):msg('activeCountMany',{n:rows.length}))
