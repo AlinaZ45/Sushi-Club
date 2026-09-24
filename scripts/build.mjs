@@ -78,6 +78,11 @@ const introHero = path.join(root, 'assets', 'sushi-intro-approved.webp');
 assert(fs.existsSync(introHero), 'Missing Sushi Club intro hero');
 fs.copyFileSync(introHero, path.join(out, 'assets', 'sushi-intro-approved.webp'));
 for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
+for (const staticName of ['staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
+  const src = path.join(root, staticName);
+  assert(fs.existsSync(src), `Missing staff app asset: ${staticName}`);
+  fs.copyFileSync(src, path.join(out, staticName));
+}
 for (const {file,bytes} of images.values()) fs.writeFileSync(path.join(out,file),bytes);
 const report = {revision, menuSource:'approved v13.49',dishCount:51,photoCount:images.size,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
 fs.writeFileSync(path.join(out,'build-info.json'),JSON.stringify(report,null,2));
