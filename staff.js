@@ -6,7 +6,7 @@ const sb=window.supabase.createClient(SB_URL,SB_KEY);
 const TIMES=[];for(let h=17;h<=22;h++){for(const m of [0,15,30,45]){if(h===22&&m>0)continue;TIMES.push(String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'))}}
 const ACTIVE_FOR_TABLES=['pending','confirmed','reconfirmed','seated'];
 const ACTIVE_FOR_CAPACITY=['confirmed','reconfirmed','seated'];
-let rows=[],blocked=[],tables=[],assignments=[];
+let rows=[],blocked=[],tables=[],allTables=[],assignments=[];
 let assigningId=null;
 let selectedTables=new Set();
 const $=id=>document.getElementById(id);
@@ -32,14 +32,14 @@ function populateTimeFilter(){const cur=$('timeFilter').value;$('timeFilter').in
 async function loadData(){const date=$('date').value||today();$('date').value=date;const [{data:rr,error:re},{data:bb,error:be},{data:tt,error:te}]=await Promise.all([
   sb.from('reservations').select('*').eq('reservation_date',date).order('reservation_time'),
   sb.from('blocked_slots').select('*').eq('active',true).or('reservation_date.eq.'+date+',block_date.eq.'+date),
-  sb.from('restaurant_tables').select('*').eq('active',true).order('sort_order')
+  sb.from('restaurant_tables').select('*').order('sort_order')
 ]);
 if(re||be||te){alert((re||be||te).message);return}
-rows=(rr||[]).map(row);blocked=bb||[];tables=tt||[];
+rows=(rr||[]).map(row);blocked=bb||[];allTables=tt||[];tables=allTables.filter(t=>t.active!==false);
 const ids=rows.map(r=>r.id);assignments=[];
 if(ids.length){const {data:aa,error:ae}=await sb.from('table_assignments').select('id,reservation_id,table_id,created_at').in('reservation_id',ids);if(ae){alert(ae.message);return}assignments=aa||[]}
 renderAll()}
-function renderAll(){renderStats();renderRequests();renderTables();renderSlots()}
+function renderAll(){renderStats();renderRequests();renderTables();renderSlots();renderTableManagement()}
 function renderStats(){$('totalStat').textContent=rows.length;$('pendingStat').textContent=rows.filter(r=>r.status==='pending').length;$('confirmedStat').textContent=rows.filter(r=>['confirmed','reconfirmed'].includes(r.status)).length;$('paxStat').textContent=rows.filter(r=>ACTIVE_FOR_CAPACITY.includes(r.status)).reduce((n,r)=>n+r.guests,0)}
 function filteredRows(){const st=$('status').value,time=$('timeFilter').value;return rows.filter(r=>(st==='all'||r.status===st)&&(time==='all'||r.time===time))}
 function statusButtons(r){
@@ -70,7 +70,55 @@ function bestTables(r){const free=tables.filter(t=>!occupantForTable(t.id,r.time
 function autoAssign(){const r=bookingById(assigningId);if(!r)return;const best=bestTables(r);if(!best)return alert('There is not enough free table capacity for this reservation.');selectedTables=new Set(best.ids);renderAssignModal()}
 async function saveAssignment(){const s=await staffSession();if(!s)return alert('Please sign in again.');const r=bookingById(assigningId);if(!r)return;const chosen=[...selectedTables],seat=chosen.map(tableById).filter(Boolean).reduce((n,t)=>n+Number(t.seats||0),0);if(!chosen.length)return alert('Select at least one table, or use Clear Assignment.');if(seat<r.guests)return alert('Selected tables do not have enough seats for this reservation.');const {error}=await sb.rpc('sushi_staff_action',{p_id:r.id,p_action:'assign',p_table_ids:chosen,p_note:null});if(error)return alert(error.message);closeAssign();await loadData()}
 async function clearAssignment(){const s=await staffSession();if(!s)return alert('Please sign in again.');const r=bookingById(assigningId);if(!r)return;const {error}=await sb.rpc('sushi_staff_action',{p_id:r.id,p_action:'clear',p_table_ids:null,p_note:null});if(error){if(error.message.includes('ONLY_PENDING_ASSIGNMENTS_CAN_BE_CLEARED'))return alert('Confirmed reservations must keep at least one table. Select replacement table(s) and press Save Tables instead.');return alert(error.message)}closeAssign();await loadData()}
-async function addTable(){const s=await staffSession();if(!s)return alert('Please sign in again.');const code=$('newTableCode').value.trim().toUpperCase(),area=$('newTableArea').value,seats=Number($('newTableSeats').value);const msg=$('tableAdminMessage');msg.textContent='';msg.className='message';if(!/^[A-Z0-9-]{1,12}$/.test(code)){msg.textContent='Use a short table code such as I8 or T10.';msg.classList.add('err');return}if(!['inside','terrace'].includes(area)||!Number.isInteger(seats)||seats<1||seats>20){msg.textContent='Enter a valid area and seat count.';msg.classList.add('err');return}if(tables.some(t=>String(t.table_code).toUpperCase()===code)){msg.textContent='This table code already exists.';msg.classList.add('err');return}const sortOrder=(tables.reduce((m,t)=>Math.max(m,Number(t.sort_order)||0),0)||0)+10;const {error}=await sb.from('restaurant_tables').insert({table_code:code,area,seats,active:true,sort_order:sortOrder});if(error){msg.textContent=error.message;msg.classList.add('err');return}$('newTableCode').value='';$('newTableSeats').value='2';msg.textContent='Table added.';msg.classList.add('ok');await loadData()}
+async function addTable(){const s=await staffSession();if(!s)return alert('Please sign in again.');const code=$('newTableCode').value.trim().toUpperCase(),area=$('newTableArea').value,seats=Number($('newTableSeats').value);const msg=$('tableAdminMessage');msg.textContent='';msg.className='message';if(!/^[A-Z0-9-]{1,12}$/.test(code)){msg.textContent='Use a short table code such as I8 or T10.';msg.classList.add('err');return}if(!['inside','terrace'].includes(area)||!Number.isInteger(seats)||seats<1||seats>20){msg.textContent='Enter a valid area and seat count.';msg.classList.add('err');return}if(allTables.some(t=>String(t.table_code).toUpperCase()===code)){msg.textContent='This table code already exists.';msg.classList.add('err');return}const sortOrder=(allTables.reduce((m,t)=>Math.max(m,Number(t.sort_order)||0),0)||0)+10;const {error}=await sb.from('restaurant_tables').insert({table_code:code,area,seats,active:true,sort_order:sortOrder});if(error){msg.textContent=error.message;msg.classList.add('err');return}$('newTableCode').value='';$('newTableSeats').value='2';msg.textContent='Table added.';msg.classList.add('ok');await loadData()}
+
+function renderTableManagement(){
+  const host=$('tableManageList');if(!host)return;
+  host.innerHTML=allTables.length?allTables.map(t=>'<div class="table-manage-row '+(t.active===false?'inactive':'')+'" data-id="'+Number(t.id)+'">'+
+    '<div><label>TABLE CODE</label><input id="mtCode'+Number(t.id)+'" value="'+esc(t.table_code)+'" maxlength="12"><div class="table-manage-state">'+(t.active===false?'Inactive':'Active')+'</div></div>'+
+    '<div><label>AREA</label><select id="mtArea'+Number(t.id)+'"><option value="inside" '+(t.area==='inside'?'selected':'')+'>Inside</option><option value="terrace" '+(t.area==='terrace'?'selected':'')+'>Terrace</option></select></div>'+
+    '<div><label>SEATS</label><input id="mtSeats'+Number(t.id)+'" type="number" min="1" max="20" value="'+Number(t.seats||2)+'"></div>'+
+    '<div class="table-manage-actions"><button class="save" onclick="window.staffSaveTable('+Number(t.id)+')">SAVE</button>'+
+    '<button class="warn" onclick="window.staffToggleTableActive('+Number(t.id)+')">'+(t.active===false?'ACTIVATE':'DISABLE')+'</button>'+
+    '<button class="danger" onclick="window.staffDeleteTable('+Number(t.id)+')">DELETE</button></div></div>').join(''):'<p class="note">No tables configured.</p>';
+}
+function tableAdminMessage(text,ok=false){const el=$('tableManageMessage');if(!el)return;el.textContent=text||'';el.className='message '+(ok?'ok':'err')}
+window.staffSaveTable=async function(id){
+  const s=await staffSession();if(!s)return alert('Please sign in again.');
+  const t=allTables.find(x=>Number(x.id)===Number(id));if(!t)return;
+  const code=$('mtCode'+id).value.trim().toUpperCase(),area=$('mtArea'+id).value,seats=Number($('mtSeats'+id).value);
+  if(!/^[A-Z0-9-]{1,12}$/.test(code))return tableAdminMessage('Use a short table code such as I8 or T10.');
+  if(!['inside','terrace'].includes(area)||!Number.isInteger(seats)||seats<1||seats>20)return tableAdminMessage('Enter a valid area and seat count.');
+  if(allTables.some(x=>Number(x.id)!==Number(id)&&String(x.table_code).toUpperCase()===code))return tableAdminMessage('This table code already exists.');
+  const {error}=await sb.from('restaurant_tables').update({table_code:code,area,seats}).eq('id',id);
+  if(error)return tableAdminMessage(error.message);
+  tableAdminMessage('Table updated.',true);await loadData();
+}
+window.staffToggleTableActive=async function(id){
+  const s=await staffSession();if(!s)return alert('Please sign in again.');
+  const t=allTables.find(x=>Number(x.id)===Number(id));if(!t)return;
+  const next=t.active===false;
+  if(!next){
+    const {data:aa,error:ae}=await sb.from('table_assignments').select('id').eq('table_id',id).limit(1);
+    if(ae)return tableAdminMessage(ae.message);
+    if((aa||[]).length&&!confirm('This table has reservation history. Disable it? Existing history will be kept.'))return;
+  }
+  const {error}=await sb.from('restaurant_tables').update({active:next}).eq('id',id);
+  if(error)return tableAdminMessage(error.message);
+  tableAdminMessage(next?'Table activated.':'Table disabled.',true);await loadData();
+}
+window.staffDeleteTable=async function(id){
+  const s=await staffSession();if(!s)return alert('Please sign in again.');
+  const t=allTables.find(x=>Number(x.id)===Number(id));if(!t)return;
+  const {data:aa,error:ae}=await sb.from('table_assignments').select('id').eq('table_id',id).limit(1);
+  if(ae)return tableAdminMessage(ae.message);
+  if((aa||[]).length)return tableAdminMessage('This table has reservation history and cannot be deleted. Use Disable instead.');
+  if(!confirm('Delete table '+t.table_code+' permanently?'))return;
+  const {error}=await sb.from('restaurant_tables').delete().eq('id',id);
+  if(error)return tableAdminMessage(error.message);
+  tableAdminMessage('Table deleted.',true);await loadData();
+}
+
 function closeAssign(){$('assignModal').classList.add('hidden');assigningId=null;selectedTables=new Set()}
 function setTab(which){for(const [tab,card] of [['req','requestsCard'],['table','tablesCard'],['slot','slotsCard']]){$(tab+'Tab').classList.toggle('on',tab===which);$(card).classList.toggle('hidden',tab!==which)}if(which==='table'&&$('timeFilter').value==='all'){$('timeFilter').value=currentServiceTime();renderRequests();renderTables()}}
 $('loginBtn').addEventListener('click',login);$('setupBtn').addEventListener('click',setup);$('logoutBtn').addEventListener('click',logout);$('date').value=today();populateTimeFilter();$('date').addEventListener('change',loadData);$('status').addEventListener('change',renderRequests);$('timeFilter').addEventListener('change',()=>{renderRequests();renderTables()});$('reqTab').addEventListener('click',()=>setTab('req'));$('tableTab').addEventListener('click',()=>setTab('table'));$('slotTab').addEventListener('click',()=>setTab('slot'));$('closeAssignBtn').addEventListener('click',closeAssign);$('assignModal').addEventListener('click',e=>{if(e.target===$('assignModal'))closeAssign()});$('autoAssignBtn').addEventListener('click',autoAssign);$('saveAssignBtn').addEventListener('click',saveAssignment);$('clearAssignBtn').addEventListener('click',clearAssignment);$('addTableBtn').addEventListener('click',addTable);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('assignModal').classList.contains('hidden'))closeAssign()});sb.auth.onAuthStateChange(()=>setTimeout(refreshAuth,0));refreshAuth();
