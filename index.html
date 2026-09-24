@@ -2270,6 +2270,80 @@ html,body{background:#f4ebe2!important}
   #reserve .times{gap:6px!important}
 }
 </style>
+<style id="full-viewport-shell-fix-v1">
+/* Full-viewport guest background while keeping the UI comfortably centered. */
+html,body{
+  width:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+}
+body{
+  min-height:100svh!important;
+  overflow-x:hidden!important;
+}
+.phone{
+  width:100%!important;
+  max-width:none!important;
+  min-height:100svh!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+  overflow:visible!important;
+}
+
+/* Home photo and blur now fill the entire browser viewport. */
+#home.future-home{
+  width:100%!important;
+  min-height:100svh!important;
+  margin:0!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.future-home-photo{
+  position:absolute!important;
+  inset:-8%!important;
+  width:116%!important;
+  height:116%!important;
+  object-fit:cover!important;
+}
+.future-home-top{
+  width:min(430px,100%)!important;
+  margin:0 auto!important;
+}
+.future-home-glass{
+  width:min(400px,calc(100% - 30px))!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+/* Reservation / My Reservations / Success backgrounds also span edge-to-edge,
+   while their actual forms stay at the original mobile-friendly width. */
+.phone>.section:not(.future-home){
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+.phone>.section:not(.future-home)>.inner,
+#success>.success{
+  width:min(430px,100%)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+/* Remove any shell seam at the top edge. */
+.phone:before,
+.phone:after{
+  border:0!important;
+  box-shadow:none!important;
+}
+</style>
 </head>
 <body>
 
