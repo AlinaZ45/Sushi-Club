@@ -529,42 +529,68 @@ input,select,textarea{
   .tabs button{min-height:50px!important}
 }
 </style>
+<style id="staff-language-v1">
+.staff-lang{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  margin:0 0 14px;
+}
+.staff-lang button{
+  width:36px;
+  height:30px;
+  border:1px solid rgba(255,255,255,.68);
+  border-radius:999px;
+  background:rgba(255,255,255,.24);
+  color:#806e63;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.7px;
+  cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.76);
+}
+.staff-lang button.on{
+  background:rgba(112,88,72,.74);
+  color:#fff;
+  border-color:rgba(255,255,255,.44);
+}
+</style>
 </head>
 <body>
 <main class="phone">
-  <header class="head"><div class="brand">DELTA HOTELS · SUSHI CLUB</div><h1>Staff App</h1><p>Reservations, table plan and live availability.</p></header>
+  <header class="head"><div class="staff-lang" aria-label="Language"><button id="staffLangEn" type="button" data-lang="en">EN</button><button id="staffLangTr" type="button" data-lang="tr">TR</button></div><div class="brand">DELTA HOTELS · SUSHI CLUB</div><h1 data-i18n="staffApp">Staff App</h1><p data-i18n="headerSubtitle">Reservations, table plan and live availability.</p></header>
   <div class="wrap">
-    <a class="back" href="/">← Back to Guest App</a>
+    <a class="back" href="/" data-i18n="backGuest">← Back to Guest App</a>
 
     <section id="authCard" class="card">
-      <div class="eyebrow">SUSHI CLUB STAFF</div>
-      <h2 class="auth-title">Welcome back</h2>
-      <p class="auth-subtitle">Sign in to manage reservations, tables and live availability.</p>
-      <label>E-MAIL</label><input id="email" type="email" autocomplete="username" placeholder="staff@hotel.com">
-      <label>PASSWORD</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
-      <button class="btn dark" id="loginBtn" style="margin-top:14px">SIGN IN</button>
+      <div class="eyebrow" data-i18n="staffEyebrow">SUSHI CLUB STAFF</div>
+      <h2 class="auth-title" data-i18n="welcomeBack">Welcome back</h2>
+      <p class="auth-subtitle" data-i18n="signInSub">Sign in to manage reservations, tables and live availability.</p>
+      <label data-i18n="email">E-MAIL</label><input id="email" type="email" autocomplete="username" placeholder="staff@hotel.com">
+      <label data-i18n="password">PASSWORD</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
+      <button class="btn dark" id="loginBtn" style="margin-top:14px" data-i18n="signIn">SIGN IN</button>
       <div class="auth-links">
-        <button class="text-link" id="forgotBtn" type="button">FORGOT PASSWORD?</button>
-        <button class="text-link" id="setupBtn" type="button">FIRST-TIME SETUP</button>
+        <button class="text-link" id="forgotBtn" type="button" data-i18n="forgotPassword">FORGOT PASSWORD?</button>
+        <button class="text-link" id="setupBtn" type="button" data-i18n="firstSetup">FIRST-TIME SETUP</button>
       </div>
       <div id="authMessage" class="message"></div>
     </section>
 
     <section id="dashboard" class="hidden">
       <section class="card">
-        <div class="top"><div><div class="eyebrow">SIGNED IN</div><b id="staffName">Sushi Club Staff</b></div><div class="staff-controls"><button class="btn light small" id="securityBtn">SECURITY</button><button class="btn light small" id="logoutBtn">SIGN OUT</button></div></div>
+        <div class="top"><div><div class="eyebrow" data-i18n="signedIn">SIGNED IN</div><b id="staffName">Sushi Club Staff</b></div><div class="staff-controls"><button class="btn light small" id="securityBtn" data-i18n="security">SECURITY</button><button class="btn light small" id="logoutBtn" data-i18n="signOut">SIGN OUT</button></div></div>
         <div class="row three">
-          <div><label>DATE</label><input id="date" type="date"></div>
-          <div><label>TIME</label><select id="timeFilter"></select></div>
-          <div><label>STATUS</label><select id="status"><option value="all">All</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="reconfirmed">Reconfirmed</option><option value="seated">Seated</option><option value="completed">Completed</option><option value="no_show">No-show</option><option value="declined">Declined</option><option value="cancelled">Cancelled</option></select></div>
+          <div><label data-i18n="date">DATE</label><input id="date" type="date"></div>
+          <div><label data-i18n="time">TIME</label><select id="timeFilter"></select></div>
+          <div><label data-i18n="status">STATUS</label><select id="status"><option value="all" data-i18n="all">All</option><option value="pending" data-i18n="pending">Pending</option><option value="confirmed" data-i18n="confirmed">Confirmed</option><option value="reconfirmed" data-i18n="reconfirmed">Reconfirmed</option><option value="seated" data-i18n="seated">Seated</option><option value="completed" data-i18n="completed">Completed</option><option value="no_show" data-i18n="noShow">No-show</option><option value="declined" data-i18n="declined">Declined</option><option value="cancelled" data-i18n="cancelled">Cancelled</option></select></div>
         </div>
-        <div class="stats"><div class="stat"><b id="totalStat">0</b><span>Total</span></div><div class="stat"><b id="pendingStat">0</b><span>Pending</span></div><div class="stat"><b id="confirmedStat">0</b><span>Confirmed</span></div><div class="stat"><b id="paxStat">0</b><span>Guests</span></div></div>
-        <div class="tabs"><button id="reqTab" class="on">RESERVATIONS</button><button id="tableTab">TABLES</button><button id="slotTab">AVAILABILITY</button></div>
+        <div class="stats"><div class="stat"><b id="totalStat">0</b><span data-i18n="total">Total</span></div><div class="stat"><b id="pendingStat">0</b><span data-i18n="pending">Pending</span></div><div class="stat"><b id="confirmedStat">0</b><span data-i18n="confirmed">Confirmed</span></div><div class="stat"><b id="paxStat">0</b><span data-i18n="guests">Guests</span></div></div>
+        <div class="tabs"><button id="reqTab" class="on" data-i18n="reservations">RESERVATIONS</button><button id="tableTab" data-i18n="tables">TABLES</button><button id="slotTab" data-i18n="availability">AVAILABILITY</button></div>
       </section>
 
       <section id="requestsCard" class="card"><div id="requests"></div></section>
-      <section id="tablesCard" class="card hidden"><div id="tablesView"></div><div class="legend"><span><i class="dot"></i>Free</span><span><i class="dot used"></i>Assigned</span></div><div class="table-admin"><div class="eyebrow">ADD TABLE</div><div class="table-admin-grid"><div><label>TABLE CODE</label><input id="newTableCode" placeholder="e.g. I8 or T10"></div><div><label>AREA</label><select id="newTableArea"><option value="inside">Inside</option><option value="terrace">Terrace</option></select></div><div><label>SEATS</label><input id="newTableSeats" type="number" min="1" max="20" value="2"></div></div><button id="addTableBtn" class="btn dark" style="margin-top:10px">ADD TABLE</button><div id="tableAdminMessage" class="message"></div>
-<div class="table-manage"><div class="eyebrow">MANAGE TABLES</div><p class="note" style="margin:5px 0 0">Edit table code, area or seats. A table can be temporarily disabled without deleting its history.</p><div id="tableManageList" class="table-manage-list"></div><div id="tableManageMessage" class="message"></div></div>
+      <section id="tablesCard" class="card hidden"><div id="tablesView"></div><div class="legend"><span><i class="dot"></i><span data-i18n="free">Free</span></span><span><i class="dot used"></i><span data-i18n="assigned">Assigned</span></span></div><div class="table-admin"><div class="eyebrow" data-i18n="addTable">ADD TABLE</div><div class="table-admin-grid"><div><label data-i18n="tableCode">TABLE CODE</label><input id="newTableCode" placeholder="e.g. I8 or T10"></div><div><label data-i18n="area">AREA</label><select id="newTableArea"><option value="inside" data-i18n="inside">Inside</option><option value="terrace" data-i18n="terrace">Terrace</option></select></div><div><label data-i18n="seats">SEATS</label><input id="newTableSeats" type="number" min="1" max="20" value="2"></div></div><button id="addTableBtn" class="btn dark" style="margin-top:10px" data-i18n="addTable">ADD TABLE</button><div id="tableAdminMessage" class="message"></div>
+<div class="table-manage"><div class="eyebrow" data-i18n="manageTables">MANAGE TABLES</div><p class="note" style="margin:5px 0 0" data-i18n="manageNote">Edit table code, area or seats. A table can be temporarily disabled without deleting its history.</p><div id="tableManageList" class="table-manage-list"></div><div id="tableManageMessage" class="message"></div></div>
 </div></section>
       <section id="slotsCard" class="card hidden"><div id="slots"></div></section>
     </section>
@@ -574,36 +600,36 @@ input,select,textarea{
 
 <div id="forgotModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="forgotTitle">
   <div class="modalbox auth-modalbox">
-    <div class="modalhead"><div><div class="eyebrow">ACCOUNT RECOVERY</div><h2 id="forgotTitle">Reset password</h2></div><button id="closeForgotBtn" class="x" aria-label="Close">×</button></div>
-    <p class="note" style="margin-top:0">Enter your approved staff e-mail. We will send a secure password-reset link.</p>
-    <label>E-MAIL</label><input id="resetEmail" type="email" autocomplete="email" placeholder="staff@hotel.com">
-    <button id="sendResetBtn" class="btn dark" style="margin-top:14px">SEND RESET LINK</button>
+    <div class="modalhead"><div><div class="eyebrow" data-i18n="accountRecovery">ACCOUNT RECOVERY</div><h2 id="forgotTitle" data-i18n="resetPassword">Reset password</h2></div><button id="closeForgotBtn" class="x" aria-label="Close">×</button></div>
+    <p class="note" style="margin-top:0" data-i18n="resetHelp">Enter your approved staff e-mail. We will send a secure password-reset link.</p>
+    <label data-i18n="email">E-MAIL</label><input id="resetEmail" type="email" autocomplete="email" placeholder="staff@hotel.com">
+    <button id="sendResetBtn" class="btn dark" style="margin-top:14px" data-i18n="sendResetLink">SEND RESET LINK</button>
     <div id="resetMessage" class="message"></div>
   </div>
 </div>
 
 <div id="passwordModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="passwordTitle">
   <div class="modalbox auth-modalbox">
-    <div class="modalhead"><div><div class="eyebrow">ACCOUNT SECURITY</div><h2 id="passwordTitle">Change password</h2></div><button id="closePasswordBtn" class="x" aria-label="Close">×</button></div>
-    <p id="passwordIntro" class="note" style="margin-top:0">Confirm your current password, then choose a new one.</p>
+    <div class="modalhead"><div><div class="eyebrow" data-i18n="accountSecurity">ACCOUNT SECURITY</div><h2 id="passwordTitle" data-i18n="changePassword">Change password</h2></div><button id="closePasswordBtn" class="x" aria-label="Close">×</button></div>
+    <p id="passwordIntro" class="note" style="margin-top:0" data-i18n="changePasswordHelp">Confirm your current password, then choose a new one.</p>
     <div id="currentPasswordWrap">
-      <label>CURRENT PASSWORD</label><input id="currentPassword" type="password" autocomplete="current-password">
+      <label data-i18n="currentPassword">CURRENT PASSWORD</label><input id="currentPassword" type="password" autocomplete="current-password">
     </div>
-    <label>NEW PASSWORD</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8">
-    <label>CONFIRM NEW PASSWORD</label><input id="confirmPassword" type="password" autocomplete="new-password" minlength="8">
-    <button id="updatePasswordBtn" class="btn dark" style="margin-top:14px">UPDATE PASSWORD</button>
-    <div class="security-note">Use at least 8 characters. Do not share staff passwords between personal accounts.</div>
+    <label data-i18n="newPassword">NEW PASSWORD</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8">
+    <label data-i18n="confirmNewPassword">CONFIRM NEW PASSWORD</label><input id="confirmPassword" type="password" autocomplete="new-password" minlength="8">
+    <button id="updatePasswordBtn" class="btn dark" style="margin-top:14px" data-i18n="updatePassword">UPDATE PASSWORD</button>
+    <div class="security-note" data-i18n="securityNote">Use at least 8 characters. Do not share staff passwords between personal accounts.</div>
     <div id="passwordMessage" class="message"></div>
   </div>
 </div>
 
 <div id="assignModal" class="modal hidden" role="dialog" aria-modal="true">
   <div class="modalbox">
-    <div class="modalhead"><div><div class="eyebrow">TABLE ASSIGNMENT</div><h2 id="assignTitle">Assign tables</h2><div id="assignMeta" class="meta"></div></div><button id="closeAssignBtn" class="x" aria-label="Close">×</button></div>
+    <div class="modalhead"><div><div class="eyebrow" data-i18n="tableAssignment">TABLE ASSIGNMENT</div><h2 id="assignTitle" data-i18n="assignTables">Assign tables</h2><div id="assignMeta" class="meta"></div></div><button id="closeAssignBtn" class="x" aria-label="Close">×</button></div>
     <div id="assignGrid"></div>
     <div id="assignSeatSummary" class="seat-summary"></div>
-    <div class="actions"><button id="autoAssignBtn">AUTO SELECT</button><button id="saveAssignBtn" class="primary">SAVE TABLES</button></div>
-    <button id="clearAssignBtn" class="btn light" style="margin-top:8px">CLEAR ASSIGNMENT</button>
+    <div class="actions"><button id="autoAssignBtn" data-i18n="autoSelect">AUTO SELECT</button><button id="saveAssignBtn" class="primary" data-i18n="saveTables">SAVE TABLES</button></div>
+    <button id="clearAssignBtn" class="btn light" style="margin-top:8px" data-i18n="clearAssignment">CLEAR ASSIGNMENT</button>
   </div>
 </div>
 
