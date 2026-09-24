@@ -28,6 +28,38 @@ async function refreshAuth(){const s=await staffSession();$('authCard').classLis
 async function login(){authMsg('Signing in...',true);const {error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){authMsg(error.message);return}const s=await staffSession();if(!s){await sb.auth.signOut();authMsg('This account is not an active Sushi Club staff account.');return}authMsg('');await refreshAuth()}
 async function setup(){const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<8){authMsg('Enter the approved staff e-mail and a password of at least 8 characters.');return}authMsg('Creating staff account...',true);const {data,error}=await sb.auth.signUp({email,password});if(error){authMsg(error.message);return}if(data.session){const s=await staffSession();if(!s){await sb.auth.signOut();authMsg('Account created, but this e-mail is not approved for Sushi Club staff access.');return}authMsg('Staff account created.',true);await refreshAuth()}else authMsg('Account created. Please confirm the e-mail, then return here and sign in.',true)}
 async function logout(){await sb.auth.signOut();$('dashboard').classList.add('hidden');$('authCard').classList.remove('hidden');authMsg('Signed out.',true)}
+function modalMsg(id,text,ok=false){const el=$(id);if(!el)return;el.textContent=text||'';el.className='message '+(ok?'ok':'err')}
+function openModal(id){$(id)?.classList.remove('hidden')}
+function closeModal(id){$(id)?.classList.add('hidden')}
+async function forgotPassword(){
+  const email=($('resetEmail')?.value||$('email')?.value||'').trim();
+  if(!email)return modalMsg('resetMessage','Enter your staff e-mail address.');
+  modalMsg('resetMessage','Sending reset link...',true);
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+'/staff?recovery=1'});
+  if(error)return modalMsg('resetMessage',error.message);
+  modalMsg('resetMessage','Reset link sent. Please check your e-mail.',true);
+}
+async function updatePassword(){
+  const np=$('newPassword').value,cp=$('confirmPassword').value;
+  if(np.length<8)return modalMsg('passwordMessage','New password must contain at least 8 characters.');
+  if(np!==cp)return modalMsg('passwordMessage','The new passwords do not match.');
+  const recovering=new URLSearchParams(location.search).get('recovery')==='1';
+  if(!recovering){
+    const s=await staffSession();if(!s)return modalMsg('passwordMessage','Please sign in again.');
+    const current=$('currentPassword').value;
+    if(!current)return modalMsg('passwordMessage','Enter your current password.');
+    const email=s.session.user.email;
+    const {error:verifyError}=await sb.auth.signInWithPassword({email,password:current});
+    if(verifyError)return modalMsg('passwordMessage','Current password is incorrect.');
+  }
+  modalMsg('passwordMessage','Updating password...',true);
+  const {error}=await sb.auth.updateUser({password:np});
+  if(error)return modalMsg('passwordMessage',error.message);
+  modalMsg('passwordMessage','Password updated successfully.',true);
+  $('currentPassword').value='';$('newPassword').value='';$('confirmPassword').value='';
+  try{history.replaceState({},'',location.pathname)}catch(e){}
+  setTimeout(()=>closeModal('passwordModal'),900);
+}
 function populateTimeFilter(){const cur=$('timeFilter').value;$('timeFilter').innerHTML='<option value="all">All times</option>'+TIMES.map(t=>'<option value="'+t+'">'+t+'</option>').join('');if(cur&&[...TIMES,'all'].includes(cur))$('timeFilter').value=cur;else $('timeFilter').value='all'}
 async function loadData(){const date=$('date').value||today();$('date').value=date;const [{data:rr,error:re},{data:bb,error:be},{data:tt,error:te}]=await Promise.all([
   sb.from('reservations').select('*').eq('reservation_date',date).order('reservation_time'),
@@ -121,5 +153,27 @@ window.staffDeleteTable=async function(id){
 
 function closeAssign(){$('assignModal').classList.add('hidden');assigningId=null;selectedTables=new Set()}
 function setTab(which){for(const [tab,card] of [['req','requestsCard'],['table','tablesCard'],['slot','slotsCard']]){$(tab+'Tab').classList.toggle('on',tab===which);$(card).classList.toggle('hidden',tab!==which)}if(which==='table'&&$('timeFilter').value==='all'){$('timeFilter').value=currentServiceTime();renderRequests();renderTables()}}
-$('loginBtn').addEventListener('click',login);$('setupBtn').addEventListener('click',setup);$('logoutBtn').addEventListener('click',logout);$('date').value=today();populateTimeFilter();$('date').addEventListener('change',loadData);$('status').addEventListener('change',renderRequests);$('timeFilter').addEventListener('change',()=>{renderRequests();renderTables()});$('reqTab').addEventListener('click',()=>setTab('req'));$('tableTab').addEventListener('click',()=>setTab('table'));$('slotTab').addEventListener('click',()=>setTab('slot'));$('closeAssignBtn').addEventListener('click',closeAssign);$('assignModal').addEventListener('click',e=>{if(e.target===$('assignModal'))closeAssign()});$('autoAssignBtn').addEventListener('click',autoAssign);$('saveAssignBtn').addEventListener('click',saveAssignment);$('clearAssignBtn').addEventListener('click',clearAssignment);$('addTableBtn').addEventListener('click',addTable);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('assignModal').classList.contains('hidden'))closeAssign()});sb.auth.onAuthStateChange(()=>setTimeout(refreshAuth,0));refreshAuth();
+$('loginBtn').addEventListener('click',login);
+$('setupBtn').addEventListener('click',setup);
+$('logoutBtn').addEventListener('click',logout);
+$('forgotBtn').addEventListener('click',()=>{$('resetEmail').value=$('email').value.trim();modalMsg('resetMessage','');openModal('forgotModal')});
+$('closeForgotBtn').addEventListener('click',()=>closeModal('forgotModal'));
+$('sendResetBtn').addEventListener('click',forgotPassword);
+$('securityBtn').addEventListener('click',()=>{document.getElementById('currentPasswordWrap').classList.remove('hidden');$('passwordIntro').textContent='Confirm your current password, then choose a new one.';modalMsg('passwordMessage','');openModal('passwordModal')});
+$('closePasswordBtn').addEventListener('click',()=>closeModal('passwordModal'));
+$('updatePasswordBtn').addEventListener('click',updatePassword);$('date').value=today();populateTimeFilter();$('date').addEventListener('change',loadData);$('status').addEventListener('change',renderRequests);$('timeFilter').addEventListener('change',()=>{renderRequests();renderTables()});$('reqTab').addEventListener('click',()=>setTab('req'));$('tableTab').addEventListener('click',()=>setTab('table'));$('slotTab').addEventListener('click',()=>setTab('slot'));$('closeAssignBtn').addEventListener('click',closeAssign);$('assignModal').addEventListener('click',e=>{if(e.target===$('assignModal'))closeAssign()});$('autoAssignBtn').addEventListener('click',autoAssign);$('saveAssignBtn').addEventListener('click',saveAssignment);$('clearAssignBtn').addEventListener('click',clearAssignment);$('addTableBtn').addEventListener('click',addTable);
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(!$('assignModal').classList.contains('hidden'))closeAssign();
+    closeModal('forgotModal');closeModal('passwordModal');
+  }
+});
+for(const id of ['forgotModal','passwordModal']) $(id).addEventListener('click',e=>{if(e.target===$(id))closeModal(id)});
+sb.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY'){document.getElementById('currentPasswordWrap').classList.add('hidden');$('passwordIntro').textContent='Choose a new password for your staff account.';modalMsg('passwordMessage','');openModal('passwordModal')}setTimeout(refreshAuth,0)});
+if(new URLSearchParams(location.search).get('recovery')==='1'){
+  document.getElementById('currentPasswordWrap').classList.add('hidden');
+  $('passwordIntro').textContent='Choose a new password for your staff account.';
+  openModal('passwordModal');
+}
+refreshAuth();
 })();
