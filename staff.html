@@ -794,6 +794,78 @@ input,select,textarea{
 }
 .password-toggle:hover{background:rgba(255,255,255,.42)}
 </style>
+<style id="staff-table-inventory-v1">
+.tables-section{padding-bottom:18px}
+.table-inventory{
+  margin-top:20px;
+  padding-top:20px;
+  border-top:1px solid rgba(168,140,120,.16);
+}
+.table-inventory-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:12px;
+}
+.table-inventory-head .note{margin-top:5px}
+.inventory-summary{
+  flex:0 0 auto;
+  padding:8px 11px;
+  border:1px solid rgba(255,255,255,.68);
+  border-radius:15px;
+  background:rgba(255,255,255,.24);
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.45;
+  text-align:right;
+}
+.inventory-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+}
+.inventory-card{
+  min-height:82px;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.68);
+  border-radius:18px;
+  background:rgba(255,255,255,.24);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.74);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.inventory-card.inactive{opacity:.48}
+.inventory-code{
+  color:var(--ink-strong);
+  font-family:"Cormorant Garamond",Baskerville,Georgia,serif;
+  font-size:22px;
+  line-height:1.05;
+}
+.inventory-meta{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.45;
+}
+.inventory-state{
+  margin-top:6px;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  color:#7e6a5d;
+}
+@media(max-width:760px){
+  .inventory-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  .table-inventory-head{flex-direction:column}
+  .inventory-summary{text-align:left}
+  .inventory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
 </head>
 <body>
 <main class="phone">
@@ -826,9 +898,40 @@ input,select,textarea{
       </section>
 
       <section id="requestsCard" class="card"><div id="requests"></div></section>
-      <section id="tablesCard" class="card hidden"><div id="tablesView"></div><div class="legend"><span><i class="dot"></i><span data-i18n="free">Free</span></span><span><i class="dot used"></i><span data-i18n="assigned">Assigned</span></span></div><div class="table-admin"><div class="eyebrow" data-i18n="addTable">ADD TABLE</div><div class="table-admin-grid"><div><label data-i18n="tableCode">TABLE CODE</label><input id="newTableCode" placeholder="e.g. I8 or T10"></div><div><label data-i18n="area">AREA</label><select id="newTableArea"><option value="inside" data-i18n="inside">Inside</option><option value="terrace" data-i18n="terrace">Terrace</option></select></div><div><label data-i18n="seats">SEATS</label><input id="newTableSeats" type="number" min="1" max="20" value="2"></div></div><button id="addTableBtn" class="btn dark" style="margin-top:10px" data-i18n="addTable">ADD TABLE</button><div id="tableAdminMessage" class="message"></div>
-<div class="table-manage"><div class="eyebrow" data-i18n="manageTables">MANAGE TABLES</div><p class="note" style="margin:5px 0 0" data-i18n="manageNote">Edit table code, area or seats. A table can be temporarily disabled without deleting its history.</p><div id="tableManageList" class="table-manage-list"></div><div id="tableManageMessage" class="message"></div></div>
-</div></section>
+      <section id="tablesCard" class="card hidden">
+  <div class="tables-section">
+    <div class="eyebrow" data-i18n="liveTablePlan">LIVE TABLE PLAN</div>
+    <div id="tablesView" style="margin-top:10px"></div>
+    <div class="legend"><span><i class="dot"></i><span data-i18n="free">Free</span></span><span><i class="dot used"></i><span data-i18n="assigned">Assigned</span></span></div>
+  </div>
+
+  <div class="table-inventory">
+    <div class="table-inventory-head">
+      <div><div class="eyebrow" data-i18n="currentTables">CURRENT TABLES</div><p class="note" data-i18n="currentTablesNote">All configured restaurant tables are listed here.</p></div>
+      <div id="tableInventorySummary" class="inventory-summary"></div>
+    </div>
+    <div id="tableInventory" class="inventory-grid"></div>
+  </div>
+
+  <div class="table-admin">
+    <div class="eyebrow" data-i18n="addTable">ADD TABLE</div>
+    <p class="note" data-i18n="addTableNote">Enter the table number/code, area and number of seats.</p>
+    <div class="table-admin-grid">
+      <div><label data-i18n="tableCode">TABLE CODE</label><input id="newTableCode" placeholder="e.g. I8 or T10"></div>
+      <div><label data-i18n="area">AREA</label><select id="newTableArea"><option value="inside" data-i18n="inside">Inside</option><option value="terrace" data-i18n="terrace">Terrace</option></select></div>
+      <div><label data-i18n="seats">SEATS</label><input id="newTableSeats" type="number" min="1" max="20" value="2"></div>
+    </div>
+    <button id="addTableBtn" class="btn dark" style="margin-top:10px" data-i18n="addTable">ADD TABLE</button>
+    <div id="tableAdminMessage" class="message"></div>
+  </div>
+
+  <div class="table-manage">
+    <div class="eyebrow" data-i18n="manageTables">MANAGE TABLES</div>
+    <p class="note" style="margin:5px 0 0" data-i18n="manageNote">Edit table code, area or seats. A table can be temporarily disabled without deleting its history.</p>
+    <div id="tableManageList" class="table-manage-list"></div>
+    <div id="tableManageMessage" class="message"></div>
+  </div>
+</section>
       <section id="slotsCard" class="card hidden"><div id="slots"></div></section>
     </section>
   </div>
