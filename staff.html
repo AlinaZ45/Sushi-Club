@@ -771,6 +771,29 @@ input,select,textarea{
   input,select,textarea{min-height:52px!important;font-size:13px!important}
 }
 </style>
+<style id="staff-password-toggle-v1">
+.password-field{position:relative}
+.password-field input{padding-right:76px!important}
+.password-toggle{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  min-width:54px;
+  height:34px;
+  padding:0 10px;
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:999px;
+  background:rgba(255,255,255,.28);
+  color:#77655a;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.6px;
+  cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82);
+}
+.password-toggle:hover{background:rgba(255,255,255,.42)}
+</style>
 </head>
 <body>
 <main class="phone">
@@ -783,7 +806,7 @@ input,select,textarea{
       <h2 class="auth-title" data-i18n="welcomeBack">Welcome back</h2>
       <p class="auth-subtitle" data-i18n="signInSub">Sign in to manage reservations, tables and live availability.</p>
       <label data-i18n="email">E-MAIL</label><input id="email" type="email" autocomplete="username" placeholder="staff@hotel.com">
-      <label data-i18n="password">PASSWORD</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
+      <label data-i18n="password">PASSWORD</label><div class="password-field"><input id="password" type="password" autocomplete="current-password" placeholder="••••••••"><button type="button" class="password-toggle" data-target="password" data-i18n="showPassword">SHOW</button></div>
       <button class="btn dark" id="loginBtn" style="margin-top:14px" data-i18n="signIn">SIGN IN</button>
       <div class="auth-links">
         <button class="text-link" id="forgotBtn" type="button" data-i18n="forgotPassword">FORGOT PASSWORD?</button>
@@ -829,10 +852,10 @@ input,select,textarea{
     <div class="modalhead"><div><div class="eyebrow" data-i18n="accountSecurity">ACCOUNT SECURITY</div><h2 id="passwordTitle" data-i18n="changePassword">Change password</h2></div><button id="closePasswordBtn" class="x" aria-label="Close">×</button></div>
     <p id="passwordIntro" class="note" style="margin-top:0" data-i18n="changePasswordHelp">Confirm your current password, then choose a new one.</p>
     <div id="currentPasswordWrap">
-      <label data-i18n="currentPassword">CURRENT PASSWORD</label><input id="currentPassword" type="password" autocomplete="current-password">
+      <label data-i18n="currentPassword">CURRENT PASSWORD</label><div class="password-field"><input id="currentPassword" type="password" autocomplete="current-password"><button type="button" class="password-toggle" data-target="currentPassword" data-i18n="showPassword">SHOW</button></div>
     </div>
-    <label data-i18n="newPassword">NEW PASSWORD</label><input id="newPassword" type="password" autocomplete="new-password" minlength="8">
-    <label data-i18n="confirmNewPassword">CONFIRM NEW PASSWORD</label><input id="confirmPassword" type="password" autocomplete="new-password" minlength="8">
+    <label data-i18n="newPassword">NEW PASSWORD</label><div class="password-field"><input id="newPassword" type="password" autocomplete="new-password" minlength="8"><button type="button" class="password-toggle" data-target="newPassword" data-i18n="showPassword">SHOW</button></div>
+    <label data-i18n="confirmNewPassword">CONFIRM NEW PASSWORD</label><div class="password-field"><input id="confirmPassword" type="password" autocomplete="new-password" minlength="8"><button type="button" class="password-toggle" data-target="confirmPassword" data-i18n="showPassword">SHOW</button></div>
     <button id="updatePasswordBtn" class="btn dark" style="margin-top:14px" data-i18n="updatePassword">UPDATE PASSWORD</button>
     <div class="security-note" data-i18n="securityNote">Use at least 8 characters. Do not share staff passwords between personal accounts.</div>
     <div id="passwordMessage" class="message"></div>
