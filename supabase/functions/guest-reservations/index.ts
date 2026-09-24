@@ -31,15 +31,34 @@ function input(b,r=null){
  return {date,time,guests,name,guestType,room,contact,email,request:clean(b.request??r?.special_request,2000)};
 }
 async function inventory(date,excludeId=null){
- let a=db.from('table_assignments').select('table_id').eq('service_date',date).eq('occupied',true);
+ let a=db.from('table_assignments').select('table_id,service_time').eq('service_date',date).eq('occupied',true);
  if(excludeId!==null)a=a.neq('reservation_id',excludeId);
- const results=await Promise.all([db.from('restaurant_tables').select('id,seats').eq('active',true),a,db.from('blocked_slots').select('reservation_time').eq('reservation_date',date).eq('active',true)]);
+ const results=await Promise.all([
+   db.from('restaurant_tables').select('id,seats').eq('active',true),
+   a,
+   db.from('blocked_slots').select('reservation_time').eq('reservation_date',date).eq('active',true)
+ ]);
  for(const r of results)if(r.error)throw r.error;
- const occupied=new Set((results[1].data||[]).map(x=>String(x.table_id)));
- return {free:(results[0].data||[]).filter(t=>!occupied.has(String(t.id))),blocked:new Set((results[2].data||[]).map(x=>String(x.reservation_time).slice(0,5)))};
+ const occupiedByTime=new Map();
+ for(const x of results[1].data||[]){
+   const time=String(x.service_time||'').slice(0,5);
+   if(!occupiedByTime.has(time))occupiedByTime.set(time,new Set());
+   occupiedByTime.get(time).add(String(x.table_id));
+ }
+ return {
+   tables:results[0].data||[],
+   occupiedByTime,
+   blocked:new Set((results[2].data||[]).map(x=>String(x.reservation_time).slice(0,5)))
+ };
 }
-function hasCapacity(inv,n){return inv.free.reduce((s,t)=>s+Number(t.seats),0)>=n;}
-async function available(date,time,n,excludeId=null){const inv=await inventory(date,excludeId);if(inv.blocked.has(time)||!hasCapacity(inv,n))fail('unavailable',409);}
+function hasCapacity(inv,n,time){
+ const occupied=inv.occupiedByTime.get(time)||new Set();
+ return inv.tables.filter(t=>!occupied.has(String(t.id))).reduce((s,t)=>s+Number(t.seats),0)>=n;
+}
+async function available(date,time,n,excludeId=null){
+ const inv=await inventory(date,excludeId);
+ if(inv.blocked.has(time)||!hasCapacity(inv,n,time))fail('unavailable',409);
+}
 async function byToken(c,t){
  c=clean(c,40).toUpperCase();t=clean(t,256);
  if(!/^SC-\d{6}$/.test(c)||!t)fail('not_found',404);
@@ -67,10 +86,10 @@ Deno.serve(async req=>{
   const url=new URL(req.url);
   if(req.method==='GET'){
    const action=url.searchParams.get('action');
-   if(action==='health')return json({ok:true,version:'4',capacityMode:'manual_release',timezone:'Europe/Istanbul'});
+   if(action==='health')return json({ok:true,version:'5',capacityMode:'time_slot_release',timezone:'Europe/Istanbul'});
    if(action==='availability'){
     const date=validateDate(url.searchParams.get('date')),n=party(url.searchParams.get('party')||1),inv=await inventory(date),now=localNow();
-    return json({ok:true,capacityMode:'manual_release',slots:TIMES.map(time=>({time,available:date>=now.date&&!(date===now.date&&time<=now.time)&&!inv.blocked.has(time)&&hasCapacity(inv,n)}))});
+    return json({ok:true,capacityMode:'time_slot_release',slots:TIMES.map(time=>({time,available:date>=now.date&&!(date===now.date&&time<=now.time)&&!inv.blocked.has(time)&&hasCapacity(inv,n,time)}))});
    }
    if(action==='get')return json({ok:true,reservation:publicRow(await byToken(url.searchParams.get('code'),url.searchParams.get('token')))});
    if(action==='lookup')return json({ok:true,reservation:publicRow(await identityRow(url.searchParams.get('code'),url.searchParams.get('identity')))});
