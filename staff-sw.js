@@ -1,4 +1,4 @@
-const CACHE_NAME='sushi-club-staff-v5';
+const CACHE_NAME='sushi-club-staff-v6';
 const APP_SHELL=['/staff','/staff.html','/staff.js','/staff-manifest.webmanifest','/staff-icon.svg'];
 
 self.addEventListener('install',event=>{
