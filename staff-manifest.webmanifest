@@ -3,7 +3,7 @@
   "short_name": "Sushi Staff",
   "description": "Staff reservations, table plan and live availability for Sushi Club.",
   "start_url": "/staff",
-  "scope": "/",
+  "scope": "/staff",
   "display": "standalone",
   "background_color": "#f3ebe4",
   "theme_color": "#efe4da",
