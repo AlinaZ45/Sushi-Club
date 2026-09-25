@@ -16,7 +16,7 @@ function localNow(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Is
 function validateDate(v){const s=String(v||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(s))fail('invalid_date');const d=new Date(s+'T00:00:00Z');if(!Number.isFinite(+d)||d.toISOString().slice(0,10)!==s)fail('invalid_date');return s;}
 function party(v){const n=Number(v);if(!Number.isInteger(n)||n<1||n>20)fail('invalid_party_size');return n;}
 function future(date,time){const now=localNow();if(date<now.date||(date===now.date&&time<=now.time))fail('time_in_past');}
-function publicRow(r){return r?{id:r.id,requestId:r.reservation_code,date:r.reservation_date,time:String(r.reservation_time).slice(0,5),guests:r.party_size,originalGuests:r.original_party_size,name:r.lead_guest_name,guestType:r.guest_type,room:r.room_number||'',contact:r.phone||'',email:r.email||'',request:r.special_request||'',status:r.status,createdAt:r.created_at,holdUntil:r.arrival_hold_until||null}:null;}
+function publicRow(r){return r?{id:r.id,requestId:r.reservation_code,date:r.reservation_date,time:String(r.reservation_time).slice(0,5),guests:r.party_size,originalGuests:r.original_party_size,name:r.lead_guest_name,guestType:r.guest_type,room:r.room_number||'',contact:r.phone||'',email:r.email||'',request:r.special_request||'',status:r.status,declineReason:r.status==='declined'?(r.staff_note||''):'',createdAt:r.created_at,holdUntil:r.arrival_hold_until||null}:null;}
 function input(b,r=null){
  const date=validateDate(b.date??r?.reservation_date),time=String(b.time??String(r?.reservation_time||'').slice(0,5)),guests=party(b.guests??r?.party_size),name=clean(b.name??r?.lead_guest_name,120);
  if(!name||!TIMES.includes(time))fail('invalid_input');future(date,time);
@@ -86,7 +86,7 @@ Deno.serve(async req=>{
   const url=new URL(req.url);
   if(req.method==='GET'){
    const action=url.searchParams.get('action');
-   if(action==='health')return json({ok:true,version:'5',capacityMode:'time_slot_release',timezone:'Europe/Istanbul'});
+   if(action==='health')return json({ok:true,version:'6',capacityMode:'time_slot_release',timezone:'Europe/Istanbul'});
    if(action==='availability'){
     const date=validateDate(url.searchParams.get('date')),n=party(url.searchParams.get('party')||1),inv=await inventory(date),now=localNow();
     return json({ok:true,capacityMode:'time_slot_release',slots:TIMES.map(time=>({time,available:date>=now.date&&!(date===now.date&&time<=now.time)&&!inv.blocked.has(time)&&hasCapacity(inv,n,time)}))});
