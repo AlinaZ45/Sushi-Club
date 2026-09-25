@@ -16,8 +16,28 @@ window.cancelMyReservation=async function(id){const r=remoteReservations.find(x=
 window.editMyReservation=function(id){const r=remoteReservations.find(x=>Number(x.id)===Number(id));if(!r||!isManageable(r))return alert(msg('cannotEdit'));guestEditingId=Number(id);document.getElementById('guestEditRef').textContent=(r.requestId||msg('reservation'))+' · '+msg('currentStatus')+': '+statusText(r.status);document.getElementById('geDate').value=r.date||today();document.getElementById('geDate').min=today();document.getElementById('geTime').innerHTML=TIMES.map(t=>'<option value="'+t+'" '+(t===r.time?'selected':'')+'>'+t+'</option>').join('');document.getElementById('geGuests').value=r.guests||1;document.getElementById('geName').value=r.name||'';document.getElementById('geRoom').value=r.room||'';document.getElementById('gePhone').value=r.contact||'';document.getElementById('geEmail').value=r.email||'';document.getElementById('geRequest').value=r.request||'';document.getElementById('guestEditOverlay').style.display='flex'};
 window.saveGuestEdit=async function(){const r=remoteReservations.find(x=>Number(x.id)===Number(guestEditingId));if(!r)return;const body={action:'update',code:r.requestId,token:(refs().find(z=>z.code===r.requestId)||{}).token,date:document.getElementById('geDate').value,time:document.getElementById('geTime').value,guests:Number(document.getElementById('geGuests').value),name:document.getElementById('geName').value.trim(),room:document.getElementById('geRoom').value.trim(),contact:document.getElementById('gePhone').value.trim(),email:document.getElementById('geEmail').value.trim(),request:document.getElementById('geRequest').value.trim()};try{await apiPost(body);closeGuestEdit();await refreshRemoteMyReservations();await renderGuestTimes();alert(msg('editUpdated'))}catch(e){alert(errText(e))}};
 window.findReservation=async function(){const ref=document.getElementById('findRef').value.trim().toUpperCase(),identity=document.getElementById('findIdentity').value.trim(),result=document.getElementById('findResult');try{const j=await apiPost({action:'claim',code:ref,identity});addRef(ref,j.manageToken);j.reservation._token=j.manageToken;await refreshRemoteMyReservations();result.innerHTML=bookingCard(j.reservation,true);refreshMyHome()}catch(e){result.innerHTML='<div class="smallnote">'+escapeHtml(e.code==='identity_mismatch'?msg('detailsMismatch'):msg('notFound'))+'</div>'}};
+
+async function handleReservationDeepLink(){
+  const params=new URLSearchParams(location.search);
+  const code=(params.get('reservation')||'').trim().toUpperCase();
+  const view=params.get('view')||'';
+  if(!/^SC-\d{6}$/.test(code) && view!=='myReservations')return;
+  if(typeof window.show==='function')window.show('myReservations');
+  const ref=document.getElementById('findRef');
+  if(ref&&/^SC-\d{6}$/.test(code))ref.value=code;
+  await refreshRemoteMyReservations();
+  if(/^SC-\d{6}$/.test(code)){
+    const known=refs().some(x=>x.code===code);
+    if(!known){
+      const identity=document.getElementById('findIdentity');
+      if(identity)identity.focus({preventScroll:true});
+      const find=document.getElementById('findResult');
+      if(find)find.innerHTML='<div class="smallnote">Reservation '+escapeHtml(code)+' is ready to open. Please verify with the room number, phone or e-mail used for the booking.</div>';
+    }
+  }
+}
 const oldShow=window.show;
 window.show=function(id){oldShow(id);if(id==='myReservations')refreshRemoteMyReservations();if(id==='reserve')renderGuestTimes();};
-document.addEventListener('DOMContentLoaded',()=>{refreshRemoteMyReservations();renderGuestTimes();});
-setTimeout(()=>{refreshRemoteMyReservations();renderGuestTimes()},300);
+document.addEventListener('DOMContentLoaded',()=>{refreshRemoteMyReservations();renderGuestTimes();handleReservationDeepLink();});
+setTimeout(()=>{refreshRemoteMyReservations();renderGuestTimes();handleReservationDeepLink()},300);
 })();
