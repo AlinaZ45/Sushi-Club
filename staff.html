@@ -866,6 +866,48 @@ input,select,textarea{
   .inventory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
+<style id="staff-table-admin-v2">
+.table-admin-grid-four{grid-template-columns:1.35fr 1fr .7fr .7fr!important}
+.inventory-card{position:relative;cursor:pointer;transition:transform .12s ease,background .12s ease,box-shadow .12s ease}
+.inventory-card:hover{background:rgba(255,255,255,.34)}
+.inventory-card.selected-for-remove{
+  outline:2px solid rgba(145,105,88,.55);
+  outline-offset:1px;
+  background:rgba(248,232,226,.58);
+}
+.inventory-check{
+  position:absolute;
+  top:9px;
+  right:9px;
+  width:20px;
+  height:20px;
+  border:1px solid rgba(134,106,88,.30);
+  border-radius:7px;
+  background:rgba(255,255,255,.58);
+  display:grid;
+  place-items:center;
+  font-size:12px;
+  font-weight:900;
+  color:#7e6455;
+}
+.inventory-card.selected-for-remove .inventory-check{background:rgba(126,100,85,.78);color:white}
+.inventory-bulk{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:12px;
+}
+.inventory-bulk .btn{width:auto;min-width:190px}
+@media(max-width:760px){
+  .table-admin-grid-four{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:520px){
+  .table-admin-grid-four{grid-template-columns:1fr!important}
+  .inventory-bulk{align-items:stretch;flex-direction:column}
+  .inventory-bulk .btn{width:100%}
+}
+</style>
 </head>
 <body>
 <main class="phone">
@@ -911,15 +953,20 @@ input,select,textarea{
       <div id="tableInventorySummary" class="inventory-summary"></div>
     </div>
     <div id="tableInventory" class="inventory-grid"></div>
+    <div class="inventory-bulk">
+      <div id="tableSelectionCount" class="note"></div>
+      <button id="removeSelectedTablesBtn" class="btn danger" type="button" data-i18n="removeSelectedTables">REMOVE SELECTED TABLES</button>
+    </div>
   </div>
 
   <div class="table-admin">
     <div class="eyebrow" data-i18n="addTable">ADD TABLE</div>
     <p class="note" data-i18n="addTableNote">Enter the table number/code, area and number of seats.</p>
-    <div class="table-admin-grid">
-      <div><label data-i18n="tableCode">TABLE CODE</label><input id="newTableCode" placeholder="e.g. I8 or T10"></div>
+    <div class="table-admin-grid table-admin-grid-four">
+      <div><label data-i18n="tableName">TABLE NAME / CODE</label><input id="newTableCode" maxlength="30" placeholder="e.g. Window, VIP, I8"></div>
       <div><label data-i18n="area">AREA</label><select id="newTableArea"><option value="inside" data-i18n="inside">Inside</option><option value="terrace" data-i18n="terrace">Terrace</option></select></div>
       <div><label data-i18n="seats">SEATS</label><input id="newTableSeats" type="number" min="1" max="20" value="2"></div>
+      <div><label data-i18n="quantity">QUANTITY</label><input id="newTableQuantity" type="number" min="1" max="20" value="1"></div>
     </div>
     <button id="addTableBtn" class="btn dark" style="margin-top:10px" data-i18n="addTable">ADD TABLE</button>
     <div id="tableAdminMessage" class="message"></div>
