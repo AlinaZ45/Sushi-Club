@@ -61,6 +61,96 @@ const UI_LANGS={
 
 
 const STATIC_EXTRA={"en":{"Selected time:":"Selected time:","I AM...":"I AM...","HOTEL GUEST":"HOTEL GUEST","I am staying at Delta Hotels Antalya Lara":"I am staying at Delta Hotels Antalya Lara","OUTSIDE GUEST":"OUTSIDE GUEST","I am visiting Sushi Club without a hotel stay":"I am visiting Sushi Club without a hotel stay","Please enter your room number so our team can identify your reservation quickly.":"Please enter your room number so our team can identify your reservation quickly.","Please leave a contact so we can send your reservation confirmation.":"Please leave a contact so we can send your reservation confirmation.","(optional)":"(optional)","REQUEST RECEIVED":"REQUEST RECEIVED","Thank you":"Thank you","BACK TO SUSHI CLUB":"BACK TO SUSHI CLUB"},"tr":{"Selected time:":"Seçilen saat:","I AM...":"BEN...","HOTEL GUEST":"OTEL MİSAFİRİ","I am staying at Delta Hotels Antalya Lara":"Delta Hotels Antalya Lara’da konaklıyorum","OUTSIDE GUEST":"DIŞARIDAN MİSAFİR","I am visiting Sushi Club without a hotel stay":"Otelde konaklamadan Sushi Club’a geliyorum","Please enter your room number so our team can identify your reservation quickly.":"Ekibimizin rezervasyonunuzu hızlıca bulabilmesi için lütfen oda numaranızı girin.","Please leave a contact so we can send your reservation confirmation.":"Rezervasyon onayınızı iletebilmemiz için lütfen iletişim bilginizi bırakın.","(optional)":"(isteğe bağlı)","REQUEST RECEIVED":"TALEP ALINDI","Thank you":"Teşekkür ederiz","BACK TO SUSHI CLUB":"SUSHI CLUB’A DÖN"},"ru":{"Selected time:":"Выбранное время:","I AM...":"Я...","HOTEL GUEST":"ГОСТЬ ОТЕЛЯ","I am staying at Delta Hotels Antalya Lara":"Я проживаю в Delta Hotels Antalya Lara","OUTSIDE GUEST":"ВНЕШНИЙ ГОСТЬ","I am visiting Sushi Club without a hotel stay":"Я посещаю Sushi Club, не проживая в отеле","Please enter your room number so our team can identify your reservation quickly.":"Укажите номер комнаты, чтобы наша команда могла быстро найти вашу резервацию.","Please leave a contact so we can send your reservation confirmation.":"Оставьте контактные данные, чтобы мы могли отправить подтверждение резервации.","(optional)":"(необязательно)","REQUEST RECEIVED":"ЗАПРОС ПОЛУЧЕН","Thank you":"Спасибо","BACK TO SUSHI CLUB":"ВЕРНУТЬСЯ В SUSHI CLUB"},"de":{"Selected time:":"Ausgewählte Uhrzeit:","I AM...":"ICH BIN...","HOTEL GUEST":"HOTELGAST","I am staying at Delta Hotels Antalya Lara":"Ich übernachte im Delta Hotels Antalya Lara","OUTSIDE GUEST":"EXTERNER GAST","I am visiting Sushi Club without a hotel stay":"Ich besuche den Sushi Club, ohne im Hotel zu übernachten","Please enter your room number so our team can identify your reservation quickly.":"Bitte geben Sie Ihre Zimmernummer ein, damit unser Team Ihre Reservierung schnell zuordnen kann.","Please leave a contact so we can send your reservation confirmation.":"Bitte hinterlassen Sie Kontaktdaten, damit wir Ihnen die Reservierungsbestätigung senden können.","(optional)":"(optional)","REQUEST RECEIVED":"ANFRAGE ERHALTEN","Thank you":"Vielen Dank","BACK TO SUSHI CLUB":"ZURÜCK ZUM SUSHI CLUB"},"fr":{"Selected time:":"Heure sélectionnée :","I AM...":"JE SUIS...","HOTEL GUEST":"CLIENT DE L’HÔTEL","I am staying at Delta Hotels Antalya Lara":"Je séjourne au Delta Hotels Antalya Lara","OUTSIDE GUEST":"CLIENT EXTÉRIEUR","I am visiting Sushi Club without a hotel stay":"Je viens au Sushi Club sans séjourner à l’hôtel","Please enter your room number so our team can identify your reservation quickly.":"Veuillez saisir votre numéro de chambre afin que notre équipe puisse retrouver rapidement votre réservation.","Please leave a contact so we can send your reservation confirmation.":"Veuillez laisser vos coordonnées afin que nous puissions vous envoyer la confirmation de votre réservation.","(optional)":"(facultatif)","REQUEST RECEIVED":"DEMANDE REÇUE","Thank you":"Merci","BACK TO SUSHI CLUB":"RETOUR AU SUSHI CLUB"},"zh":{"Selected time:":"已选时间：","I AM...":"我是...","HOTEL GUEST":"住店客人","I am staying at Delta Hotels Antalya Lara":"我入住 Delta Hotels Antalya Lara","OUTSIDE GUEST":"非住店客人","I am visiting Sushi Club without a hotel stay":"我未入住酒店，仅前往 Sushi Club 用餐","Please enter your room number so our team can identify your reservation quickly.":"请输入房间号，以便我们的团队快速找到您的预订。","Please leave a contact so we can send your reservation confirmation.":"请留下联系方式，以便我们发送预订确认。","(optional)":"（可选）","REQUEST RECEIVED":"已收到申请","Thank you":"谢谢","BACK TO SUSHI CLUB":"返回 SUSHI CLUB"}};
+const SCREEN_COPY={
+ en:{
+  'Sushi Club · Menu & Reservation':'Sushi Club · Menu & Reservation',
+  'Technology meets dining — right at your fingertips.':'Technology meets dining — right at your fingertips.',
+  'TAP TO ENTER':'TAP TO ENTER',
+  'Japanese dining shaped by craft, atmosphere and the Mediterranean.':'Japanese dining shaped by craft, atmosphere and the Mediterranean.',
+  'Discover the menu':'Discover the menu',
+  'Reservation':'Reservation',
+  'Reserve your table':'Reserve your table',
+  'View or manage your booking':'View or manage your booking',
+  'MY RESERVATION':'MY RESERVATION',
+  'TIME':'TIME'
+ },
+ tr:{
+  'Sushi Club · Menu & Reservation':'Sushi Club · Menü ve Rezervasyon',
+  'Technology meets dining — right at your fingertips.':'Teknoloji ve gastronomi — parmaklarınızın ucunda.',
+  'TAP TO ENTER':'GİRMEK İÇİN DOKUNUN',
+  'Japanese dining shaped by craft, atmosphere and the Mediterranean.':'Ustalık, atmosfer ve Akdeniz dokunuşuyla şekillenen Japon mutfağı.',
+  'Discover the menu':'Menüyü keşfedin',
+  'Reservation':'Rezervasyon',
+  'Reserve your table':'Masanızı rezerve edin',
+  'View or manage your booking':'Rezervasyonunuzu görüntüleyin veya yönetin',
+  'MY RESERVATION':'REZERVASYONUM',
+  'TIME':'SAAT'
+ },
+ ru:{
+  'Sushi Club · Menu & Reservation':'Sushi Club · Меню и резервация',
+  'Technology meets dining — right at your fingertips.':'Технологии и гастрономия — у вас под рукой.',
+  'TAP TO ENTER':'КОСНИТЕСЬ, ЧТОБЫ ВОЙТИ',
+  'Japanese dining shaped by craft, atmosphere and the Mediterranean.':'Японская кухня, созданная мастерством, атмосферой и духом Средиземноморья.',
+  'Discover the menu':'Открыть меню',
+  'Reservation':'Резервация',
+  'Reserve your table':'Забронировать стол',
+  'View or manage your booking':'Просмотреть или управлять бронью',
+  'MY RESERVATION':'МОЯ РЕЗЕРВАЦИЯ',
+  'TIME':'ВРЕМЯ'
+ },
+ de:{
+  'Sushi Club · Menu & Reservation':'Sushi Club · Menü & Reservierung',
+  'Technology meets dining — right at your fingertips.':'Technologie trifft Genuss — direkt an Ihren Fingerspitzen.',
+  'TAP TO ENTER':'ZUM EINTRETEN TIPPEN',
+  'Japanese dining shaped by craft, atmosphere and the Mediterranean.':'Japanische Küche, geprägt von Handwerk, Atmosphäre und dem Mittelmeer.',
+  'Discover the menu':'Menü entdecken',
+  'Reservation':'Reservierung',
+  'Reserve your table':'Tisch reservieren',
+  'View or manage your booking':'Reservierung ansehen oder verwalten',
+  'MY RESERVATION':'MEINE RESERVIERUNG',
+  'TIME':'UHRZEIT'
+ },
+ fr:{
+  'Sushi Club · Menu & Reservation':'Sushi Club · Menu & Réservation',
+  'Technology meets dining — right at your fingertips.':'La technologie rencontre la gastronomie — au bout de vos doigts.',
+  'TAP TO ENTER':'TOUCHEZ POUR ENTRER',
+  'Japanese dining shaped by craft, atmosphere and the Mediterranean.':'Une cuisine japonaise façonnée par le savoir-faire, l’atmosphère et la Méditerranée.',
+  'Discover the menu':'Découvrir le menu',
+  'Reservation':'Réservation',
+  'Reserve your table':'Réserver votre table',
+  'View or manage your booking':'Voir ou gérer votre réservation',
+  'MY RESERVATION':'MA RÉSERVATION',
+  'TIME':'HEURE'
+ },
+ zh:{
+  'Sushi Club · Menu & Reservation':'Sushi Club · 菜单与预订',
+  'Technology meets dining — right at your fingertips.':'科技与美食，在指尖相遇。',
+  'TAP TO ENTER':'轻触进入',
+  'Japanese dining shaped by craft, atmosphere and the Mediterranean.':'以匠心、氛围与地中海风情塑造的日式餐饮体验。',
+  'Discover the menu':'浏览菜单',
+  'Reservation':'预订',
+  'Reserve your table':'预订餐桌',
+  'View or manage your booking':'查看或管理您的预订',
+  'MY RESERVATION':'我的预订',
+  'TIME':'时间'
+ }
+};
+const COMPOSITE_COPY={
+ en:{intro:['Activate Your','Taste Buds'],home:['A More Than','a Meal Experience']},
+ tr:{intro:['Lezzeti','Keşfedin'],home:['Bir Yemekten','Daha Fazlası']},
+ ru:{intro:['Пробудите','аппетит'],home:['Больше, чем','просто ужин']},
+ de:{intro:['Wecken Sie','Ihre Sinne'],home:['Mehr als','nur ein Essen']},
+ fr:{intro:['Éveillez','vos papilles'],home:['Plus qu’un','simple repas']},
+ zh:{intro:['唤醒您的','味蕾'],home:['不止是一顿','用餐体验']}
+};
+const PLACEHOLDER_EXTRA={
+ en:{'Name under which the reservation will be held':'Name under which the reservation will be held'},
+ tr:{'Name under which the reservation will be held':'Rezervasyonun yapılacağı isim'},
+ ru:{'Name under which the reservation will be held':'Имя, на которое оформляется резервация'},
+ de:{'Name under which the reservation will be held':'Name, auf den die Reservierung läuft'},
+ fr:{'Name under which the reservation will be held':'Nom sous lequel la réservation sera enregistrée'},
+ zh:{'Name under which the reservation will be held':'预订登记姓名'}
+};
 const PLACEHOLDER_LANGS={
  en:{'Reservation ID · SC-123456':'Reservation ID · SC-123456','Room / phone / e-mail':'Room / phone / e-mail','Enter number of guests':'Enter number of guests','e.g. 512':'e.g. 512','For reservation updates':'For reservation updates','+90 ...':'+90 ...','name@email.com':'name@email.com','Allergy, birthday, seating preference...':'Allergy, birthday, seating preference...','Hotel guests':'Hotel guests'},
  tr:{'Reservation ID · SC-123456':'Rezervasyon ID · SC-123456','Room / phone / e-mail':'Oda / telefon / e-posta','Enter number of guests':'Kişi sayısını girin','e.g. 512':'örn. 512','For reservation updates':'Rezervasyon güncellemeleri için','+90 ...':'+90 ...','name@email.com':'name@email.com','Allergy, birthday, seating preference...':'Alerji, doğum günü, masa tercihi...','Hotel guests':'Otel misafirleri'},
@@ -274,9 +364,18 @@ function v13DeepLink(){
 let currentLanguage=localStorage.getItem('sushiClubLanguage')||'en';
 const MY_CARD_LANG={"en":{"eyebrow":"YOUR BOOKING","title":"My Reservations","button":"MY RESERVATIONS","empty":"Already booked? View, edit or cancel your reservation here."},"tr":{"eyebrow":"REZERVASYONUNUZ","title":"Rezervasyonlarım","button":"REZERVASYONLARIM","empty":"Rezervasyonunuzu, durumunu ve detaylarını görüntüleyebilir, değiştirebilir veya buradan iptal edebilirsiniz."},"ru":{"eyebrow":"ВАША БРОНЬ","title":"Мои резервации","button":"МОИ РЕЗЕРВАЦИИ","empty":"Здесь можно посмотреть бронь, её статус и детали, изменить или отменить её."},"de":{"eyebrow":"IHRE RESERVIERUNG","title":"Meine Reservierungen","button":"MEINE RESERVIERUNGEN","empty":"Hier können Sie Ihre Reservierung, den Status und die Details ansehen, ändern oder stornieren."},"fr":{"eyebrow":"VOTRE RÉSERVATION","title":"Mes réservations","button":"MES RÉSERVATIONS","empty":"Consultez ici votre réservation, son statut et ses détails, modifiez-la ou annulez-la."},"zh":{"eyebrow":"您的预订","title":"我的预订","button":"我的预订","empty":"您可以在这里查看预订、状态和详情，也可以修改或取消预订。"}};
 const GUEST_MSG={"en":{"pleaseSelect":"Please select","activeCountOne":"You have 1 active reservation on this device.","activeCountMany":"You have {n} active reservations on this device.","reservation":"RESERVATION","guest":"Guest","guestsOne":"guest","guestsMany":"guests","room":"Room","specialRequest":"Special request","none":"None","edit":"EDIT","cancel":"CANCEL","noBooking":"No booking is saved on this device yet.","cannotCancel":"This reservation can no longer be cancelled.","confirmCancel":"Cancel this reservation?","cannotEdit":"This reservation can no longer be edited.","currentStatus":"Current status","requiredEdit":"Please complete date, time, number of guests and lead guest name.","roomRequired":"Room number is required for hotel guests.","outsideContactRequired":"Outside guests must provide a phone / WhatsApp number or e-mail.","editPending":"Changes saved. Your reservation is pending restaurant confirmation again.","editUpdated":"Your reservation details have been updated.","notFound":"Reservation not found.","detailsMismatch":"Reservation details do not match.","agreePolicy":"Please read and agree to the Reservation & Visit Rules.","mainRequired":"Please enter your name, date, number of guests and choose an available time.","enterRoom":"Please enter your room number.","enterOutsideContact":"Please enter a WhatsApp / phone number or e-mail so we can confirm your reservation.","duplicate":"An active reservation already exists for these details at the same time. Please use My Reservations to manage it.","unavailable":"This time is no longer available. Please choose another time.","sentTitle":"Reservation request sent","sentText":"Your request is pending. Sushi Club will confirm it according to availability.","request":"Reservation Request","leadGuest":"Lead guest","dateTime":"Date & time","partySize":"Party size","guestType":"Guest type","hotelGuest":"Hotel guest","outsideGuest":"Outside guest","contact":"Contact","email":"E-mail","exactParty":"This request is for {n} {guestWord}. Any change in party size is subject to availability and should be confirmed with the restaurant team.","status_pending":"Pending","status_confirmed":"Confirmed","status_reconfirmed":"Reconfirmed","status_rejected":"Declined","status_declined":"Declined","status_cancelled":"Cancelled","status_late_cancelled":"Late cancelled","status_no_show":"No-show","status_completed":"Completed","declineReason":"Decline reason"},"tr":{"pleaseSelect":"Lütfen seçin","activeCountOne":"Bu cihazda 1 aktif rezervasyonunuz var.","activeCountMany":"Bu cihazda {n} aktif rezervasyonunuz var.","reservation":"REZERVASYON","guest":"Misafir","guestsOne":"kişi","guestsMany":"kişi","room":"Oda","specialRequest":"Özel talep","none":"Yok","edit":"DÜZENLE","cancel":"İPTAL ET","noBooking":"Bu cihazda henüz kayıtlı bir rezervasyon yok.","cannotCancel":"Bu rezervasyon artık iptal edilemez.","confirmCancel":"Bu rezervasyonu iptal etmek istiyor musunuz?","cannotEdit":"Bu rezervasyon artık düzenlenemez.","currentStatus":"Mevcut durum","requiredEdit":"Lütfen tarih, saat, kişi sayısı ve ana misafir adını eksiksiz girin.","roomRequired":"Otel misafirleri için oda numarası zorunludur.","outsideContactRequired":"Dışarıdan gelen misafirler telefon / WhatsApp veya e-posta bilgisi vermelidir.","editPending":"Değişiklikler kaydedildi. Rezervasyonunuz yeniden restoran onayı bekliyor.","editUpdated":"Rezervasyon bilgileriniz güncellendi.","notFound":"Rezervasyon bulunamadı.","detailsMismatch":"Rezervasyon bilgileri eşleşmiyor.","agreePolicy":"Lütfen Rezervasyon Kurallarını okuyup kabul edin.","mainRequired":"Lütfen adınızı, tarihi, kişi sayısını girin ve uygun bir saat seçin.","enterRoom":"Lütfen oda numaranızı girin.","enterOutsideContact":"Rezervasyonunuzu onaylayabilmemiz için WhatsApp / telefon numarası veya e-posta girin.","duplicate":"Aynı bilgiler ve saat için zaten aktif bir rezervasyon bulunuyor. Lütfen Rezervasyonlarım bölümünden yönetin.","unavailable":"Bu saat artık uygun değil. Lütfen başka bir saat seçin.","sentTitle":"Rezervasyon talebi gönderildi","sentText":"Talebiniz beklemede. Sushi Club müsaitliğe göre onaylayacaktır.","request":"Rezervasyon Talebi","leadGuest":"Ana misafir","dateTime":"Tarih ve saat","partySize":"Kişi sayısı","guestType":"Misafir tipi","hotelGuest":"Otel misafiri","outsideGuest":"Dışarıdan misafir","contact":"İletişim","email":"E-posta","exactParty":"Bu talep {n} kişi içindir. Kişi sayısındaki değişiklikler müsaitliğe bağlıdır ve restoran ekibi tarafından onaylanmalıdır.","status_pending":"Beklemede","status_confirmed":"Onaylandı","status_reconfirmed":"Yeniden onaylandı","status_rejected":"Reddedildi","status_declined":"Reddedildi","status_cancelled":"İptal edildi","status_late_cancelled":"Geç iptal","status_no_show":"Gelmedi","status_completed":"Tamamlandı","declineReason":"Reddetme nedeni"},"ru":{"pleaseSelect":"Выберите время","activeCountOne":"На этом устройстве сохранена 1 активная резервация.","activeCountMany":"На этом устройстве сохранено активных резерваций: {n}.","reservation":"РЕЗЕРВАЦИЯ","guest":"Гость","guestsOne":"гость","guestsMany":"гостей","room":"Комната","specialRequest":"Особые пожелания","none":"Нет","edit":"ИЗМЕНИТЬ","cancel":"ОТМЕНИТЬ","noBooking":"На этом устройстве пока нет сохранённых резерваций.","cannotCancel":"Эту резервацию больше нельзя отменить.","confirmCancel":"Отменить эту резервацию?","cannotEdit":"Эту резервацию больше нельзя изменить.","currentStatus":"Текущий статус","requiredEdit":"Заполните дату, время, количество гостей и имя основного гостя.","roomRequired":"Для гостя отеля необходимо указать номер комнаты.","outsideContactRequired":"Внешнему гостю необходимо указать телефон / WhatsApp или e-mail.","editPending":"Изменения сохранены. Резервация снова ожидает подтверждения ресторана.","editUpdated":"Данные резервации обновлены.","notFound":"Резервация не найдена.","detailsMismatch":"Данные резервации не совпадают.","agreePolicy":"Прочитайте и примите правила бронирования.","mainRequired":"Укажите имя, дату, количество гостей и выберите доступное время.","enterRoom":"Укажите номер комнаты.","enterOutsideContact":"Укажите WhatsApp / телефон или e-mail, чтобы мы могли подтвердить резервацию.","duplicate":"На это же время уже существует активная резервация с указанными данными. Используйте раздел «Мои резервации» для управления.","unavailable":"Это время больше недоступно. Выберите другое время.","sentTitle":"Запрос на резервацию отправлен","sentText":"Ваш запрос ожидает подтверждения. Sushi Club подтвердит его при наличии мест.","request":"Запрос на резервацию","leadGuest":"Основной гость","dateTime":"Дата и время","partySize":"Количество гостей","guestType":"Тип гостя","hotelGuest":"Гость отеля","outsideGuest":"Внешний гость","contact":"Контакт","email":"E-mail","exactParty":"Запрос оформлен на {n} {guestWord}. Изменение количества гостей зависит от наличия мест и должно быть подтверждено командой ресторана.","status_pending":"Ожидает подтверждения","status_confirmed":"Подтверждено","status_reconfirmed":"Повторно подтверждено","status_rejected":"Отклонено","status_declined":"Отклонено","status_cancelled":"Отменено","status_late_cancelled":"Поздняя отмена","status_no_show":"Неявка","status_completed":"Завершено","declineReason":"Причина отказа"},"de":{"pleaseSelect":"Bitte auswählen","activeCountOne":"Auf diesem Gerät ist 1 aktive Reservierung gespeichert.","activeCountMany":"Auf diesem Gerät sind {n} aktive Reservierungen gespeichert.","reservation":"RESERVIERUNG","guest":"Gast","guestsOne":"Gast","guestsMany":"Gäste","room":"Zimmer","specialRequest":"Besonderer Wunsch","none":"Keine","edit":"BEARBEITEN","cancel":"STORNIEREN","noBooking":"Auf diesem Gerät ist noch keine Reservierung gespeichert.","cannotCancel":"Diese Reservierung kann nicht mehr storniert werden.","confirmCancel":"Diese Reservierung stornieren?","cannotEdit":"Diese Reservierung kann nicht mehr bearbeitet werden.","currentStatus":"Aktueller Status","requiredEdit":"Bitte Datum, Uhrzeit, Personenzahl und Namen des Hauptgastes vollständig eingeben.","roomRequired":"Für Hotelgäste ist die Zimmernummer erforderlich.","outsideContactRequired":"Externe Gäste müssen eine Telefonnummer / WhatsApp oder E-Mail angeben.","editPending":"Änderungen gespeichert. Die Reservierung wartet erneut auf die Bestätigung des Restaurants.","editUpdated":"Ihre Reservierungsdaten wurden aktualisiert.","notFound":"Reservierung nicht gefunden.","detailsMismatch":"Die Reservierungsdaten stimmen nicht überein.","agreePolicy":"Bitte lesen und akzeptieren Sie die Reservierungsregeln.","mainRequired":"Bitte geben Sie Name, Datum und Personenzahl ein und wählen Sie eine verfügbare Uhrzeit.","enterRoom":"Bitte geben Sie Ihre Zimmernummer ein.","enterOutsideContact":"Bitte geben Sie WhatsApp / Telefonnummer oder E-Mail an, damit wir Ihre Reservierung bestätigen können.","duplicate":"Für diese Angaben besteht zur gleichen Uhrzeit bereits eine aktive Reservierung. Bitte verwalten Sie sie unter „Meine Reservierungen“.","unavailable":"Diese Uhrzeit ist nicht mehr verfügbar. Bitte wählen Sie eine andere.","sentTitle":"Reservierungsanfrage gesendet","sentText":"Ihre Anfrage ist ausstehend. Der Sushi Club bestätigt sie je nach Verfügbarkeit.","request":"Reservierungsanfrage","leadGuest":"Hauptgast","dateTime":"Datum & Uhrzeit","partySize":"Personenzahl","guestType":"Gasttyp","hotelGuest":"Hotelgast","outsideGuest":"Externer Gast","contact":"Kontakt","email":"E-Mail","exactParty":"Diese Anfrage gilt für {n} {guestWord}. Änderungen der Personenzahl sind abhängig von der Verfügbarkeit und müssen vom Restaurantteam bestätigt werden.","status_pending":"Ausstehend","status_confirmed":"Bestätigt","status_reconfirmed":"Erneut bestätigt","status_rejected":"Abgelehnt","status_declined":"Abgelehnt","status_cancelled":"Storniert","status_late_cancelled":"Späte Stornierung","status_no_show":"No-show","status_completed":"Abgeschlossen","declineReason":"Ablehnungsgrund"},"fr":{"pleaseSelect":"Veuillez sélectionner","activeCountOne":"1 réservation active est enregistrée sur cet appareil.","activeCountMany":"{n} réservations actives sont enregistrées sur cet appareil.","reservation":"RÉSERVATION","guest":"Client","guestsOne":"personne","guestsMany":"personnes","room":"Chambre","specialRequest":"Demande spéciale","none":"Aucune","edit":"MODIFIER","cancel":"ANNULER","noBooking":"Aucune réservation n’est encore enregistrée sur cet appareil.","cannotCancel":"Cette réservation ne peut plus être annulée.","confirmCancel":"Annuler cette réservation ?","cannotEdit":"Cette réservation ne peut plus être modifiée.","currentStatus":"Statut actuel","requiredEdit":"Veuillez renseigner la date, l’heure, le nombre de personnes et le nom du client principal.","roomRequired":"Le numéro de chambre est obligatoire pour les clients de l’hôtel.","outsideContactRequired":"Les clients extérieurs doivent fournir un téléphone / WhatsApp ou une adresse e-mail.","editPending":"Modifications enregistrées. Votre réservation est de nouveau en attente de confirmation du restaurant.","editUpdated":"Les détails de votre réservation ont été mis à jour.","notFound":"Réservation introuvable.","detailsMismatch":"Les informations de réservation ne correspondent pas.","agreePolicy":"Veuillez lire et accepter les conditions de réservation.","mainRequired":"Veuillez saisir votre nom, la date, le nombre de personnes et choisir une heure disponible.","enterRoom":"Veuillez saisir votre numéro de chambre.","enterOutsideContact":"Veuillez saisir un numéro WhatsApp / téléphone ou un e-mail afin que nous puissions confirmer votre réservation.","duplicate":"Une réservation active existe déjà pour ces informations à la même heure. Veuillez la gérer dans « Mes réservations ».","unavailable":"Cette heure n’est plus disponible. Veuillez en choisir une autre.","sentTitle":"Demande de réservation envoyée","sentText":"Votre demande est en attente. Le Sushi Club la confirmera selon les disponibilités.","request":"Demande de réservation","leadGuest":"Client principal","dateTime":"Date et heure","partySize":"Nombre de personnes","guestType":"Type de client","hotelGuest":"Client de l’hôtel","outsideGuest":"Client extérieur","contact":"Contact","email":"E-mail","exactParty":"Cette demande est pour {n} {guestWord}. Toute modification du nombre de personnes dépend des disponibilités et doit être confirmée par l’équipe du restaurant.","status_pending":"En attente","status_confirmed":"Confirmée","status_reconfirmed":"Reconfirmée","status_rejected":"Refusée","status_declined":"Refusée","status_cancelled":"Annulée","status_late_cancelled":"Annulation tardive","status_no_show":"No-show","status_completed":"Terminée","declineReason":"Motif du refus"},"zh":{"pleaseSelect":"请选择","activeCountOne":"此设备上有 1 个有效预订。","activeCountMany":"此设备上有 {n} 个有效预订。","reservation":"预订","guest":"客人","guestsOne":"位客人","guestsMany":"位客人","room":"房间","specialRequest":"特殊要求","none":"无","edit":"修改","cancel":"取消","noBooking":"此设备上尚未保存任何预订。","cannotCancel":"此预订已无法取消。","confirmCancel":"确定取消此预订吗？","cannotEdit":"此预订已无法修改。","currentStatus":"当前状态","requiredEdit":"请完整填写日期、时间、人数和主要客人姓名。","roomRequired":"住店客人必须填写房间号。","outsideContactRequired":"非住店客人必须提供电话 / WhatsApp 或电子邮箱。","editPending":"修改已保存。您的预订现已重新等待餐厅确认。","editUpdated":"您的预订信息已更新。","notFound":"未找到预订。","detailsMismatch":"预订信息不匹配。","agreePolicy":"请阅读并同意预订规则。","mainRequired":"请输入姓名、日期、人数并选择可用时间。","enterRoom":"请输入房间号。","enterOutsideContact":"请输入 WhatsApp / 电话号码或电子邮箱，以便我们确认您的预订。","duplicate":"相同信息在同一时间已有有效预订。请前往“我的预订”进行管理。","unavailable":"该时间已不可用，请选择其他时间。","sentTitle":"预订申请已发送","sentText":"您的申请正在等待确认。Sushi Club 将根据供应情况进行确认。","request":"预订申请","leadGuest":"主要客人","dateTime":"日期和时间","partySize":"人数","guestType":"客人类型","hotelGuest":"住店客人","outsideGuest":"非住店客人","contact":"联系方式","email":"电子邮箱","exactParty":"此申请为 {n} {guestWord}。人数变更需视供应情况而定，并须由餐厅团队确认。","status_pending":"待确认","status_confirmed":"已确认","status_reconfirmed":"已再次确认","status_rejected":"已拒绝","status_declined":"已拒绝","status_cancelled":"已取消","status_late_cancelled":"迟取消","status_no_show":"未到店","status_completed":"已完成","declineReason":"拒绝原因"}};
+const GUEST_MSG_EXTRA={
+ en:{genericError:'Something went wrong. Please try again.',bookingReadyVerify:'Reservation {code} is ready to open. Please verify with the room number, phone or e-mail used for the booking.'},
+ tr:{genericError:'Bir sorun oluştu. Lütfen tekrar deneyin.',bookingReadyVerify:'Rezervasyon {code} açılmaya hazır. Lütfen rezervasyonda kullanılan oda numarası, telefon veya e-posta ile doğrulayın.'},
+ ru:{genericError:'Произошла ошибка. Пожалуйста, попробуйте ещё раз.',bookingReadyVerify:'Резервация {code} готова к открытию. Подтвердите её номером комнаты, телефоном или e-mail, указанным при бронировании.'},
+ de:{genericError:'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.',bookingReadyVerify:'Die Reservierung {code} kann geöffnet werden. Bitte bestätigen Sie sie mit der bei der Buchung verwendeten Zimmernummer, Telefonnummer oder E-Mail-Adresse.'},
+ fr:{genericError:'Une erreur est survenue. Veuillez réessayer.',bookingReadyVerify:'La réservation {code} est prête à être ouverte. Veuillez la vérifier avec le numéro de chambre, le téléphone ou l’e-mail utilisé lors de la réservation.'},
+ zh:{genericError:'出现问题，请重试。',bookingReadyVerify:'预订 {code} 已可打开。请使用预订时填写的房间号、电话或电子邮箱进行验证。'}
+};
 function msg(key,vars={}){
   const d=GUEST_MSG[currentLanguage]||GUEST_MSG.en;
-  let s=(d[key]!==undefined?d[key]:(GUEST_MSG.en[key]||key));
+  const dx=GUEST_MSG_EXTRA[currentLanguage]||GUEST_MSG_EXTRA.en;
+  let s=(dx[key]!==undefined?dx[key]:(d[key]!==undefined?d[key]:(GUEST_MSG_EXTRA.en[key]!==undefined?GUEST_MSG_EXTRA.en[key]:(GUEST_MSG.en[key]||key))));
   Object.keys(vars).forEach(k=>{s=String(s).replaceAll('{'+k+'}',String(vars[k]))});
   return s;
 }
@@ -299,6 +398,8 @@ function translateString(text,lang){
   const en=UI_LANGS.en;
   const dict=UI_LANGS[lang]||en;
   const extra=(STATIC_EXTRA[lang]||STATIC_EXTRA.en);
+  const screen=(SCREEN_COPY[lang]||SCREEN_COPY.en);
+  if(screen&&screen[text]!==undefined)return screen[text];
   if(extra&&extra[text]!==undefined)return extra[text];
   if(dict[text]!==undefined)return dict[text];
   return text;
@@ -313,8 +414,17 @@ function applyLanguage(lang){
     el.textContent=translateString(base,currentLanguage);
   });
   originalPlaceholders.forEach((base,el)=>{
-    if(document.body.contains(el))el.placeholder=(PLACEHOLDER_LANGS[currentLanguage]&&PLACEHOLDER_LANGS[currentLanguage][base])||base;
+    if(!document.body.contains(el))return;
+    const p1=PLACEHOLDER_EXTRA[currentLanguage]||PLACEHOLDER_EXTRA.en;
+    const p2=PLACEHOLDER_LANGS[currentLanguage]||PLACEHOLDER_LANGS.en;
+    el.placeholder=(p1&&p1[base]!==undefined?p1[base]:(p2&&p2[base]!==undefined?p2[base]:base));
   });
+  document.title=translateString('Sushi Club · Menu & Reservation',currentLanguage);
+  const composite=COMPOSITE_COPY[currentLanguage]||COMPOSITE_COPY.en;
+  const introTitle=document.querySelector('#sushiIntroV4 .sushi-intro-copy h1');
+  if(introTitle)introTitle.innerHTML=composite.intro[0]+'<br>'+composite.intro[1];
+  const homeTitle=document.querySelector('#home .future-home-heading h1');
+  if(homeTitle)homeTitle.innerHTML=composite.home[0]+'<br>'+composite.home[1];
   document.querySelectorAll('#languageSwitcher button').forEach(b=>{
     b.classList.toggle('active',b.dataset.lang===currentLanguage);
     b.setAttribute('aria-pressed',b.dataset.lang===currentLanguage?'true':'false');
@@ -333,6 +443,7 @@ function setLanguage(lang){
     if(title)title.innerText=msg('sentTitle');
     if(text)text.innerText=msg('sentText');
   }
+  if(typeof window.refreshGuestLiveLanguage==='function')window.refreshGuestLiveLanguage();
 }
 
 const TIMES=[...document.querySelectorAll('#reserveTimes .time')].map(b=>b.innerText);
