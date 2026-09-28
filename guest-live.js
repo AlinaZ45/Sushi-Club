@@ -6,7 +6,7 @@ function saveRefs(v){localStorage.setItem('sushiClubRemoteRefs',JSON.stringify(v
 function addRef(code,token){const a=refs().filter(x=>x.code!==code);a.unshift({code,token});saveRefs(a)}
 async function apiGet(params){const u=new URL(API);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,String(v)));const r=await fetch(u);const j=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(j.error||'Request failed'),{code:j.error,status:r.status,data:j});return j}
 async function apiPost(body){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(j.error||'Request failed'),{code:j.error,status:r.status,data:j});return j}
-function errText(e){if(e&&e.code==='unavailable')return msg('unavailable');if(e&&e.code==='duplicate')return msg('duplicate');return 'Something went wrong. Please try again.'}
+function errText(e){if(e&&e.code==='unavailable')return msg('unavailable');if(e&&e.code==='duplicate')return msg('duplicate');return msg('genericError')}
 async function refreshRemoteMyReservations(){const out=[];for(const x of refs()){try{const j=await apiGet({action:'get',code:x.code,token:x.token});if(j.reservation){j.reservation._token=x.token;out.push(j.reservation)}}catch(e){}}remoteReservations=out;renderMyReservations();refreshMyHome();}
 window.myReservations=function(){return remoteReservations.slice().sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time))};
 window.rememberMyReservation=function(){};
@@ -32,10 +32,21 @@ async function handleReservationDeepLink(){
       const identity=document.getElementById('findIdentity');
       if(identity)identity.focus({preventScroll:true});
       const find=document.getElementById('findResult');
-      if(find)find.innerHTML='<div class="smallnote">Reservation '+escapeHtml(code)+' is ready to open. Please verify with the room number, phone or e-mail used for the booking.</div>';
+      if(find)find.innerHTML='<div class="smallnote">'+escapeHtml(msg('bookingReadyVerify',{code}))+'</div>';
     }
   }
 }
+window.refreshGuestLiveLanguage=function(){
+  if(typeof renderMyReservations==='function')renderMyReservations();
+  if(typeof refreshMyHome==='function')refreshMyHome();
+  const params=new URLSearchParams(location.search);
+  const code=(params.get('reservation')||'').trim().toUpperCase();
+  const find=document.getElementById('findResult');
+  const known=refs().some(x=>x.code===code);
+  if(find&&/^SC-\d{6}$/.test(code)&&!known){
+    find.innerHTML='<div class="smallnote">'+escapeHtml(msg('bookingReadyVerify',{code}))+'</div>';
+  }
+};
 const oldShow=window.show;
 window.show=function(id){oldShow(id);if(id==='myReservations')refreshRemoteMyReservations();if(id==='reserve')renderGuestTimes();};
 document.addEventListener('DOMContentLoaded',()=>{refreshRemoteMyReservations();renderGuestTimes();handleReservationDeepLink();});
