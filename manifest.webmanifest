@@ -1,0 +1,9 @@
+{
+  "name": "Sushi Club",
+  "short_name": "Sushi Club",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#b9b0a9",
+  "theme_color": "#b9b0a9"
+}
