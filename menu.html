@@ -295,6 +295,30 @@ body:after{
   .lux-menu-item{grid-template-columns:41% 59%}
   .lux-menu-item h3{font-size:21px}
 }
+
+/* Tap-to-enlarge menu photos */
+.lux-item-photo{cursor:zoom-in}
+.menu-lightbox{
+  position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
+  padding:18px;background:rgba(15,12,10,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)
+}
+.menu-lightbox.open{display:flex}
+.menu-lightbox-inner{position:relative;width:min(96vw,980px);max-height:94vh;display:flex;align-items:center;justify-content:center}
+.menu-lightbox img{
+  display:block;max-width:100%;max-height:88vh;width:auto;height:auto;object-fit:contain;border-radius:24px;
+  box-shadow:0 24px 80px rgba(0,0,0,.42);background:rgba(255,255,255,.08);touch-action:pinch-zoom
+}
+.menu-lightbox-close{
+  position:absolute;top:-10px;right:-6px;width:44px;height:44px;border:0;border-radius:50%;
+  background:rgba(255,255,255,.93);color:#1b1714;font-size:25px;line-height:1;cursor:pointer;
+  box-shadow:0 8px 26px rgba(0,0,0,.22)
+}
+@media(max-width:760px){
+  .menu-lightbox{padding:10px}
+  .menu-lightbox img{max-height:90vh;border-radius:18px}
+  .menu-lightbox-close{top:8px;right:8px}
+}
+
 </style></head><body><main class="wrap"><div class="top"><a class="back" href="/">← BACK</a><a class="reserve" href="index.html#reserve">RESERVE A TABLE</a></div><div class="brand"><small>DELTA HOTELS BY MARRIOTT · ANTALYA LARA</small><h1>SUSHI CLUB</h1><p>Japanese flavors, thoughtfully prepared.</p></div><div class="cats"><button class="active" data-cat="All">All</button><button data-cat="Rolls">Rolls</button><button data-cat="Maki">Maki</button><button data-cat="Nigiri">Nigiri</button><button data-cat="Sashimi">Sashimi</button><button data-cat="Gunkan">Gunkan</button><button data-cat="Sets">Sets</button><button data-cat="Carpaccio">Carpaccio</button><button data-cat="Snacks">Snacks</button><button data-cat="Desserts">Desserts</button><button data-cat="Hot Food">Hot Food</button></div><input id="search" class="search" type="search" placeholder="Search menu"><div id="grid" class="grid"><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="shrimp crunch 8 pcs. tempura shrimps, cream cheese, avocado, panko.">
 <div class="lux-item-photo"><img alt="Shrimp Crunch 8 Pcs." data-menu-img="shrimp-crunch-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
 <div class="lux-item-info">
@@ -581,6 +605,49 @@ body:after{
 <p>Shrimp robatayaki.</p>
 <div class="lux-item-bottom"><span class="lux-price">1320 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
 </div>
-</article></div><div id="empty" class="empty" style="display:none">No dishes found.</div><div class="footer"><a href="/#reserve">RESERVE A TABLE</a></div></main><script src="menu-images-lite.js"></script><script>
+</article></div><div id="empty" class="empty" style="display:none">No dishes found.</div><div class="footer"><a href="/#reserve">RESERVE A TABLE</a></div></main>
+<div id="menuLightbox" class="menu-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged menu image" aria-hidden="true">
+  <div class="menu-lightbox-inner">
+    <img id="menuLightboxImage" alt="">
+    <button id="menuLightboxClose" class="menu-lightbox-close" type="button" aria-label="Close enlarged image">×</button>
+  </div>
+</div>
+<script src="menu-images-lite.js"></script><script>
 let active='All';const cards=[...document.querySelectorAll('.lux-menu-item')];function apply(){const q=document.getElementById('search').value.trim().toLowerCase();let n=0;cards.forEach(c=>{const cat=c.dataset.menuCategory||'';const txt=(c.dataset.menuSearch||c.innerText).toLowerCase();const ok=(active==='All'||cat===active)&&(!q||txt.includes(q));c.style.display=ok?'grid':'none';if(ok)n++});document.getElementById('empty').style.display=n?'none':'block'}document.querySelectorAll('.cats button').forEach(b=>b.onclick=()=>{active=b.dataset.cat;document.querySelectorAll('.cats button').forEach(x=>x.classList.toggle('active',x===b));apply()});document.getElementById('search').addEventListener('input',apply);apply();
+
+(function(){
+  const box=document.getElementById('menuLightbox');
+  const big=document.getElementById('menuLightboxImage');
+  const close=document.getElementById('menuLightboxClose');
+  if(!box||!big||!close)return;
+
+  function openImage(img){
+    if(!img||!img.src)return;
+    big.src=img.currentSrc||img.src;
+    big.alt=img.alt||'Menu image';
+    box.classList.add('open');
+    box.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    close.focus();
+  }
+  function closeImage(){
+    box.classList.remove('open');
+    box.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    big.removeAttribute('src');
+  }
+
+  document.querySelectorAll('.lux-item-photo img').forEach(img=>{
+    img.setAttribute('tabindex','0');
+    img.setAttribute('role','button');
+    img.setAttribute('aria-label',(img.alt||'Menu image')+' — tap to enlarge');
+    img.addEventListener('click',()=>openImage(img));
+    img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openImage(img)}});
+  });
+
+  close.addEventListener('click',closeImage);
+  box.addEventListener('click',e=>{if(e.target===box)closeImage()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&box.classList.contains('open'))closeImage()});
+})();
+
 </script></body></html>
