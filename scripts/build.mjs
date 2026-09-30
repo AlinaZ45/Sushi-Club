@@ -78,7 +78,7 @@ const introHero = path.join(root, 'assets', 'sushi-intro-approved.webp');
 assert(fs.existsSync(introHero), 'Missing Sushi Club intro hero');
 fs.copyFileSync(introHero, path.join(out, 'assets', 'sushi-intro-approved.webp'));
 for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
-for (const staticName of ['staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
+for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
   const src = path.join(root, staticName);
   assert(fs.existsSync(src), `Missing staff app asset: ${staticName}`);
   fs.copyFileSync(src, path.join(out, staticName));
