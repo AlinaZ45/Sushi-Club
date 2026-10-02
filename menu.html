@@ -210,7 +210,8 @@ body:after{
   display:block;
   border-radius:23px;
   image-rendering:auto;
-  transform:translateZ(0) scale(1.01);
+  -webkit-font-smoothing:antialiased;
+  backface-visibility:hidden;
 }
 .lux-item-info{
   min-width:0;
@@ -309,8 +310,9 @@ body:after{
   background:rgba(255,255,255,.08);
   box-shadow:0 24px 80px rgba(0,0,0,.42);touch-action:pinch-zoom;
   object-fit:contain;image-rendering:auto;
-  transform:translateZ(0);
   -webkit-user-drag:none;
+  backface-visibility:hidden;
+  filter:contrast(1.015) saturate(1.01);
 }
 .menu-lightbox-close{
   position:absolute;top:-10px;right:-6px;width:44px;height:44px;border:0;border-radius:50%;
@@ -628,6 +630,8 @@ let active='All';const cards=[...document.querySelectorAll('.lux-menu-item')];fu
   function openImage(img){
     if(!img||!img.src)return;
     const fullSrc=img.dataset.menuFullSrc||img.currentSrc||img.src;
+    big.decoding='sync';
+    big.fetchPriority='high';
     big.src=fullSrc;
     big.alt=img.alt||'Menu image';
     box.classList.add('open');
@@ -644,6 +648,13 @@ let active='All';const cards=[...document.querySelectorAll('.lux-menu-item')];fu
   }
 
   document.querySelectorAll('.lux-item-photo img').forEach(img=>{
+    img.decoding='async';
+    img.addEventListener('load',()=>{
+      if(img.naturalWidth&&img.naturalHeight){
+        img.dataset.nativeWidth=String(img.naturalWidth);
+        img.dataset.nativeHeight=String(img.naturalHeight);
+      }
+    },{once:true});
     img.setAttribute('tabindex','0');
     img.setAttribute('role','button');
     img.setAttribute('aria-label',(img.alt||'Menu image')+' — tap to enlarge');
