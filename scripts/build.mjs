@@ -37,7 +37,7 @@ for (const block of source['menu-images-lite.js'].split('(function(){')) {
 assert.equal(images.size, 51, 'All 51 approved photos must be present');
 let menu = source['menu.html'];
 let attached = 0;
-menu = menu.replace(/<img\b[^>]*>/g, tag => {
+menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   const key = tag.match(/data-menu-img="([^"]+)"/);
   assert(key && images.has(key[1]), 'Dish has no matching approved photo');
   attached++;
