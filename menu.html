@@ -305,9 +305,12 @@ body:after{
 .menu-lightbox.open{display:flex}
 .menu-lightbox-inner{position:relative;width:min(96vw,980px);max-height:94vh;display:flex;align-items:center;justify-content:center}
 .menu-lightbox-image{
-  display:block;width:min(92vw,920px);height:min(86vh,760px);border-radius:24px;
-  background:rgba(255,255,255,.08) center/contain no-repeat;
-  box-shadow:0 24px 80px rgba(0,0,0,.42);touch-action:pinch-zoom
+  display:block;max-width:92vw;max-height:86vh;width:auto;height:auto;border-radius:24px;
+  background:rgba(255,255,255,.08);
+  box-shadow:0 24px 80px rgba(0,0,0,.42);touch-action:pinch-zoom;
+  object-fit:contain;image-rendering:auto;
+  transform:translateZ(0);
+  -webkit-user-drag:none;
 }
 .menu-lightbox-close{
   position:absolute;top:-10px;right:-6px;width:44px;height:44px;border:0;border-radius:50%;
@@ -316,7 +319,7 @@ body:after{
 }
 @media(max-width:760px){
   .menu-lightbox{padding:10px}
-  .menu-lightbox-image{width:94vw;height:88vh;border-radius:18px}
+  .menu-lightbox-image{max-width:94vw;max-height:88vh;border-radius:18px}
   .menu-lightbox-close{top:8px;right:8px}
 }
 
@@ -609,7 +612,7 @@ body:after{
 </article></div><div id="empty" class="empty" style="display:none">No dishes found.</div><div class="footer"><a href="/#reserve">RESERVE A TABLE</a></div></main>
 <div id="menuLightbox" class="menu-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged menu image" aria-hidden="true">
   <div class="menu-lightbox-inner">
-    <div id="menuLightboxImage" class="menu-lightbox-image" role="img" aria-label=""></div>
+    <img id="menuLightboxImage" class="menu-lightbox-image" alt="" decoding="async"/>
     <button id="menuLightboxClose" class="menu-lightbox-close" type="button" aria-label="Close enlarged image">×</button>
   </div>
 </div>
@@ -624,8 +627,9 @@ let active='All';const cards=[...document.querySelectorAll('.lux-menu-item')];fu
 
   function openImage(img){
     if(!img||!img.src)return;
-    big.style.backgroundImage='url("'+(img.currentSrc||img.src).replace(/"/g,'%22')+'")';
-    big.setAttribute('aria-label',img.alt||'Menu image');
+    const fullSrc=img.dataset.menuFullSrc||img.currentSrc||img.src;
+    big.src=fullSrc;
+    big.alt=img.alt||'Menu image';
     box.classList.add('open');
     box.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
@@ -635,8 +639,8 @@ let active='All';const cards=[...document.querySelectorAll('.lux-menu-item')];fu
     box.classList.remove('open');
     box.setAttribute('aria-hidden','true');
     document.body.style.overflow='';
-    big.style.backgroundImage='';
-    big.setAttribute('aria-label','');
+    big.removeAttribute('src');
+    big.alt='';
   }
 
   document.querySelectorAll('.lux-item-photo img').forEach(img=>{
