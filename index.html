@@ -1853,13 +1853,6 @@ html,body{background:#f4ebe2!important}
   text-align:center;font-size:7px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,.93);
   text-shadow:0 1px 14px rgba(104,79,61,.24);
 }
-.sushi-falling-drop{
-  position:absolute;z-index:5;left:50%;top:58%;width:15px;height:22px;opacity:0;
-  transform:translate(-50%,-50%) scale(.8) rotate(45deg);
-  border-radius:70% 30% 68% 32%;
-  background:linear-gradient(145deg,rgba(255,196,118,.95),rgba(207,109,55,.88));
-  box-shadow:0 4px 18px rgba(182,105,62,.28);
-}
 #sushiIntroBloom{
   position:absolute;z-index:7;left:50%;top:77%;width:24px;height:24px;border-radius:50%;
   transform:translate(-50%,-50%) scale(.1);opacity:0;pointer-events:none;
@@ -1867,13 +1860,10 @@ html,body{background:#f4ebe2!important}
 }
 #sushiIntroV4.is-opening .sushi-intro-copy,
 #sushiIntroV4.is-opening .sushi-intro-hint{animation:sfTextAway .65s ease .25s forwards}
-#sushiIntroV4.is-opening .sushi-falling-drop{animation:sfDropFall 1.05s cubic-bezier(.2,.7,.2,1) forwards}
 #sushiIntroV4.is-opening .sushi-intro-dot span{animation:sfDotPress .72s ease forwards}
 #sushiIntroV4.is-opening .sushi-intro-photo{animation:sfLightZoom 2.7s ease forwards}
 #sushiIntroV4.is-opening #sushiIntroBloom{animation:sfBloom 2.1s cubic-bezier(.16,.72,.18,1) .82s forwards}
 #sushiIntroV4.is-hidden{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .72s ease,visibility .72s ease}
-@keyframes sfDropFall{
-  0%{opacity:0;top:57%;transform:translate(-50%,-50%) scale(.55) rotate(45deg)}
   18%{opacity:1}
   72%{opacity:1;top:73%;transform:translate(-50%,-50%) scale(1) rotate(45deg)}
   100%{opacity:0;top:77%;transform:translate(-50%,-50%) scale(.72) rotate(45deg)}
@@ -2574,7 +2564,7 @@ body{
     <h1>Activate Your<br>Taste Buds</h1>
     <p>Technology meets dining — right at your fingertips.</p>
   </div>
-  <span class="sushi-falling-drop" aria-hidden="true"></span>\n  <button id="sushiIntroTap" class="sushi-intro-dot" type="button" aria-label="Enter Sushi Club">
+  <button id="sushiIntroTap" class="sushi-intro-dot" type="button" aria-label="Enter Sushi Club">
     <span></span>
   </button>
   <div class="sushi-intro-hint">TAP TO ENTER</div>
