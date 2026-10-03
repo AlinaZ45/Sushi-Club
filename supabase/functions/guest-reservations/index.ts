@@ -15,7 +15,7 @@ const code=()=>`SC-${String(crypto.getRandomValues(new Uint32Array(1))[0]%100000
 function localNow(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return {date:`${g('year')}-${g('month')}-${g('day')}`,time:`${g('hour')}:${g('minute')}`};}
 function validateDate(v){const s=String(v||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(s))fail('invalid_date');const d=new Date(s+'T00:00:00Z');if(!Number.isFinite(+d)||d.toISOString().slice(0,10)!==s)fail('invalid_date');return s;}
 function party(v){const n=Number(v);if(!Number.isInteger(n)||n<1||n>20)fail('invalid_party_size');return n;}
-function future(date,time){const now=localNow();if(date<now.date||(date===now.date&&time<=now.time))fail('time_in_past');}
+function future(date,time){const now=localNow();if(date<now.date)fail('date_in_past');}
 function publicRow(r){return r?{id:r.id,requestId:r.reservation_code,date:r.reservation_date,time:String(r.reservation_time).slice(0,5),guests:r.party_size,originalGuests:r.original_party_size,name:r.lead_guest_name,guestType:r.guest_type,room:r.room_number||'',contact:r.phone||'',email:r.email||'',request:r.special_request||'',status:r.status,declineReason:r.status==='declined'?(r.staff_note||''):'',createdAt:r.created_at,holdUntil:r.arrival_hold_until||null}:null;}
 function input(b,r=null){
  const date=validateDate(b.date??r?.reservation_date),time=String(b.time??String(r?.reservation_time||'').slice(0,5)),guests=party(b.guests??r?.party_size),name=clean(b.name??r?.lead_guest_name,120);
@@ -86,10 +86,10 @@ Deno.serve(async req=>{
   const url=new URL(req.url);
   if(req.method==='GET'){
    const action=url.searchParams.get('action');
-   if(action==='health')return json({ok:true,version:'6',capacityMode:'time_slot_release',timezone:'Europe/Istanbul'});
+   if(action==='health')return json({ok:true,version:'7',capacityMode:'time_slot_release',timezone:'Europe/Istanbul'});
    if(action==='availability'){
     const date=validateDate(url.searchParams.get('date')),n=party(url.searchParams.get('party')||1),inv=await inventory(date),now=localNow();
-    return json({ok:true,capacityMode:'time_slot_release',slots:TIMES.map(time=>({time,available:date>=now.date&&!(date===now.date&&time<=now.time)&&!inv.blocked.has(time)&&hasCapacity(inv,n,time)}))});
+    return json({ok:true,capacityMode:'time_slot_release',slots:TIMES.map(time=>({time,available:date>=now.date&&!inv.blocked.has(time)&&hasCapacity(inv,n,time)}))});
    }
    if(action==='get')return json({ok:true,reservation:publicRow(await byToken(url.searchParams.get('code'),url.searchParams.get('token')))});
    if(action==='lookup')return json({ok:true,reservation:publicRow(await identityRow(url.searchParams.get('code'),url.searchParams.get('identity')))});
