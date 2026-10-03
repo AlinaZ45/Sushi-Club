@@ -559,10 +559,38 @@ function setGuestType(type){
   document.getElementById('hotelGuestPanel').style.display=type==='hotel'?'block':'none';
   document.getElementById('outsideGuestPanel').style.display=type==='outside'?'block':'none';
 }
+function v13HoldUntil(time){
+  const m=String(time||'').trim().match(/^([01]\d|2[0-3]):([0-5]\d)$/);
+  if(!m)return '';
+  const total=(Number(m[1])*60+Number(m[2])+15)%(24*60);
+  return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
+}
+function v13ReminderMarkup(until){
+  const rt=v13Text();
+  return '<div class="sc-reminder-title">'+rt.reminderTitle+'</div>'+
+    '<ul><li>'+rt.reminderAdult+'</li><li>'+rt.reminderDress+'</li>'+
+    '<li>'+rt.reminderHold+' <strong>'+until+'</strong></li></ul>';
+}
+function v13UpdateReserveReminder(){
+  const card=document.querySelector('#reserve .card');
+  if(!card)return;
+  const active=document.querySelector('#reserveTimes .time.active:not(:disabled)');
+  let box=card.querySelector('.sc-confirm-reminder[data-reserve-reminder="1"]');
+  const until=active?v13HoldUntil(active.innerText):'';
+  if(!until){if(box)box.remove();return;}
+  if(!box){
+    box=document.createElement('div');
+    box.className='sc-confirm-reminder';
+    box.dataset.reserveReminder='1';
+    card.appendChild(box);
+  }
+  box.innerHTML=v13ReminderMarkup(until);
+}
 function syncSelectedTime(){
   const a=document.querySelector('#reserveTimes .time.active:not(:disabled)');
   const x=document.getElementById('selectedTimeText');
   if(x)x.textContent=a?a.innerText:msg('pleaseSelect');
+  v13UpdateReserveReminder();
 }
 
 function confirmReservation(){
@@ -862,22 +890,28 @@ setTimeout(()=>{v13InstallRules();v13RefreshProfessionalText();v13ExternalEntry(
 setInterval(()=>{v13InstallRules();},800);
 
 function v13ConfirmedReminders(){
- document.querySelectorAll('.card,.reservation-card,.booking-card').forEach(card=>{
-   if(card.dataset.v13reminder)return;
-   const txt=(card.textContent||'').toLowerCase();
-   if(txt.includes('confirmed')||txt.includes('подтверж')||txt.includes('bestätigt')||txt.includes('confirmée')){
-     const time=(card.textContent||'').match(/\b([01]\d|2[0-3]):[0-5]\d\b/);
-     if(time){
-       const [h,m]=time[0].split(':').map(Number),d=new Date(2000,0,1,h,m+15);
-       const until=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
-       const x=document.createElement('div');x.className='sc-confirm-reminder';
-       const rt=v13Text();
-       x.innerHTML='<div class="sc-reminder-title">'+rt.reminderTitle+'</div>'+
-         '<ul><li>'+rt.reminderAdult+'</li><li>'+rt.reminderDress+'</li>'+
-         '<li>'+rt.reminderHold+' <strong>'+until+'</strong></li></ul>';
-       card.appendChild(x);card.dataset.v13reminder='1';
-     }
+ document.querySelectorAll('.booking-card').forEach(card=>{
+   const status=card.querySelector('.booking-status');
+   const isConfirmed=status&&(status.classList.contains('confirmed')||status.classList.contains('reconfirmed'));
+   if(!isConfirmed){
+     const old=card.querySelector('.sc-confirm-reminder[data-booking-reminder="1"]');
+     if(old)old.remove();
+     return;
    }
+   const meta=card.querySelector('.booking-meta b');
+   const match=(meta&&meta.textContent||'').match(/\b([01]\d|2[0-3]):[0-5]\d\b/);
+   if(!match)return;
+   const until=v13HoldUntil(match[0]);
+   if(!until)return;
+   let x=card.querySelector('.sc-confirm-reminder[data-booking-reminder="1"]');
+   if(!x){
+     x=document.createElement('div');
+     x.className='sc-confirm-reminder';
+     x.dataset.bookingReminder='1';
+     card.appendChild(x);
+   }
+   x.innerHTML=v13ReminderMarkup(until);
  });
+ v13UpdateReserveReminder();
 }
 setInterval(v13ConfirmedReminders,900);
