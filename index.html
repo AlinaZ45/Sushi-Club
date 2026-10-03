@@ -1853,55 +1853,37 @@ html,body{background:#f4ebe2!important}
   text-align:center;font-size:7px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,.93);
   text-shadow:0 1px 14px rgba(104,79,61,.24);
 }
-.sushi-roll-reveal{
-  position:absolute;z-index:7;left:50%;top:77%;width:34px;height:34px;
-  transform:translate(-50%,-50%) scale(.45);opacity:0;pointer-events:none;
+.soy-ripple{
+  position:absolute;z-index:5;left:50%;top:77%;width:34px;height:34px;
+  transform:translate(-50%,-50%);pointer-events:none;
 }
-.sushi-roll-reveal span{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  border-radius:50%;
+.soy-ring{
+  position:absolute;inset:0;border-radius:50%;opacity:0;
+  border:1.4px solid rgba(156,92,42,.78);
+  box-shadow:
+    0 0 12px rgba(187,116,55,.18),
+    inset 0 0 10px rgba(255,214,153,.08);
 }
-.roll-rice{
-  width:34px;height:34px;
-  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,1),rgba(248,243,237,.98) 62%,rgba(233,223,214,.96) 100%);
-  box-shadow:0 0 24px rgba(255,248,241,.55),0 0 50px rgba(255,244,232,.28);
+#sushiIntroV4.is-opening .soy-ring-1{animation:soyRipple 1.35s cubic-bezier(.18,.72,.2,1) .04s forwards}
+#sushiIntroV4.is-opening .soy-ring-2{animation:soyRipple 1.55s cubic-bezier(.18,.72,.2,1) .18s forwards}
+#sushiIntroV4.is-opening .soy-ring-3{animation:soyRipple 1.75s cubic-bezier(.18,.72,.2,1) .34s forwards}
+@keyframes soyRipple{
+  0%{
+    opacity:0;
+    transform:scale(.72);
+    border-color:rgba(174,103,45,.86);
+  }
+  12%{opacity:.82}
+  55%{
+    opacity:.46;
+    border-color:rgba(154,88,39,.55);
+  }
+  100%{
+    opacity:0;
+    transform:scale(8.4);
+    border-color:rgba(191,126,63,0);
+  }
 }
-.roll-nori{
-  width:24px;height:24px;
-  background:radial-gradient(circle at 40% 35%,rgba(56,61,50,.98),rgba(34,38,31,.98) 70%,rgba(18,21,17,1) 100%);
-  box-shadow:inset 0 0 6px rgba(110,130,105,.18);
-}
-.roll-salmon{
-  width:11px;height:11px;
-  background:radial-gradient(circle at 35% 30%,rgba(255,197,153,1),rgba(247,140,102,.98) 55%,rgba(217,103,71,1) 100%);
-  box-shadow:0 0 12px rgba(255,171,120,.30),inset 0 0 3px rgba(255,228,210,.25);
-}
-#sushiIntroV4.is-opening .sushi-roll-reveal{
-  animation:sfRollReveal 1.05s cubic-bezier(.18,.72,.18,1) .08s forwards;
-}
-#sushiIntroV4.is-opening .roll-salmon{
-  animation:sfSalmonPulse .55s ease .18s forwards;
-}
-#sushiIntroV4.is-opening .sushi-intro-dot:before,
-#sushiIntroV4.is-opening .sushi-intro-dot:after{
-  animation:sfDotFade .35s ease forwards;
-}
-@keyframes sfRollReveal{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}
-  12%{opacity:1;transform:translate(-50%,-50%) scale(.92)}
-  45%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(7.8)}
-}
-@keyframes sfSalmonPulse{
-  0%{transform:translate(-50%,-50%) scale(.88)}
-  50%{transform:translate(-50%,-50%) scale(1.12)}
-  100%{transform:translate(-50%,-50%) scale(1)}
-}
-@keyframes sfDotToRoll{
-  0%{transform:translate(-50%,-50%) scale(1);opacity:1}
-  100%{transform:translate(-50%,-50%) scale(.72);opacity:.15}
-}
-@keyframes sfDotFade{to{opacity:0}}
 #sushiIntroBloom{
   position:absolute;z-index:7;left:50%;top:77%;width:24px;height:24px;border-radius:50%;
   transform:translate(-50%,-50%) scale(.1);opacity:0;pointer-events:none;
@@ -1909,11 +1891,12 @@ html,body{background:#f4ebe2!important}
 }
 #sushiIntroV4.is-opening .sushi-intro-copy,
 #sushiIntroV4.is-opening .sushi-intro-hint{animation:sfTextAway .65s ease .25s forwards}
-#sushiIntroV4.is-opening .sushi-intro-dot span{animation:sfDotToRoll .46s ease forwards}
+#sushiIntroV4.is-opening .sushi-intro-dot span{animation:sfDotPress .72s ease forwards}
 #sushiIntroV4.is-opening .sushi-intro-photo{animation:sfLightZoom 2.7s ease forwards}
 #sushiIntroV4.is-opening #sushiIntroBloom{animation:sfBloom 2.1s cubic-bezier(.16,.72,.18,1) .82s forwards}
 #sushiIntroV4.is-hidden{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .72s ease,visibility .72s ease}
 @keyframes sfTextAway{to{opacity:0;transform:translate(-50%,-54%) scale(.985)}}
+@keyframes sfDotPress{45%{transform:translate(-50%,-50%) scale(.74)}100%{transform:translate(-50%,-50%) scale(1.04)}}
 @keyframes sfLightZoom{
   0%{filter:blur(10px) brightness(1.32) saturate(.76) contrast(.84);transform:scale(1.04)}
   100%{filter:blur(17px) brightness(1.58) saturate(.65) contrast(.76);transform:scale(1.10)}
@@ -2611,10 +2594,10 @@ body{
   <button id="sushiIntroTap" class="sushi-intro-dot" type="button" aria-label="Enter Sushi Club">
     <span></span>
   </button>
-  <div id="sushiRollReveal" class="sushi-roll-reveal" aria-hidden="true">
-    <span class="roll-rice"></span>
-    <span class="roll-nori"></span>
-    <span class="roll-salmon"></span>
+  <div id="soyRipple" class="soy-ripple" aria-hidden="true">
+    <span class="soy-ring soy-ring-1"></span>
+    <span class="soy-ring soy-ring-2"></span>
+    <span class="soy-ring soy-ring-3"></span>
   </div>
   <div class="sushi-intro-hint">TAP TO ENTER</div>
   <div id="sushiIntroBloom" aria-hidden="true"></div>
