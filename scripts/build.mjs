@@ -41,11 +41,15 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   const key = tag.match(/data-menu-img="([^"]+)"/);
   assert(key, 'Menu image key missing');
   attached++;
+  if (key[1] === 'peach-lipton') {
+    assert(/src="data:image\/webp;base64,[A-Za-z0-9+/=]+"/.test(tag), 'Peach Lipton photo missing');
+    return tag.replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
+  }
   assert(images.has(key[1]), 'Dish has no matching approved photo');
   const src = images.get(key[1]).file;
   return tag.replace(/\s+src="[^"]*"/, ` src="${src}"`).replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
 });
-assert.equal(attached, 51, 'Menu/photo count mismatch');
+assert.equal(attached, 52, 'Menu/photo count mismatch');
 menu = menu.replace(/<script\b[^>]*src="\/?menu-images(?:-lite)?\.js"[^>]*><\/script>/g, '');
 assert(!menu.includes('menu-images'), 'Unresolved photo script');
 menu = menu.replaceAll('href="/"', 'href="index.html"').replaceAll('href="/#reserve"', 'href="index.html#reserve"');
@@ -85,6 +89,6 @@ for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','s
   fs.copyFileSync(src, path.join(out, staticName));
 }
 for (const {file,bytes} of images.values()) fs.writeFileSync(path.join(out,file),bytes);
-const report = {revision, menuSource:'approved v13.49',dishCount:52,photoCount:images.size,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
+const report = {revision, menuSource:'approved v13.49',dishCount:52,photoCount:images.size+1,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
 fs.writeFileSync(path.join(out,'build-info.json'),JSON.stringify(report,null,2));
 console.log(JSON.stringify({ok:true, dishes:52,photos:images.size,output:'dist',revision}));
