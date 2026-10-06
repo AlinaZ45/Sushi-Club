@@ -83,16 +83,18 @@ fs.mkdirSync(path.join(out, 'assets'), {recursive:true});
 const introHero = path.join(root, 'assets', 'sushi-intro-approved.webp');
 assert(fs.existsSync(introHero), 'Missing Sushi Club intro hero');
 fs.copyFileSync(introHero, path.join(out, 'assets', 'sushi-intro-approved.webp'));
-for (const drinkAsset of ['peach-lipton-final.webp','lemon-lipton-final.webp']) {
-  const src = path.join(root, 'assets', drinkAsset);
-  assert(fs.existsSync(src), `Missing drink asset: ${drinkAsset}`);
-  fs.copyFileSync(src, path.join(out, 'assets', drinkAsset));
-}
-for (const drinkAsset of ['peach-lipton-final.webp','lemon-lipton-final.webp']) {
-  const src = path.join(root, 'assets', drinkAsset);
-  assert(fs.existsSync(src), `Missing drink asset: ${drinkAsset}`);
-  fs.copyFileSync(src, path.join(out, 'assets', drinkAsset));
-}
+const peachAsset = path.join(root, 'assets', 'peach-lipton-final.webp');
+assert(fs.existsSync(peachAsset), 'Missing Peach Lipton asset');
+fs.copyFileSync(peachAsset, path.join(out, 'assets', 'peach-lipton-final.webp'));
+
+const lemonPartsDir = path.join(root, 'assets', 'lemon-parts');
+const lemonBase64 = ['00.txt','01.txt','02.txt','03.txt','04.txt']
+  .map(name => fs.readFileSync(path.join(lemonPartsDir, name), 'utf8').trim())
+  .join('');
+const lemonBytes = Buffer.from(lemonBase64, 'base64');
+assert(lemonBytes.length > 10000, 'Missing Lemon Lipton photo data');
+assert(lemonBytes.subarray(0,4).toString() === 'RIFF' && lemonBytes.subarray(8,12).toString() === 'WEBP', 'Corrupt Lemon Lipton photo');
+fs.writeFileSync(path.join(out, 'assets', 'lemon-lipton-final.webp'), lemonBytes);
 for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
 for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
   const src = path.join(root, staticName);
