@@ -42,7 +42,7 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   assert(key, 'Menu image key missing');
   attached++;
   if (key[1] === 'peach-lipton') {
-    assert(tag.includes('src="data:image/webp;base64,'), 'Peach Lipton photo missing');
+    assert(tag.includes('src="assets/peach-lipton-final.webp"'), 'Peach Lipton photo missing');
     return tag.replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
   }
   assert(images.has(key[1]), 'Dish has no matching approved photo');
