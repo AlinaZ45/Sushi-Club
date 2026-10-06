@@ -18,7 +18,7 @@ for (const name of names) {
   }
   assert(!/sb_secret_[A-Za-z0-9_-]+/.test(source[name]), `${name}: private key in client source`);
 }
-assert.equal((source['menu.html'].match(/<article\b[^>]*class="lux-menu-item"/g)||[]).length, 52, 'The approved menu must contain 52 dishes');
+assert.equal((source['menu.html'].match(/<article\b[^>]*class="lux-menu-item"/g)||[]).length, 53, 'The approved menu must contain 53 dishes');
 
 // Decode the existing approved photos at build time. No photo JS is required in a guest browser.
 const images = new Map();
@@ -41,8 +41,9 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   const key = tag.match(/data-menu-img="([^"]+)"/);
   assert(key, 'Menu image key missing');
   attached++;
-  if (key[1] === 'peach-lipton') {
-    assert(tag.includes('src="assets/peach-lipton-final.webp"'), 'Peach Lipton photo missing');
+  if (key[1] === 'peach-lipton' || key[1] === 'lemon-lipton') {
+    const drinkFile = key[1] === 'peach-lipton' ? 'assets/peach-lipton-final.webp' : 'assets/lemon-lipton-final.webp';
+    assert(tag.includes(`src="${drinkFile}"`), `${key[1]} photo missing`);
     return tag.replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
   }
   assert(images.has(key[1]), 'Dish has no matching approved photo');
@@ -87,6 +88,11 @@ for (const drinkAsset of ['peach-lipton-final.webp','lemon-lipton-final.webp']) 
   assert(fs.existsSync(src), `Missing drink asset: ${drinkAsset}`);
   fs.copyFileSync(src, path.join(out, 'assets', drinkAsset));
 }
+for (const drinkAsset of ['peach-lipton-final.webp','lemon-lipton-final.webp']) {
+  const src = path.join(root, 'assets', drinkAsset);
+  assert(fs.existsSync(src), `Missing drink asset: ${drinkAsset}`);
+  fs.copyFileSync(src, path.join(out, 'assets', drinkAsset));
+}
 for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
 for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
   const src = path.join(root, staticName);
@@ -94,6 +100,6 @@ for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','s
   fs.copyFileSync(src, path.join(out, staticName));
 }
 for (const {file,bytes} of images.values()) fs.writeFileSync(path.join(out,file),bytes);
-const report = {revision, menuSource:'approved v13.49',dishCount:52,photoCount:images.size+2,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
+const report = {revision, menuSource:'approved v13.49',dishCount:53,photoCount:images.size+2,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
 fs.writeFileSync(path.join(out,'build-info.json'),JSON.stringify(report,null,2));
 console.log(JSON.stringify({ok:true, dishes:52,photos:images.size+2,output:'dist',revision}));
