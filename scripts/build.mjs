@@ -49,7 +49,7 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   const src = images.get(key[1]).file;
   return tag.replace(/\s+src="[^"]*"/, ` src="${src}"`).replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
 });
-assert.equal(attached, 52, 'Menu/photo count mismatch');
+assert.equal(attached, 53, 'Menu/photo count mismatch');
 menu = menu.replace(/<script\b[^>]*src="\/?menu-images(?:-lite)?\.js"[^>]*><\/script>/g, '');
 assert(!menu.includes('menu-images'), 'Unresolved photo script');
 menu = menu.replaceAll('href="/"', 'href="index.html"').replaceAll('href="/#reserve"', 'href="index.html#reserve"');
@@ -82,6 +82,11 @@ fs.mkdirSync(path.join(out, 'assets'), {recursive:true});
 const introHero = path.join(root, 'assets', 'sushi-intro-approved.webp');
 assert(fs.existsSync(introHero), 'Missing Sushi Club intro hero');
 fs.copyFileSync(introHero, path.join(out, 'assets', 'sushi-intro-approved.webp'));
+for (const drinkAsset of ['peach-lipton-final.webp','lemon-lipton-final.webp']) {
+  const src = path.join(root, 'assets', drinkAsset);
+  assert(fs.existsSync(src), `Missing drink asset: ${drinkAsset}`);
+  fs.copyFileSync(src, path.join(out, 'assets', drinkAsset));
+}
 for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
 for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
   const src = path.join(root, staticName);
@@ -89,6 +94,6 @@ for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','s
   fs.copyFileSync(src, path.join(out, staticName));
 }
 for (const {file,bytes} of images.values()) fs.writeFileSync(path.join(out,file),bytes);
-const report = {revision, menuSource:'approved v13.49',dishCount:52,photoCount:images.size+1,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
+const report = {revision, menuSource:'approved v13.49',dishCount:52,photoCount:images.size+2,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
 fs.writeFileSync(path.join(out,'build-info.json'),JSON.stringify(report,null,2));
-console.log(JSON.stringify({ok:true, dishes:52,photos:images.size,output:'dist',revision}));
+console.log(JSON.stringify({ok:true, dishes:52,photos:images.size+2,output:'dist',revision}));
