@@ -213,6 +213,141 @@ body:after{
   -webkit-font-smoothing:antialiased;
   backface-visibility:hidden;
 }
+/* Peach Lipton animated menu card */
+.peach-motion{
+  position:relative;
+  min-height:190px;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    radial-gradient(circle at 72% 18%,rgba(255,183,74,.30),transparent 23%),
+    radial-gradient(circle at 22% 26%,rgba(255,132,42,.19),transparent 28%),
+    linear-gradient(155deg,#120b08 0%,#21120b 54%,#080605 100%);
+}
+.peach-motion:before{
+  content:"";
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(circle at 18% 18%,rgba(255,190,83,.42) 0 2px,transparent 3px),
+    radial-gradient(circle at 78% 30%,rgba(255,160,48,.35) 0 3px,transparent 4px),
+    radial-gradient(circle at 66% 76%,rgba(255,210,125,.24) 0 2px,transparent 3px);
+  filter:blur(.2px);
+}
+.peach-floor{
+  position:absolute;left:-8%;right:-8%;bottom:-4%;height:35%;z-index:1;
+  background:linear-gradient(180deg,rgba(16,9,6,0),rgba(6,4,3,.88)),
+             radial-gradient(ellipse at center,rgba(255,158,40,.18),transparent 62%);
+}
+.peach-fruit{
+  position:absolute;bottom:18px;width:38px;height:38px;border-radius:50%;z-index:5;
+  background:radial-gradient(circle at 34% 27%,#ffd17e 0 9%,#ff9b35 27%,#f16a2f 61%,#9c2b20 100%);
+  box-shadow:inset -7px -9px 12px rgba(85,14,7,.22),0 8px 18px rgba(0,0,0,.28);
+  opacity:0;
+}
+.peach-fruit:after{
+  content:"";position:absolute;width:13px;height:7px;border-radius:80% 20% 80% 20%;
+  background:#507a37;top:-3px;left:18px;transform:rotate(-24deg);
+}
+.peach-one{left:-46px;animation:peachRollOne 6s cubic-bezier(.42,0,.2,1) infinite}
+.peach-two{left:-72px;bottom:50px;width:31px;height:31px;animation:peachRollTwo 6s .12s cubic-bezier(.42,0,.2,1) infinite}
+.peach-glass{
+  position:absolute;left:50%;bottom:13px;z-index:4;width:70px;height:130px;
+  transform:translateX(-50%) scale(.76);opacity:0;
+  border:2px solid rgba(255,255,255,.82);border-top-width:3px;border-radius:8px 8px 15px 15px;
+  background:
+    linear-gradient(to top,rgba(238,150,23,.94) 0 4%,rgba(238,150,23,.85) 4% 68%,rgba(255,177,49,.18) 68% 100%);
+  box-shadow:inset 9px 0 15px rgba(255,255,255,.15),inset -8px 0 14px rgba(92,45,10,.16),0 15px 26px rgba(0,0,0,.30);
+  animation:glassArrive 6s ease-in-out infinite;
+}
+.peach-glass:before{
+  content:"";position:absolute;left:8px;right:8px;top:28px;height:84px;
+  background:
+    linear-gradient(38deg,transparent 0 13%,rgba(255,255,255,.48) 14% 23%,transparent 24% 41%,rgba(255,255,255,.35) 42% 51%,transparent 52%),
+    linear-gradient(-38deg,transparent 0 18%,rgba(235,247,255,.44) 19% 29%,transparent 30% 50%,rgba(255,255,255,.34) 51% 62%,transparent 63%);
+  opacity:.76;filter:drop-shadow(0 0 2px rgba(255,255,255,.25));
+}
+.peach-glass:after{
+  content:"";position:absolute;left:5px;right:5px;top:39px;height:5px;border-radius:50%;
+  background:rgba(255,212,122,.64);box-shadow:0 4px 9px rgba(255,178,54,.35);
+}
+.peach-can{
+  position:absolute;z-index:6;top:-56px;left:18%;width:46px;height:112px;border-radius:12px 12px 9px 9px;
+  transform:rotate(-37deg);transform-origin:70% 90%;opacity:0;
+  background:
+    linear-gradient(180deg,#ffe23b 0 29%,#27a75c 29% 35%,#1f91c5 35% 67%,#ef8733 67% 100%);
+  box-shadow:inset 3px 0 4px rgba(255,255,255,.32),inset -3px 0 4px rgba(0,0,0,.13),0 8px 18px rgba(0,0,0,.33);
+  animation:canPour 6s ease-in-out infinite;
+}
+.peach-can:before{
+  content:"Lipton";position:absolute;left:5px;right:5px;top:33px;height:27px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:#cf2527;color:#fff;font:700 8px/1 "Manrope",Arial,sans-serif;
+  border:2px solid #ffd833;box-shadow:0 0 0 2px rgba(255,255,255,.55);
+}
+.peach-stream{
+  position:absolute;z-index:3;top:32px;left:47%;width:10px;height:0;border-radius:999px;
+  transform:rotate(12deg);transform-origin:top;background:linear-gradient(90deg,#f9b637,#d97814,#ffc55f);
+  opacity:0;filter:drop-shadow(0 0 4px rgba(255,172,45,.42));
+  animation:teaStream 6s ease-in-out infinite;
+}
+.peach-splash{
+  position:absolute;z-index:7;left:50%;bottom:113px;width:72px;height:18px;transform:translateX(-50%) scale(.35);
+  border-radius:50%;border:4px solid rgba(255,169,43,.82);opacity:0;
+  animation:splashPop 6s ease-in-out infinite;
+}
+.peach-shine{
+  position:absolute;z-index:8;inset:0;pointer-events:none;opacity:0;
+  background:linear-gradient(118deg,transparent 35%,rgba(255,255,255,.16) 47%,transparent 58%);
+  animation:shinePass 6s ease-in-out infinite;
+}
+@keyframes peachRollOne{
+  0%,3%{opacity:0;transform:translateX(0) rotate(0)}
+  8%{opacity:1}
+  29%{opacity:1;transform:translateX(128px) rotate(470deg)}
+  36%,100%{opacity:0;transform:translateX(168px) rotate(620deg)}
+}
+@keyframes peachRollTwo{
+  0%,6%{opacity:0;transform:translateX(0) rotate(0)}
+  11%{opacity:1}
+  31%{opacity:1;transform:translateX(116px) rotate(420deg)}
+  38%,100%{opacity:0;transform:translateX(155px) rotate(560deg)}
+}
+@keyframes glassArrive{
+  0%,23%{opacity:0;transform:translateX(-50%) translateY(25px) scale(.76)}
+  34%,82%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
+  91%,100%{opacity:0;transform:translateX(-50%) translateY(4px) scale(.96)}
+}
+@keyframes canPour{
+  0%,34%{opacity:0;transform:translate(-14px,-12px) rotate(-18deg)}
+  43%{opacity:1;transform:translate(0,0) rotate(-34deg)}
+  52%,73%{opacity:1;transform:translate(8px,8px) rotate(-58deg)}
+  82%,100%{opacity:0;transform:translate(19px,-14px) rotate(-30deg)}
+}
+@keyframes teaStream{
+  0%,46%{opacity:0;height:0}
+  52%{opacity:1;height:0}
+  58%,72%{opacity:.96;height:96px}
+  79%,100%{opacity:0;height:0}
+}
+@keyframes splashPop{
+  0%,54%{opacity:0;transform:translateX(-50%) scale(.3)}
+  60%{opacity:.95;transform:translateX(-50%) scale(1)}
+  68%{opacity:.35;transform:translateX(-50%) scale(1.25)}
+  75%,100%{opacity:0;transform:translateX(-50%) scale(1.35)}
+}
+@keyframes shinePass{
+  0%,66%{opacity:0;transform:translateX(-80%)}
+  72%{opacity:1}
+  83%{opacity:0;transform:translateX(80%)}
+  100%{opacity:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .peach-fruit,.peach-glass,.peach-can,.peach-stream,.peach-splash,.peach-shine{animation:none!important}
+  .peach-glass{opacity:1;transform:translateX(-50%) scale(1)}
+  .peach-can{opacity:.95;transform:translate(8px,8px) rotate(-58deg)}
+  .peach-stream{opacity:.92;height:96px}
+}
+
 .lux-item-info{
   min-width:0;
   padding:13px 12px 10px 2px;
@@ -325,7 +460,7 @@ body:after{
   .menu-lightbox-close{top:8px;right:8px}
 }
 
-</style></head><body><main class="wrap"><div class="top"><a class="back" href="/">← BACK</a><a class="reserve" href="index.html#reserve">RESERVE A TABLE</a></div><div class="brand"><small>DELTA HOTELS BY MARRIOTT · ANTALYA LARA</small><h1>SUSHI CLUB</h1><p>Japanese flavors, thoughtfully prepared.</p></div><div class="cats"><button class="active" data-cat="All">All</button><button data-cat="Rolls">Rolls</button><button data-cat="Maki">Maki</button><button data-cat="Nigiri">Nigiri</button><button data-cat="Sashimi">Sashimi</button><button data-cat="Gunkan">Gunkan</button><button data-cat="Sets">Sets</button><button data-cat="Carpaccio">Carpaccio</button><button data-cat="Snacks">Snacks</button><button data-cat="Desserts">Desserts</button><button data-cat="Hot Food">Hot Food</button></div><input id="search" class="search" type="search" placeholder="Search menu"><div id="grid" class="grid"><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="shrimp crunch 8 pcs. tempura shrimps, cream cheese, avocado, panko.">
+</style></head><body><main class="wrap"><div class="top"><a class="back" href="/">← BACK</a><a class="reserve" href="index.html#reserve">RESERVE A TABLE</a></div><div class="brand"><small>DELTA HOTELS BY MARRIOTT · ANTALYA LARA</small><h1>SUSHI CLUB</h1><p>Japanese flavors, thoughtfully prepared.</p></div><div class="cats"><button class="active" data-cat="All">All</button><button data-cat="Rolls">Rolls</button><button data-cat="Maki">Maki</button><button data-cat="Nigiri">Nigiri</button><button data-cat="Sashimi">Sashimi</button><button data-cat="Gunkan">Gunkan</button><button data-cat="Sets">Sets</button><button data-cat="Carpaccio">Carpaccio</button><button data-cat="Snacks">Snacks</button><button data-cat="Desserts">Desserts</button><button data-cat="Hot Food">Hot Food</button><button data-cat="Non-Alcoholic Cold Drinks">Non-Alcoholic Cold Drinks</button></div><input id="search" class="search" type="search" placeholder="Search menu"><div id="grid" class="grid"><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="shrimp crunch 8 pcs. tempura shrimps, cream cheese, avocado, panko.">
 <div class="lux-item-photo"><img alt="Shrimp Crunch 8 Pcs." data-menu-img="shrimp-crunch-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
 <div class="lux-item-info">
 <div class="lux-item-kicker">Rolls</div>
@@ -610,6 +745,23 @@ body:after{
 <h3>Shrimp Robatayaki</h3>
 <p>Shrimp robatayaki.</p>
 <div class="lux-item-bottom"><span class="lux-price">1520 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
+</div>
+</article><article class="lux-menu-item" data-menu-category="Non-Alcoholic Cold Drinks" data-menu-search="peach lipton peach iced tea cold drink">
+<div class="lux-item-photo peach-motion" role="img" aria-label="Animated Peach Lipton iced tea">
+  <div class="peach-floor"></div>
+  <div class="peach-fruit peach-one"></div>
+  <div class="peach-fruit peach-two"></div>
+  <div class="peach-glass"></div>
+  <div class="peach-can"></div>
+  <div class="peach-stream"></div>
+  <div class="peach-splash"></div>
+  <div class="peach-shine"></div>
+</div>
+<div class="lux-item-info">
+  <div class="lux-item-kicker">Non-Alcoholic Cold Drinks</div>
+  <h3>Peach Lipton</h3>
+  <p>Peach-flavored iced tea, served chilled over ice.</p>
+  <div class="lux-item-bottom"><span class="lux-price">—</span></div>
 </div>
 </article></div><div id="empty" class="empty" style="display:none">No dishes found.</div><div class="footer"><a href="/#reserve">RESERVE A TABLE</a></div></main>
 <div id="menuLightbox" class="menu-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged menu image" aria-hidden="true">
