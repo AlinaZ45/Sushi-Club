@@ -18,7 +18,7 @@ for (const name of names) {
   }
   assert(!/sb_secret_[A-Za-z0-9_-]+/.test(source[name]), `${name}: private key in client source`);
 }
-assert.equal((source['menu.html'].match(/<article\b[^>]*class="lux-menu-item"/g)||[]).length, 51, 'The approved menu must contain 51 dishes');
+assert.equal((source['menu.html'].match(/<article\b[^>]*class="lux-menu-item"/g)||[]).length, 52, 'The approved menu must contain 52 dishes');
 
 // Decode the existing approved photos at build time. No photo JS is required in a guest browser.
 const images = new Map();
@@ -84,6 +84,6 @@ for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','s
   fs.copyFileSync(src, path.join(out, staticName));
 }
 for (const {file,bytes} of images.values()) fs.writeFileSync(path.join(out,file),bytes);
-const report = {revision, menuSource:'approved v13.49',dishCount:51,photoCount:images.size,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
+const report = {revision, menuSource:'approved v13.49',dishCount:52,photoCount:images.size,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
 fs.writeFileSync(path.join(out,'build-info.json'),JSON.stringify(report,null,2));
-console.log(JSON.stringify({ok:true, dishes:51,photos:images.size,output:'dist',revision}));
+console.log(JSON.stringify({ok:true, dishes:52,photos:images.size,output:'dist',revision}));
