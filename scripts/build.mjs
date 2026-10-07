@@ -18,7 +18,7 @@ for (const name of names) {
   }
   assert(!/sb_secret_[A-Za-z0-9_-]+/.test(source[name]), `${name}: private key in client source`);
 }
-assert.equal((source['menu.html'].match(/<article\b[^>]*class="lux-menu-item"/g)||[]).length, 53, 'The approved menu must contain 53 dishes');
+assert.equal((source['menu.html'].match(/<article\b[^>]*class="lux-menu-item"/g)||[]).length, 54, 'The approved menu must contain 54 dishes');
 
 // Decode the existing approved photos at build time. No photo JS is required in a guest browser.
 const images = new Map();
