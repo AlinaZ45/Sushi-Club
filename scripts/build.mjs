@@ -94,6 +94,10 @@ fs.copyFileSync(lemonAsset, path.join(out, 'assets', 'lemon-lipton-clean.jpg.png
 const cocaAsset = path.join(root, 'assets', 'coca-cola-zero-330-clean.png.png');
 assert(fs.existsSync(cocaAsset), 'Missing Coca Cola Zero asset');
 fs.copyFileSync(cocaAsset, path.join(out, 'assets', 'coca-cola-zero-330-clean.png.png'));
+
+const cocaOriginalAsset = path.join(root, 'assets', 'coca-cola-original-330-clean.png.png');
+assert(fs.existsSync(cocaOriginalAsset), 'Missing Coca Cola Original asset');
+fs.copyFileSync(cocaOriginalAsset, path.join(out, 'assets', 'coca-cola-original-330-clean.png.png'));
 for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
 for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
   const src = path.join(root, staticName);
