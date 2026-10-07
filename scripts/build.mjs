@@ -42,7 +42,7 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   assert(key, 'Menu image key missing');
   attached++;
   if (key[1] === 'peach-lipton' || key[1] === 'lemon-lipton') {
-    const drinkFile = key[1] === 'peach-lipton' ? 'assets/peach-lipton-final.webp' : 'assets/lemon-lipton-final.jpg';
+    const drinkFile = key[1] === 'peach-lipton' ? 'assets/peach-lipton-final.webp' : 'assets/menu/lemon-lipton-new.webp';
     assert(tag.includes(`src="${drinkFile}"`), `${key[1]} photo missing`);
     return tag.replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
   }
@@ -87,9 +87,9 @@ const peachAsset = path.join(root, 'assets', 'peach-lipton-final.webp');
 assert(fs.existsSync(peachAsset), 'Missing Peach Lipton asset');
 fs.copyFileSync(peachAsset, path.join(out, 'assets', 'peach-lipton-final.webp'));
 
-const lemonAsset = path.join(root, 'assets', 'lemon-lipton-final.jpg');
+const lemonAsset = path.join(root, 'assets', 'menu', 'lemon-lipton-new.webp');
 assert(fs.existsSync(lemonAsset), 'Missing Lemon Lipton asset');
-fs.copyFileSync(lemonAsset, path.join(out, 'assets', 'lemon-lipton-final.jpg'));
+fs.copyFileSync(lemonAsset, path.join(out, 'assets', 'menu', 'lemon-lipton-new.webp'));
 for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
 for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
   const src = path.join(root, staticName);
