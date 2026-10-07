@@ -42,7 +42,7 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   assert(key, 'Menu image key missing');
   attached++;
   if (key[1] === 'peach-lipton' || key[1] === 'lemon-lipton') {
-    const drinkFile = key[1] === 'peach-lipton' ? 'assets/peach-lipton-final.webp' : 'assets/lemon-lipton-clean.jpg.png';
+    const drinkFile = key[1] === 'peach-lipton' ? 'assets/menu/peach-lipton-clean.png.png' : 'assets/lemon-lipton-clean.jpg.png';
     assert(tag.includes(`src="${drinkFile}"`), `${key[1]} photo missing`);
     return tag.replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
   }
@@ -83,9 +83,9 @@ fs.mkdirSync(path.join(out, 'assets'), {recursive:true});
 const introHero = path.join(root, 'assets', 'sushi-intro-approved.webp');
 assert(fs.existsSync(introHero), 'Missing Sushi Club intro hero');
 fs.copyFileSync(introHero, path.join(out, 'assets', 'sushi-intro-approved.webp'));
-const peachAsset = path.join(root, 'assets', 'peach-lipton-final.webp');
+const peachAsset = path.join(root, 'assets', 'menu', 'peach-lipton-clean.png.png');
 assert(fs.existsSync(peachAsset), 'Missing Peach Lipton asset');
-fs.copyFileSync(peachAsset, path.join(out, 'assets', 'peach-lipton-final.webp'));
+fs.copyFileSync(peachAsset, path.join(out, 'assets', 'menu', 'peach-lipton-clean.png.png'));
 
 const lemonAsset = path.join(root, 'assets', 'lemon-lipton-clean.jpg.png');
 assert(fs.existsSync(lemonAsset), 'Missing Lemon Lipton asset');
