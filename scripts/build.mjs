@@ -41,8 +41,8 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   const key = tag.match(/data-menu-img="([^"]+)"/);
   assert(key, 'Menu image key missing');
   attached++;
-  if (key[1] === 'peach-lipton' || key[1] === 'lemon-lipton') {
-    const drinkFile = key[1] === 'peach-lipton' ? 'assets/menu/peach-lipton-clean.png.png' : 'assets/lemon-lipton-clean.jpg.png';
+  if (key[1] === 'peach-lipton' || key[1] === 'lemon-lipton' || key[1] === 'coca-cola-zero-330') {
+    const drinkFile = key[1] === 'peach-lipton' ? 'assets/menu/peach-lipton-clean.png.png' : key[1] === 'lemon-lipton' ? 'assets/lemon-lipton-clean.jpg.png' : 'assets/coca-cola-zero-330-clean.png.png';
     assert(tag.includes(`src="${drinkFile}"`), `${key[1]} photo missing`);
     return tag.replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
   }
@@ -50,7 +50,7 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   const src = images.get(key[1]).file;
   return tag.replace(/\s+src="[^"]*"/, ` src="${src}"`).replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
 });
-assert.equal(attached, 53, 'Menu/photo count mismatch');
+assert.equal(attached, 54, 'Menu/photo count mismatch');
 menu = menu.replace(/<script\b[^>]*src="\/?menu-images(?:-lite)?\.js"[^>]*><\/script>/g, '');
 assert(!menu.includes('menu-images'), 'Unresolved photo script');
 menu = menu.replaceAll('href="/"', 'href="index.html"').replaceAll('href="/#reserve"', 'href="index.html#reserve"');
@@ -90,6 +90,10 @@ fs.copyFileSync(peachAsset, path.join(out, 'assets', 'menu', 'peach-lipton-clean
 const lemonAsset = path.join(root, 'assets', 'lemon-lipton-clean.jpg.png');
 assert(fs.existsSync(lemonAsset), 'Missing Lemon Lipton asset');
 fs.copyFileSync(lemonAsset, path.join(out, 'assets', 'lemon-lipton-clean.jpg.png'));
+
+const cocaAsset = path.join(root, 'assets', 'coca-cola-zero-330-clean.png.png');
+assert(fs.existsSync(cocaAsset), 'Missing Coca Cola Zero asset');
+fs.copyFileSync(cocaAsset, path.join(out, 'assets', 'coca-cola-zero-330-clean.png.png'));
 for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
 for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
   const src = path.join(root, staticName);
