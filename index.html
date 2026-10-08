@@ -2581,27 +2581,19 @@ body{
 </style>
 
 
-<style id="mobile-scroll-recovery">
-/* Allow touch scrolling through guest booking screens on iOS and Android.
-   Keep full-bleed artwork and intro overlay unchanged. */
-html, body { overflow-y:auto!important; overflow-x:hidden!important; -webkit-overflow-scrolling:touch; overscroll-behavior-y:auto!important; }
-.phone { height:auto!important; min-height:100dvh!important; overflow:visible!important; }
-.phone > .section:not(.future-home) { height:auto!important; min-height:100dvh!important; overflow:visible!important; }
-#home.future-home { height:auto!important; min-height:100dvh!important; overflow-y:visible!important; overflow-x:clip!important; }
-@media (display-mode:standalone) {
-  html, body, .phone { height:auto!important; min-height:100dvh!important; }
-}
-</style>
 
-<style id="guest-bottom-scroll-fix">
-/* Keep the last reservation controls in the scrollable document flow. */
-html, body { height:auto!important; min-height:100%!important; overflow-y:auto!important; touch-action:pan-y pinch-zoom; }
-main.phone { display:block!important; height:auto!important; overflow:visible!important; }
-main.phone > section.section.active { height:auto!important; max-height:none!important; overflow:visible!important; padding-bottom:max(48px, env(safe-area-inset-bottom))!important; }
-main.phone > section.section.active > .inner { height:auto!important; max-height:none!important; overflow:visible!important; padding-bottom:max(64px, env(safe-area-inset-bottom))!important; }
-#home.future-home.active { display:flow-root!important; min-height:100dvh!important; overflow:visible!important; padding-bottom:max(64px, env(safe-area-inset-bottom))!important; }
-#home .future-home-glass { margin-bottom:30px!important; }
-.future-home-photo, .future-home-architecture, .future-home-vignette { pointer-events:none!important; }
+
+
+
+<style id="active-screen-scroll-fix">
+/* Scroll the active guest screen itself; full-viewport backgrounds remain fixed. */
+html,body { margin:0!important; width:100%!important; height:100%!important; overflow:hidden!important; }
+main.phone { position:relative!important; display:block!important; width:100%!important; height:100dvh!important; min-height:100dvh!important; overflow:hidden!important; }
+main.phone > section.section.active { position:relative!important; display:block!important; height:100dvh!important; min-height:0!important; max-height:none!important; overflow-x:hidden!important; overflow-y:auto!important; -webkit-overflow-scrolling:touch!important; overscroll-behavior-y:contain!important; touch-action:pan-y!important; padding-bottom:max(36px,env(safe-area-inset-bottom))!important; box-sizing:border-box!important; }
+main.phone > section.section.active > .inner { min-height:100%!important; height:auto!important; padding-bottom:max(80px,env(safe-area-inset-bottom))!important; box-sizing:border-box!important; }
+#home.future-home.active { min-height:0!important; height:100dvh!important; overflow-y:auto!important; overflow-x:hidden!important; padding-bottom:max(72px,env(safe-area-inset-bottom))!important; }
+#home .future-home-glass { margin-bottom:36px!important; }
+.future-home-photo,.future-home-architecture,.future-home-vignette { pointer-events:none!important; }
 </style>
 </head>
 <body>
