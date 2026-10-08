@@ -2580,6 +2580,18 @@ body{
 }
 </style>
 
+
+<style id="mobile-scroll-recovery">
+/* Allow touch scrolling through guest booking screens on iOS and Android.
+   Keep full-bleed artwork and intro overlay unchanged. */
+html, body { overflow-y:auto!important; overflow-x:hidden!important; -webkit-overflow-scrolling:touch; overscroll-behavior-y:auto!important; }
+.phone { height:auto!important; min-height:100dvh!important; overflow:visible!important; }
+.phone > .section:not(.future-home) { height:auto!important; min-height:100dvh!important; overflow:visible!important; }
+#home.future-home { height:auto!important; min-height:100dvh!important; overflow-y:visible!important; overflow-x:clip!important; }
+@media (display-mode:standalone) {
+  html, body, .phone { height:auto!important; min-height:100dvh!important; }
+}
+</style>
 </head>
 <body>
 
