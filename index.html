@@ -2598,6 +2598,44 @@ main.phone > section.section.active > .inner {height:auto!important;max-height:n
 .future-home-photo,.future-home-architecture,.future-home-vignette {pointer-events:none!important;}
 @media(display-mode:standalone){html,body,main.phone {height:auto!important;min-height:100dvh!important;}}
 </style>
+
+<style id="reservation-independent-scrolling">
+/* Reserve and My Reservations own their scrolling area, independent of page shells. */
+main.phone > #reserve.section.active,
+main.phone > #myReservations.section.active {
+  position:fixed!important;
+  inset:0!important;
+  top:0!important;
+  bottom:0!important;
+  left:0!important;
+  right:0!important;
+  z-index:20!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  min-height:0!important;
+  overflow-x:hidden!important;
+  overflow-y:scroll!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior-y:auto!important;
+  touch-action:pan-y!important;
+  padding:0!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+main.phone > #reserve.section.active > .inner,
+main.phone > #myReservations.section.active > .inner {
+  position:relative!important;
+  height:max-content!important;
+  min-height:calc(100dvh + 1px)!important;
+  max-height:none!important;
+  overflow:visible!important;
+  padding-bottom:calc(140px + env(safe-area-inset-bottom))!important;
+  box-sizing:border-box!important;
+}
+</style>
 </head>
 <body>
 
