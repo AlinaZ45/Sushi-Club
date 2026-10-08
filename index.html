@@ -2585,15 +2585,18 @@ body{
 
 
 
-<style id="active-screen-scroll-fix">
-/* Scroll the active guest screen itself; full-viewport backgrounds remain fixed. */
-html,body { margin:0!important; width:100%!important; height:100%!important; overflow:hidden!important; }
-main.phone { position:relative!important; display:block!important; width:100%!important; height:100dvh!important; min-height:100dvh!important; overflow:hidden!important; }
-main.phone > section.section.active { position:relative!important; display:block!important; height:100dvh!important; min-height:0!important; max-height:none!important; overflow-x:hidden!important; overflow-y:auto!important; -webkit-overflow-scrolling:touch!important; overscroll-behavior-y:contain!important; touch-action:pan-y!important; padding-bottom:max(36px,env(safe-area-inset-bottom))!important; box-sizing:border-box!important; }
-main.phone > section.section.active > .inner { min-height:100%!important; height:auto!important; padding-bottom:max(80px,env(safe-area-inset-bottom))!important; box-sizing:border-box!important; }
-#home.future-home.active { min-height:0!important; height:100dvh!important; overflow-y:auto!important; overflow-x:hidden!important; padding-bottom:max(72px,env(safe-area-inset-bottom))!important; }
-#home .future-home-glass { margin-bottom:36px!important; }
-.future-home-photo,.future-home-architecture,.future-home-vignette { pointer-events:none!important; }
+
+<style id="guest-natural-page-scroll">
+/* Revert scroll locking: the document scrolls normally, including on iOS Safari. */
+html,body {height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-y:auto!important;touch-action:auto!important;-webkit-overflow-scrolling:touch;}
+body {position:static!important;}
+main.phone {position:relative!important;width:100%!important;height:auto!important;min-height:100dvh!important;max-height:none!important;overflow:visible!important;}
+main.phone > section.section.active {position:relative!important;height:auto!important;min-height:100dvh!important;max-height:none!important;overflow:visible!important;box-sizing:border-box!important;padding-bottom:calc(64px + env(safe-area-inset-bottom))!important;}
+main.phone > section.section.active > .inner {height:auto!important;max-height:none!important;overflow:visible!important;box-sizing:border-box!important;padding-bottom:calc(64px + env(safe-area-inset-bottom))!important;}
+#home.future-home.active {height:auto!important;min-height:100dvh!important;overflow:visible!important;padding-bottom:calc(64px + env(safe-area-inset-bottom))!important;}
+#home .future-home-glass {margin-bottom:30px!important;}
+.future-home-photo,.future-home-architecture,.future-home-vignette {pointer-events:none!important;}
+@media(display-mode:standalone){html,body,main.phone {height:auto!important;min-height:100dvh!important;}}
 </style>
 </head>
 <body>
