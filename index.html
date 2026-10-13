@@ -2794,13 +2794,13 @@ main.phone > #myReservations.section.active > .inner {
         <p class="panelHint">Please enter your room number so our team can identify your reservation quickly.</p>
         <label>ROOM NUMBER</label>
         <input id="rroom" inputmode="numeric" placeholder="e.g. 512">
-        <label>WHATSAPP OR E-MAIL <span class="optional">(optional)</span></label>
-        <input id="hotelContact" type="text" placeholder="For reservation updates"><p class="smallnote" id="hotelNotifyHint"></p>
+        <label>WHATSAPP OR E-MAIL <span class="required" aria-label="required">*</span></label>
+        <input id="hotelContact" type="text" required autocomplete="email" placeholder="WhatsApp number or email (required)"><p class="smallnote" id="hotelNotifyHint"></p>
       </div>
 
       <div id="outsideGuestPanel" class="typePanel" style="display:none">
         <p class="panelHint">Please leave a contact so we can send your reservation confirmation.</p>
-        <label>WHATSAPP / PHONE</label>
+        <label>WHATSAPP / PHONE OR E-MAIL <span class="required" aria-label="required">*</span></label>
         <input id="outsidePhone" type="tel" placeholder="+90 ...">
         <label>E-MAIL <span class="optional">(optional)</span></label>
         <input id="outsideEmail" type="email" placeholder="name@email.com"><p class="smallnote" id="outsideNotifyHint"></p>
