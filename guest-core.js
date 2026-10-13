@@ -712,6 +712,7 @@ function bookingCard(r,canManage=true){
       ${escapeHtml(msg('specialRequest'))}: ${r.request?escapeHtml(r.request):escapeHtml(msg('none'))}
       ${r.status==='declined'&&r.declineReason?'<br><b>'+escapeHtml(msg('declineReason'))+':</b> '+escapeHtml(r.declineReason):''}
     </div>
+    ${typeof window.reservationChatMarkup==='function'?window.reservationChatMarkup(r):''}
     ${canManage&&isManageable(r)?`<div class="booking-actions"><button onclick="editMyReservation(${r.id})">${escapeHtml(msg('edit'))}</button><button onclick="cancelMyReservation(${r.id})">${escapeHtml(msg('cancel'))}</button></div>`:''}
   </div>`;
 }
