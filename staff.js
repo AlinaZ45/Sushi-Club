@@ -7,6 +7,7 @@ const TIMES=[];for(let h=17;h<=22;h++){for(const m of [0,15,30,45]){if(h===22&&m
 const ACTIVE_FOR_TABLES=['pending','confirmed','reconfirmed','seated'];
 const ACTIVE_FOR_CAPACITY=['confirmed','reconfirmed','seated'];
 let rows=[],blocked=[],tables=[],allTables=[],assignments=[];
+let chatsByReservation={};const openStaffChats=new Set();
 let assigningId=null;
 let selectedTables=new Set();
 let selectedInventoryTables=new Set();
@@ -105,7 +106,7 @@ if(re||be||te){alert((re||be||te).message);return}
 rows=(rr||[]).map(row);blocked=bb||[];allTables=tt||[];tables=allTables.filter(t=>t.active!==false);
 const ids=rows.map(r=>r.id);assignments=[];
 if(ids.length){const {data:aa,error:ae}=await sb.from('table_assignments').select('id,reservation_id,table_id,created_at').in('reservation_id',ids);if(ae){alert(ae.message);return}assignments=aa||[]}
-renderAll()}
+renderAll();refreshStaffChats()}
 function renderAll(){renderStats();renderRequests();renderTables();renderSlots();renderTableInventory();renderTableManagement()}
 function renderStats(){$('totalStat').textContent=rows.length;$('pendingStat').textContent=rows.filter(r=>r.status==='pending').length;$('confirmedStat').textContent=rows.filter(r=>['confirmed','reconfirmed'].includes(r.status)).length;$('paxStat').textContent=rows.filter(r=>ACTIVE_FOR_CAPACITY.includes(r.status)).reduce((n,r)=>n+r.guests,0)}
 function filteredRows(){const st=$('status').value,time=$('timeFilter').value;return rows.filter(r=>(st==='all'||r.status===st)&&(time==='all'||r.time===time))}
@@ -118,8 +119,36 @@ function statusButtons(r){
 }
 function renderRequests(){const shown=filteredRows();$('requests').innerHTML=shown.length?shown.map(r=>{
   const at=assignedTables(r.id),seat=assignedSeats(r.id);
-  return '<div class="booking"><div class="top"><b>'+esc(r.time)+' · '+esc(r.name)+'</b><span class="pill '+esc(r.status)+'">'+esc(r.status)+'</span></div><div class="meta">'+r.guests+' guest(s)'+(r.room?' · Room '+esc(r.room):'')+(r.phone?'<br><b>WhatsApp / Phone:</b> <a href="https://wa.me/'+encodeURIComponent(String(r.phone).replace(/[^0-9]/g,''))+'" target="_blank" rel="noopener noreferrer">'+esc(r.phone)+'</a>':'')+(r.email?'<br><b>Email:</b> <a href="mailto:'+encodeURIComponent(r.email)+'">'+esc(r.email)+'</a>':'')+(r.request?'<br>'+esc(r.request):'')+'<br>'+esc(r.code)+'</div><div class="assignment"><b>Table:</b> '+esc(assignedCodes(r.id))+(at.length?' · '+seat+' seats':'')+'</div>'+statusButtons(r)+'</div>'
+  return '<div class="booking"><div class="top"><b>'+esc(r.time)+' · '+esc(r.name)+'</b><span class="pill '+esc(r.status)+'">'+esc(r.status)+'</span></div><div class="meta">'+r.guests+' guest(s)'+(r.room?' · Room '+esc(r.room):'')+(r.phone?'<br><b>WhatsApp / Phone:</b> <a href="https://wa.me/'+encodeURIComponent(String(r.phone).replace(/[^0-9]/g,''))+'" target="_blank" rel="noopener noreferrer">'+esc(r.phone)+'</a>':'')+(r.email?'<br><b>Email:</b> <a href="mailto:'+encodeURIComponent(r.email)+'">'+esc(r.email)+'</a>':'')+(r.request?'<br>'+esc(r.request):'')+'<br>'+esc(r.code)+'</div><div class="assignment"><b>Table:</b> '+esc(assignedCodes(r.id))+(at.length?' · '+seat+' seats':'')+'</div>'+statusButtons(r)+staffChatMarkup(r)+'</div>'
 }).join(''):'<p class="note">No reservations in this view.</p>'}
+function chatLabels(){return staffLang==='tr'?['MESAJLAR','YANIT YAZ','GÖNDER','Misafir','Sushi Club','Yeni mesaj']:['MESSAGES','WRITE A REPLY','SEND REPLY','Guest','Sushi Club','New message']}
+function staffChatMarkup(r){
+ const labels=chatLabels(),messages=chatsByReservation[r.id]||[],open=openStaffChats.has(r.id);
+ const lastRead=Number(localStorage.getItem('staffChatRead:'+r.id)||0);
+ const unread=messages.filter(m=>m.sender==='guest'&&Number(m.id)>lastRead).length;
+ return '<div style="border-top:1px solid #d9c9bc;margin-top:12px;padding-top:12px"><button type="button" onclick="staffToggleChat('+r.id+')" style="padding:10px 14px;border-radius:10px">'+esc(labels[0])+(unread?' · '+unread+' '+esc(labels[5]):'')+'</button>'+(open?'<div style="margin-top:10px">'+(messages.map(m=>'<div style="white-space:pre-wrap;overflow-wrap:anywhere;background:'+(m.sender==='guest'?'#eee1d4':'#f6eee7')+';padding:10px;border-radius:10px;margin:7px 0"><b>'+esc(m.sender==='guest'?labels[3]:labels[4])+'</b><div>'+esc(m.body)+'</div></div>').join('')||'<p>—</p>')+'<textarea maxlength="2000" id="staffChatInput-'+r.id+'" rows="3" style="width:100%;box-sizing:border-box;margin-top:10px;border-radius:10px;padding:10px" placeholder="'+esc(labels[1])+'"></textarea><button type="button" onclick="staffSendChat('+r.id+')" style="margin-top:8px">'+esc(labels[2])+'</button></div>':'')+'</div>';
+}
+window.staffToggleChat=function(id){
+ if(openStaffChats.has(id))openStaffChats.delete(id);else openStaffChats.add(id);
+ if(openStaffChats.has(id)){const last=(chatsByReservation[id]||[]).filter(m=>m.sender==='guest').at(-1);if(last)localStorage.setItem('staffChatRead:'+id,last.id)}
+ renderRequests();
+};
+async function refreshStaffChats(){
+ const {data:{session}}=await sb.auth.getSession();if(!session)return;
+ const u=new URL(GUEST_API);u.searchParams.set('action','staff_messages');u.searchParams.set('date',$('date').value||today());
+ try{const response=await fetch(u,{headers:{Authorization:'Bearer '+session.access_token}});if(!response.ok)return;const result=await response.json();const grouped={};for(const m of result.messages||[])(grouped[m.reservation_id]??=[]).push(m);chatsByReservation=grouped;renderRequests();}catch(e){console.warn('chat_refresh_failed')}
+}
+window.staffSendChat=async function(id){
+ const input=$('staffChatInput-'+id),text=input?.value.trim();if(!text)return;
+ const {data:{session}}=await sb.auth.getSession();if(!session)return alert(t('signAgain'));
+ input.disabled=true;
+ try{
+  const response=await fetch(GUEST_API,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token},body:JSON.stringify({action:'staff_message',reservationId:id,message:text})});
+  const result=await response.json();if(!response.ok)throw Error(result.error||'Could not send');
+  (chatsByReservation[id]??=[]).push(result.message);renderRequests();
+ }catch(e){input.disabled=false;alert(e.message)}
+};
+
 function occupantForTable(tableId,time,excludeId=null){for(const a of assignments){if(Number(a.table_id)!==Number(tableId))continue;const r=bookingById(a.reservation_id);if(!r||r.time!==time||!ACTIVE_FOR_TABLES.includes(r.status))continue;if(excludeId!==null&&Number(r.id)===Number(excludeId))continue;return r}return null}
 function tableCard(tbl,time){if(!time||time==='all')return '<div class="table-card"><b>'+esc(tbl.table_code)+'</b><small>'+t('seatCount',{n:tbl.seats})+'</small><small>'+t('selectTime')+'</small></div>';const occ=occupantForTable(tbl.id,time);const blockedSlot=isBlocked(time);return '<div class="table-card '+(occ?'used':'free')+(blockedSlot?' blocked':'')+'"><b>'+esc(tbl.table_code)+'</b><small>'+t('seatCount',{n:tbl.seats})+'</small><small>'+(blockedSlot?t('slotBlocked'):occ?esc(occ.name)+' · '+occ.guests+'p':t('available'))+'</small></div>'}
 function renderTables(){const time=$('timeFilter').value,inside=tables.filter(t=>t.area==='inside'),terrace=tables.filter(t=>t.area==='terrace');let html='';if(time==='all')html+='<p class="note" style="margin:0 0 12px">'+t('chooseTime')+'</p>';else if(isBlocked(time))html+='<p class="note" style="margin:0 0 12px">'+t('blockedNew',{time:esc(time)})+'</p>';html+='<div class="area-title">'+t('inside').toUpperCase()+'</div><div class="table-grid">'+inside.map(x=>tableCard(x,time)).join('')+'</div><div class="area-title" style="margin-top:17px">'+t('terrace').toUpperCase()+'</div><div class="table-grid">'+terrace.map(x=>tableCard(x,time)).join('')+'</div>';$('tablesView').innerHTML=html}
@@ -315,4 +344,5 @@ if(new URLSearchParams(location.search).get('recovery')==='1'){
 applyStaticLanguage();
 populateTimeFilter();
 refreshAuth();
+setInterval(()=>{if(!$('dashboard').classList.contains('hidden'))refreshStaffChats()},20000);
 })();
