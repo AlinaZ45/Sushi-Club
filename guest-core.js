@@ -620,11 +620,11 @@ function confirmReservation(){
     alert(msg('enterRoom'));
     return;
   }
-  if(guestType==='outside' && !outsidePhone && !outsideEmail){
+  if(!contact && !email){
     alert(msg('enterOutsideContact'));
     return;
   }
-  const existingActive=db.reservations.find(r=>{
+  if(contact && !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) || /^\+?[\d\s().-]{6,40}$/.test(contact))){alert('Please enter a valid WhatsApp number or email address.');return;}\n  if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert('Please enter a valid email address.');return;}\n  const existingActive=db.reservations.find(r=>{
     if(!['pending','confirmed','reconfirmed'].includes(r.status)||r.date!==date||r.time!==active.innerText)return false;
     if(guestType==='hotel')return r.guestType==='hotel'&&String(r.room||'').trim()===room;
     return r.guestType==='outside'&&(
