@@ -79,6 +79,26 @@ async function patch(r,values){const {data,error}=await db.from('reservations').
 async function audit(r,action,oldStatus,details={}){const {error}=await db.from('reservation_audit').insert({reservation_id:r.id,action,old_status:oldStatus,new_status:r.status,details});if(error)console.error('audit_write_failed',error.code);}
 const manageable=r=>{if(!['pending','confirmed','reconfirmed'].includes(r.status))fail('not_manageable',409);};
 
+async function staffIdentity(req){
+ const bearer=(req.headers.get('authorization')||'').match(/^Bearer (.+)$/i)?.[1];
+ if(!bearer)fail('unauthorized',401);
+ const {data:auth,error:ae}=await db.auth.getUser(bearer);
+ if(ae||!auth?.user)fail('unauthorized',401);
+ const {data:p,error:pe}=await db.from('staff_profiles').select('user_id').eq('user_id',auth.user.id).eq('active',true).maybeSingle();
+ if(pe||!p)fail('forbidden',403);
+ return auth.user.id;
+}
+async function chatHistory(id){
+ const {data,error}=await db.from('reservation_messages').select('id,sender,body,created_at').eq('reservation_id',id).order('id',{ascending:true}).limit(150);
+ if(error)throw error;return data||[];
+}
+async function chatInsert(id,sender,body){
+ const message=clean(body,2000);
+ if(!message)fail('message_required');
+ const {data,error}=await db.from('reservation_messages').insert({reservation_id:id,sender,body:message}).select('id,sender,body,created_at').single();
+ if(error)throw error;return data;
+}
+
 Deno.serve(async req=>{
  if(req.method==='OPTIONS')return new Response('ok',{headers:HEADERS});
  try{
@@ -91,7 +111,8 @@ Deno.serve(async req=>{
     const date=validateDate(url.searchParams.get('date')),n=party(url.searchParams.get('party')||1),inv=await inventory(date),now=localNow();
     return json({ok:true,capacityMode:'time_slot_release',slots:TIMES.map(time=>({time,available:date>=now.date&&!inv.blocked.has(time)&&hasCapacity(inv,n,time)}))});
    }
-   if(action==='get')return json({ok:true,reservation:publicRow(await byToken(url.searchParams.get('code'),url.searchParams.get('token')))});
+   if(action==='get'){const r=await byToken(url.searchParams.get('code'),url.searchParams.get('token'));return json({ok:true,reservation:{...publicRow(r),messages:await chatHistory(r.id)}});}
+   if(action==='staff_messages'){await staffIdentity(req);const date=validateDate(url.searchParams.get('date'));const {data,error}=await db.from('reservations').select('id').eq('reservation_date',date);if(error)throw error;const ids=(data||[]).map(x=>x.id);if(!ids.length)return json({ok:true,messages:[]});const {data:messages,error:me}=await db.from('reservation_messages').select('id,reservation_id,sender,body,created_at').in('reservation_id',ids).order('id',{ascending:true}).limit(500);if(me)throw me;return json({ok:true,messages:messages||[]});}
    if(action==='lookup')return json({ok:true,reservation:publicRow(await identityRow(url.searchParams.get('code'),url.searchParams.get('identity')))});
    fail('not_found',404);
   }
@@ -101,6 +122,8 @@ Deno.serve(async req=>{
   if(!b||typeof b!=='object'||Array.isArray(b))fail('invalid_input');
   const ip=(req.headers.get('x-real-ip')||req.headers.get('x-forwarded-for')||'unknown').split(',')[0].trim();
   await rate('write:'+await sha(ip),100);
+  if(b.action==='guest_message'){const r=await byToken(b.code,b.token);await rate('chat:'+await sha(r.reservation_code),30);return json({ok:true,message:await chatInsert(r.id,'guest',b.message)});}
+  if(b.action==='staff_message'){await staffIdentity(req);const id=Number(b.reservationId);if(!Number.isSafeInteger(id)||id<1)fail('invalid_input');const {data:r,error}=await db.from('reservations').select('id').eq('id',id).maybeSingle();if(error)throw error;if(!r)fail('not_found',404);return json({ok:true,message:await chatInsert(id,'staff',b.message)});}
   if(b.action==='create'){
    const x=input(b);
    if(b.rulesAccepted===false||String(b.rulesVersion||'')!=='1.0')fail('rules_required');
