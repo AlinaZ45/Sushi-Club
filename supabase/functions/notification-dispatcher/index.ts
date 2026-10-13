@@ -61,6 +61,8 @@ function emailHtml(type:string,p:any) {
 <p style="margin:8px 0;"><b>Date:</b> ${esc(p.reservation_date)} &nbsp; <b>Time:</b> ${esc(String(p.reservation_time||"").slice(0,5))}</p>
 <p style="margin:8px 0;"><b>Guests:</b> ${esc(p.party_size)} &nbsp; <b>Status:</b> ${esc(status)}</p>
 ${p.room_number ? `<p style="margin:8px 0;"><b>Room:</b> ${esc(p.room_number)}</p>` : ""}
+${p.phone ? `<p style="margin:8px 0;"><b>WhatsApp / Phone:</b> ${esc(p.phone)}</p>` : ""}
+${p.email ? `<p style="margin:8px 0;"><b>Email:</b> ${esc(p.email)}</p>` : ""}
 ${p.special_request ? `<p style="margin:8px 0;"><b>Request:</b> ${esc(p.special_request)}</p>` : ""}
 <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:22px auto 8px;"><tr><td bgcolor="#8f7563" style="border-radius:999px;"><a href="${esc(actionUrl)}" style="display:inline-block;padding:14px 28px;color:#fff;text-decoration:none;font-size:13px;font-weight:700;">${esc(actionText)}</a></td></tr></table>
 <p style="font-size:12px;line-height:1.6;color:#8a786d;">${esc(helperText)}</p>
