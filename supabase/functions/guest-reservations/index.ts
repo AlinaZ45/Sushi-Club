@@ -27,7 +27,7 @@ function input(b,r=null){
  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))fail('invalid_email');
  if(contact&&!/^\+?[\d\s().-]{6,40}$/.test(contact))fail('invalid_phone');
  if(guestType==='hotel'&&!room)fail('room_required');
- if(guestType==='outside'&&!contact&&!email)fail('contact_required');
+ if(!contact&&!email)fail('contact_required');
  return {date,time,guests,name,guestType,room,contact,email,request:clean(b.request??r?.special_request,2000)};
 }
 async function inventory(date,excludeId=null){
