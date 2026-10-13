@@ -106,7 +106,7 @@ Deno.serve(async req=>{
   const url=new URL(req.url);
   if(req.method==='GET'){
    const action=url.searchParams.get('action');
-   if(action==='health')return json({ok:true,version:'7',capacityMode:'time_slot_release',timezone:'Europe/Istanbul'});
+   if(action==='health')return json({ok:true,version:'8',chat:true,capacityMode:'time_slot_release',timezone:'Europe/Istanbul'});
    if(action==='availability'){
     const date=validateDate(url.searchParams.get('date')),n=party(url.searchParams.get('party')||1),inv=await inventory(date),now=localNow();
     return json({ok:true,capacityMode:'time_slot_release',slots:TIMES.map(time=>({time,available:date>=now.date&&!inv.blocked.has(time)&&hasCapacity(inv,n,time)}))});
@@ -126,6 +126,7 @@ Deno.serve(async req=>{
   if(b.action==='staff_message'){await staffIdentity(req);const id=Number(b.reservationId);if(!Number.isSafeInteger(id)||id<1)fail('invalid_input');const {data:r,error}=await db.from('reservations').select('id').eq('id',id).maybeSingle();if(error)throw error;if(!r)fail('not_found',404);return json({ok:true,message:await chatInsert(id,'staff',b.message)});}
   if(b.action==='create'){
    const x=input(b);
+   const openingMessage=clean(b.message,2000);
    if(b.rulesAccepted===false||String(b.rulesVersion||'')!=='1.0')fail('rules_required');
    await available(x.date,x.time,x.guests);
    const manageToken=token(),manageHash=await sha(manageToken);
@@ -133,7 +134,10 @@ Deno.serve(async req=>{
     const reservationCode=code();
     const {data,error}=await db.from('reservations').insert({reservation_code:reservationCode,request_id:reservationCode,manage_token_hash:manageHash,reservation_date:x.date,reservation_time:x.time+':00',party_size:x.guests,original_party_size:x.guests,lead_guest_name:x.name,guest_type:x.guestType,room_number:x.room||null,phone:x.contact||null,email:x.email||null,special_request:x.request||null,status:'pending',source:'guest',rules_accepted:true,rules_accepted_at:new Date().toISOString(),rules_version:'1.0'}).select('*').single();
     if(error){if(error.code==='23505'&&String(error.message).includes('reservation_code'))continue;if(error.code==='23505')fail('duplicate',409);throw error;}
-    await audit(data,'CREATED',null,{source:'guest'});return json({ok:true,reservation:publicRow(data),manageToken},201);
+    await audit(data,'CREATED',null,{source:'guest'});
+    let opening=null,messageSaved=true;
+    if(openingMessage){try{opening=await chatInsert(data.id,'guest',openingMessage);}catch(e){messageSaved=false;console.error('opening_chat_failed',e?.code||'unknown');}}
+    return json({ok:true,reservation:{...publicRow(data),messages:opening?[opening]:[]},manageToken,messageSaved},201);
    }
    fail('try_again',503);
   }
