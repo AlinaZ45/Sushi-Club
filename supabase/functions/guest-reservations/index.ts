@@ -89,8 +89,8 @@ async function staffIdentity(req){
  return auth.user.id;
 }
 async function chatHistory(id){
- const {data,error}=await db.from('reservation_messages').select('id,sender,body,created_at').eq('reservation_id',id).order('id',{ascending:true}).limit(150);
- if(error)throw error;return data||[];
+ const {data,error}=await db.from('reservation_messages').select('id,sender,body,created_at').eq('reservation_id',id).order('id',{ascending:false}).limit(150);
+ if(error)throw error;return (data||[]).reverse();
 }
 async function chatInsert(id,sender,body){
  const message=clean(body,2000);
