@@ -18,7 +18,7 @@ for (const name of names) {
   }
   assert(!/sb_secret_[A-Za-z0-9_-]+/.test(source[name]), `${name}: private key in client source`);
 }
-assert.equal((source['menu.html'].match(/<article\b[^>]*class="lux-menu-item"/g)||[]).length, 73, 'The approved menu must contain 73 dishes');
+assert.equal((source['menu.html'].match(/<article\b[^>]*class="lux-menu-item"/g)||[]).length, 72, 'The approved menu must contain 72 dishes');
 
 // Decode the existing approved photos at build time. No photo JS is required in a guest browser.
 const images = new Map();
@@ -41,8 +41,8 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   const key = tag.match(/data-menu-img="([^"]+)"/);
   assert(key, 'Menu image key missing');
   attached++;
-  if (key[1] === 'peach-lipton' || key[1] === 'lemon-lipton' || key[1] === 'coca-cola-zero-330' || key[1] === 'coca-cola-original-330' || key[1] === 'schweppes-tonic-250' || key[1] === 'tomato-juice' || key[1] === 'uludag-sparkling-water-750' || key[1] === 'still-water-330' || key[1] === 'still-water-750' || key[1] === 'americano' || key[1] === 'latte' || key[1] === 'latte-macchiato' || key[1] === 'hot-chocolate' || key[1] === 'turkish-traditional-coffee' || key[1] === 'espresso' || key[1] === 'double-espresso' || key[1] === 'corona-beer-330' || key[1] === 'bomonti-not-filtered-500' || key[1] === 'efes-330' || key[1] === 'becks-330' || key[1] === 'carlsberg' || key[1] === 'miller-330') {
-    const drinkFile = key[1] === 'peach-lipton' ? 'assets/menu/peach-lipton-clean.png.png' : key[1] === 'lemon-lipton' ? 'assets/lemon-lipton-clean.jpg.png' : key[1] === 'coca-cola-zero-330' ? 'assets/coca-cola-zero-330-clean.png.png' : key[1] === 'coca-cola-original-330' ? 'assets/coca-cola-original-330-clean.png.png' : key[1] === 'schweppes-tonic-250' ? 'assets/menu/Schweppes-Tonic-Water-clean.png.png' : key[1] === 'tomato-juice' ? 'assets/menu/Tomato-Juice-clean.png.png' : key[1] === 'uludag-sparkling-water-750' ? 'assets/menu/Uludağ-Blue-Bottle-Sparkling-clean.png.png' : key[1] === 'americano' ? 'assets/menu/Americano-clean.png.png' : key[1] === 'latte' ? 'assets/menu/Latte-clean.png.png' : key[1] === 'latte-macchiato' ? 'assets/Latte-Macchiato-clean.png.png' : key[1] === 'hot-chocolate' ? 'assets/menu/Hot-Chocolate-clean.png.png' : key[1] === 'turkish-traditional-coffee' ? 'assets/Turkish-Coffee-Ritual-clean.png.png' : key[1] === 'espresso' ? 'assets/menu/Espresso-clean.png.png' : key[1] === 'double-espresso' ? 'assets/menu/Espresso-clean.png.png' : key[1] === 'corona-beer-330' ? 'assets/menu/Corona-clean.png.png' : key[1] === 'bomonti-not-filtered-500' ? 'assets/menu/Bomonti-clean.png.png' : key[1] === 'efes-330' ? 'assets/menu/Efes-clean.png.png' : key[1] === 'becks-330' ? 'assets/menu/Beck’s-clean.png.png' : key[1] === 'carlsberg' ? 'assets/menu/Carlsberg-clean.png.png' : key[1] === 'miller-330' ? 'assets/menu/Miller-clean.png.png' : 'assets/menu/Uludağ-Suyu-clean.png.png';
+  if (key[1] === 'peach-lipton' || key[1] === 'lemon-lipton' || key[1] === 'coca-cola-original-330' || key[1] === 'schweppes-tonic-250' || key[1] === 'tomato-juice' || key[1] === 'uludag-sparkling-water-750' || key[1] === 'still-water-330' || key[1] === 'still-water-750' || key[1] === 'americano' || key[1] === 'latte' || key[1] === 'latte-macchiato' || key[1] === 'hot-chocolate' || key[1] === 'turkish-traditional-coffee' || key[1] === 'espresso' || key[1] === 'double-espresso' || key[1] === 'corona-beer-330' || key[1] === 'bomonti-not-filtered-500' || key[1] === 'efes-330' || key[1] === 'becks-330' || key[1] === 'carlsberg' || key[1] === 'miller-330') {
+    const drinkFile = key[1] === 'peach-lipton' ? 'assets/menu/peach-lipton-clean.png.png' : key[1] === 'lemon-lipton' ? 'assets/lemon-lipton-clean.jpg.png'  : key[1] === 'coca-cola-original-330' ? 'assets/coca-cola-original-330-clean.png.png' : key[1] === 'schweppes-tonic-250' ? 'assets/menu/Schweppes-Tonic-Water-clean.png.png' : key[1] === 'tomato-juice' ? 'assets/menu/Tomato-Juice-clean.png.png' : key[1] === 'uludag-sparkling-water-750' ? 'assets/menu/Uludağ-Blue-Bottle-Sparkling-clean.png.png' : key[1] === 'americano' ? 'assets/menu/Americano-clean.png.png' : key[1] === 'latte' ? 'assets/menu/Latte-clean.png.png' : key[1] === 'latte-macchiato' ? 'assets/Latte-Macchiato-clean.png.png' : key[1] === 'hot-chocolate' ? 'assets/menu/Hot-Chocolate-clean.png.png' : key[1] === 'turkish-traditional-coffee' ? 'assets/Turkish-Coffee-Ritual-clean.png.png' : key[1] === 'espresso' ? 'assets/menu/Espresso-clean.png.png' : key[1] === 'double-espresso' ? 'assets/menu/Espresso-clean.png.png' : key[1] === 'corona-beer-330' ? 'assets/menu/Corona-clean.png.png' : key[1] === 'bomonti-not-filtered-500' ? 'assets/menu/Bomonti-clean.png.png' : key[1] === 'efes-330' ? 'assets/menu/Efes-clean.png.png' : key[1] === 'becks-330' ? 'assets/menu/Beck’s-clean.png.png' : key[1] === 'carlsberg' ? 'assets/menu/Carlsberg-clean.png.png' : key[1] === 'miller-330' ? 'assets/menu/Miller-clean.png.png' : 'assets/menu/Uludağ-Suyu-clean.png.png';
     assert(tag.includes(`src="${drinkFile}"`), `${key[1]} photo missing`);
     return tag.replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
   }
@@ -55,7 +55,7 @@ const emptyPhotoNames = [...menu.matchAll(/<article\b[^>]*class="lux-menu-item"[
   .filter(match => /<div class="lux-item-photo"><\/div>/.test(match[0]))
   .map(match => (match[0].match(/<h3>([^<]+)<\/h3>/) || [])[1]);
 assert.deepEqual(emptyPhotoNames, ['Lemon Lipton', 'Coca Cola Original 330 ml'], 'Unexpected menu cards without photos');
-assert.equal(attached + emptyPhotoNames.length, 73, 'Menu/photo count mismatch');
+assert.equal(attached + emptyPhotoNames.length, 72, 'Menu/photo count mismatch');
 menu = menu.replace(/<script\b[^>]*src="\/?menu-images(?:-lite)?\.js"[^>]*><\/script>/g, '');
 assert(!menu.includes('menu-images'), 'Unresolved photo script');
 menu = menu.replaceAll('href="/"', 'href="index.html"').replaceAll('href="/#reserve"', 'href="index.html#reserve"');
@@ -91,10 +91,6 @@ fs.copyFileSync(introHero, path.join(out, 'assets', 'sushi-intro-approved.webp')
 const peachAsset = path.join(root, 'assets', 'menu', 'peach-lipton-clean.png.png');
 assert(fs.existsSync(peachAsset), 'Missing Peach Lipton asset');
 fs.copyFileSync(peachAsset, path.join(out, 'assets', 'menu', 'peach-lipton-clean.png.png'));
-
-const cocaAsset = path.join(root, 'assets', 'coca-cola-zero-330-clean.png.png');
-assert(fs.existsSync(cocaAsset), 'Missing Coca Cola Zero asset');
-fs.copyFileSync(cocaAsset, path.join(out, 'assets', 'coca-cola-zero-330-clean.png.png'));
 
 const schweppesAsset = path.join(root, 'assets', 'menu', 'Schweppes-Tonic-Water-clean.png.png');
 assert(fs.existsSync(schweppesAsset), 'Missing Schweppes Tonic asset');
@@ -166,6 +162,6 @@ for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','s
   fs.copyFileSync(src, path.join(out, staticName));
 }
 for (const {file,bytes} of images.values()) fs.writeFileSync(path.join(out,file),bytes);
-const report = {revision, menuSource:'approved v13.49',dishCount:53,photoCount:images.size+2,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
+const report = {revision, menuSource:'approved v13.49',dishCount:72,photoCount:attached,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
 fs.writeFileSync(path.join(out,'build-info.json'),JSON.stringify(report,null,2));
-console.log(JSON.stringify({ok:true, dishes:52,photos:images.size+2,output:'dist',revision}));
+console.log(JSON.stringify({ok:true, dishes:72,photos:attached,output:'dist',revision}));
