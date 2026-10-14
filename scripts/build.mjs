@@ -50,7 +50,12 @@ menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
   const src = images.get(key[1]).file;
   return tag.replace(/\s+src="[^"]*"/, ` src="${src}"`).replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
 });
-assert.equal(attached, 73, 'Menu/photo count mismatch');
+// The two drinks are intentionally awaiting replacement photos.
+const emptyPhotoNames = [...menu.matchAll(/<article\b[^>]*class="lux-menu-item"[^>]*>[\s\S]*?<\/article>/g)]
+  .filter(match => /<div class="lux-item-photo"><\/div>/.test(match[0]))
+  .map(match => (match[0].match(/<h3>([^<]+)<\/h3>/) || [])[1]);
+assert.deepEqual(emptyPhotoNames, ['Lemon Lipton', 'Coca Cola Original 330 ml'], 'Unexpected menu cards without photos');
+assert.equal(attached + emptyPhotoNames.length, 73, 'Menu/photo count mismatch');
 menu = menu.replace(/<script\b[^>]*src="\/?menu-images(?:-lite)?\.js"[^>]*><\/script>/g, '');
 assert(!menu.includes('menu-images'), 'Unresolved photo script');
 menu = menu.replaceAll('href="/"', 'href="index.html"').replaceAll('href="/#reserve"', 'href="index.html#reserve"');
@@ -87,17 +92,9 @@ const peachAsset = path.join(root, 'assets', 'menu', 'peach-lipton-clean.png.png
 assert(fs.existsSync(peachAsset), 'Missing Peach Lipton asset');
 fs.copyFileSync(peachAsset, path.join(out, 'assets', 'menu', 'peach-lipton-clean.png.png'));
 
-const lemonAsset = path.join(root, 'assets', 'lemon-lipton-clean.jpg.png');
-assert(fs.existsSync(lemonAsset), 'Missing Lemon Lipton asset');
-fs.copyFileSync(lemonAsset, path.join(out, 'assets', 'lemon-lipton-clean.jpg.png'));
-
 const cocaAsset = path.join(root, 'assets', 'coca-cola-zero-330-clean.png.png');
 assert(fs.existsSync(cocaAsset), 'Missing Coca Cola Zero asset');
 fs.copyFileSync(cocaAsset, path.join(out, 'assets', 'coca-cola-zero-330-clean.png.png'));
-
-const cocaOriginalAsset = path.join(root, 'assets', 'coca-cola-original-330-clean.png.png');
-assert(fs.existsSync(cocaOriginalAsset), 'Missing Coca Cola Original asset');
-fs.copyFileSync(cocaOriginalAsset, path.join(out, 'assets', 'coca-cola-original-330-clean.png.png'));
 
 const schweppesAsset = path.join(root, 'assets', 'menu', 'Schweppes-Tonic-Water-clean.png.png');
 assert(fs.existsSync(schweppesAsset), 'Missing Schweppes Tonic asset');
