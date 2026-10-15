@@ -213,30 +213,6 @@ body:after{
   -webkit-font-smoothing:antialiased;
   backface-visibility:hidden;
 }
-/* Coca-Cola Original: show the exact uploaded full-size 4:3 photo uncropped.
-   The blurred backdrop fills this narrow card; the main image remains untouched. */
-.lux-item-photo.coca-cola-photo{
-  position:relative;
-  isolation:isolate;
-  background:#170c08;
-}
-.lux-item-photo.coca-cola-photo::before{
-  content:"";
-  position:absolute;
-  inset:-20px;
-  background:url("assets/Coca-Cola%20Glow%20on%20Marble.png") center/cover no-repeat;
-  filter:blur(18px) brightness(.62);
-  transform:scale(1.06);
-  pointer-events:none;
-}
-.lux-item-photo.coca-cola-photo img{
-  position:relative;
-  z-index:1;
-  object-fit:contain;
-  object-position:center;
-  transform:none;
-  border-radius:0;
-}
 .lux-item-info{
   min-width:0;
   padding:13px 12px 10px 2px;
@@ -653,7 +629,7 @@ body:after{
   <div class="lux-item-bottom"><span class="lux-price">180 ₺</span></div>
 </div>
 </article><article class="lux-menu-item" data-menu-category="Non-Alcoholic Beer" data-menu-search="coca cola original 330 ml coke original cold drink">
-<div class="lux-item-photo coca-cola-photo"><img alt="Coca Cola Original 330 ml" data-menu-img="coca-cola-original-330" loading="lazy" src="assets/Coca-Cola%20Glow%20on%20Marble.png"/></div>
+<div class="lux-item-photo"><img alt="Coca Cola Original 330 ml" data-menu-img="coca-cola-original-330" loading="lazy" src="assets/Coca-Cola%20Glow%20on%20Marble.png"/></div>
 <div class="lux-item-info">
   <div class="lux-item-kicker">Non-Alcoholic Beer</div>
   <h3>Coca Cola Original 330 ml</h3>
