@@ -16,7 +16,7 @@
     fr:'Sushi Club est fermé le lundi. Veuillez choisir une autre date.',
     zh:'Sushi Club 周一休息，请选择其他日期。'
   };
-  const isMonday=date=>/^\\d{4}-\\d{2}-\\d{2}$/.test(date)&&new Date(date+'T00:00:00Z').getUTCDay()===1;
+  const isMonday=date=>/^\d{4}-\d{2}-\d{2}$/.test(date)&&new Date(date+'T00:00:00Z').getUTCDay()===1;
   const lang=()=>typeof currentLanguage==='string'?currentLanguage:'en';
   const errorText=()=>errors[lang()]||errors.en;
   const api='https://poxuyzcaejbqouelzwob.supabase.co/functions/v1/guest-reservations';
