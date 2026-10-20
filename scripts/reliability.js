@@ -8,6 +8,15 @@
     fr:'Impossible de vérifier les disponibilités. Veuillez réessayer.',
     zh:'无法查询空位，请重试。'
   };
+  const closed={
+    en:'Sushi Club is closed on Mondays. Please choose another date.',
+    tr:'Sushi Club pazartesi günleri kapalıdır. Lütfen başka bir tarih seçin.',
+    ru:'По понедельникам Sushi Club закрыт. Пожалуйста, выберите другую дату.',
+    de:'Sushi Club ist montags geschlossen. Bitte wählen Sie ein anderes Datum.',
+    fr:'Sushi Club est fermé le lundi. Veuillez choisir une autre date.',
+    zh:'Sushi Club 周一休息，请选择其他日期。'
+  };
+  const isMonday=date=>/^\\d{4}-\\d{2}-\\d{2}$/.test(date)&&new Date(date+'T00:00:00Z').getUTCDay()===1;
   const lang=()=>typeof currentLanguage==='string'?currentLanguage:'en';
   const errorText=()=>errors[lang()]||errors.en;
   const api='https://poxuyzcaejbqouelzwob.supabase.co/functions/v1/guest-reservations';
@@ -25,6 +34,10 @@
     const key=date+'|'+party;
     checked='';
     const buttons=[...document.querySelectorAll('#reserveTimes .time')];
+    if(isMonday(date)){
+      buttons.forEach(b=>{b.disabled=true;b.style.opacity='.35';b.style.cursor='not-allowed';b.classList.remove('active');});
+      notice(closed[lang()]||closed.en,false);syncSelectedTime();return;
+    }
     const selected=buttons.find(b=>b.classList.contains('active'))?.textContent.trim();
     buttons.forEach(b=>{b.disabled=true;b.style.opacity='.35';b.style.cursor='not-allowed';b.classList.remove('active');});
     syncSelectedTime();
@@ -50,7 +63,9 @@
   const originalConfirm=window.confirmReservation;
   window.confirmReservation=async function () {
     if(submitting)return;
-    const key=(document.getElementById('rdate').value||today())+'|'+Number(document.getElementById('guests').value||1);
+    const selectedDate=document.getElementById('rdate').value||today();
+    if(isMonday(selectedDate)){alert(closed[lang()]||closed.en);return;}
+    const key=selectedDate+'|'+Number(document.getElementById('guests').value||1);
     if(checked!==key){await window.renderGuestTimes();if(checked!==key){alert(errorText());return;}}
     submitting=true;
     try{await originalConfirm();}finally{submitting=false;}
