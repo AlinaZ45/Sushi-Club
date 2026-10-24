@@ -2787,16 +2787,16 @@ main.phone > #myReservations.section.active > .inner {
       <label class="guestTypeTitle">I AM...</label>
       <div class="guestTypeGrid">
         <button type="button" id="hotelGuestBtn" class="guestType active" onclick="setGuestType('hotel')">
-          <b>HOTEL GUEST</b><span>I am making a reservation at this restaurant</span>
+          <b>RESTAURANT GUEST</b><span>I am making a reservation at this restaurant</span>
         </button>
         <button type="button" id="outsideGuestBtn" class="guestType" onclick="setGuestType('outside')">
-          <b>OUTSIDE GUEST</b><span>I am making a restaurant reservation</span>
+          <b>GUEST</b><span>I am making a restaurant reservation</span>
         </button>
       </div>
 
       <div id="hotelGuestPanel" class="typePanel">
         <p class="panelHint">Please leave a contact so our team can reach you if needed.</p>
-        <label>ROOM NUMBER</label>
+        <label>REFERENCE (OPTIONAL)</label>
         <input id="rroom" inputmode="numeric" placeholder="e.g. 512">
         <label>WHATSAPP OR E-MAIL <span class="required" aria-label="required">*</span></label>
         <input id="hotelContact" type="text" required autocomplete="email" placeholder="WhatsApp number or email (required)"><p class="smallnote" id="hotelNotifyHint"></p>
@@ -2868,7 +2868,7 @@ main.phone > #myReservations.section.active > .inner {
       <label>TIME<select id="geTime"></select></label>
       <label>NUMBER OF GUESTS<input id="geGuests" type="number" min="1"></label>
       <label>LEAD GUEST NAME<input id="geName"></label>
-      <label>ROOM NUMBER<input id="geRoom" placeholder="Hotel guests"></label>
+      <label>REFERENCE (OPTIONAL)<input id="geRoom" placeholder="Optional reference"></label>
       <label>WHATSAPP / PHONE<input id="gePhone"></label>
       <label style="grid-column:1/-1">E-MAIL<input id="geEmail" type="email"></label>
       <label style="grid-column:1/-1">SPECIAL REQUEST<textarea id="geRequest" rows="3"></textarea></label>
