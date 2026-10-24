@@ -551,9 +551,9 @@ function renderGuestTimes(){
 }
 
 
-let guestType='hotel';
+let guestType='outside';
 function setGuestType(type){
-  guestType=type;
+  guestType='outside';
   document.getElementById('hotelGuestBtn').classList.toggle('active',type==='hotel');
   document.getElementById('outsideGuestBtn').classList.toggle('active',type==='outside');
   document.getElementById('hotelGuestPanel').style.display=type==='hotel'?'block':'none';
