@@ -33,7 +33,7 @@
     const party=Number(document.getElementById('guests').value||1);
     const key=date+'|'+party;
     checked='';
-    const buttons=[...document.querySelectorAll('#reserveTimes .time')];
+    let buttons=[...document.querySelectorAll('#reserveTimes .time')];
     if(isMonday(date)){
       buttons.forEach(b=>{b.disabled=true;b.style.opacity='.35';b.style.cursor='not-allowed';b.classList.remove('active');});
       notice(closed[lang()]||closed.en,false);syncSelectedTime();return;
@@ -51,6 +51,13 @@
       if(!response.ok||data.ok!==true||!Array.isArray(data.slots)||!data.slots.length)throw new Error('Invalid availability response');
       if(mine!==sequence)return;
       if(data.restaurant?.name){const title=document.querySelector('.future-home-kicker');if(title)title.textContent=data.restaurant.name;document.title=data.restaurant.name+' · Reservations';}
+      const serverTimes=data.slots.map(slot=>slot.time);
+      if(JSON.stringify(buttons.map(b=>b.textContent.trim()))!==JSON.stringify(serverTimes)){
+        const container=document.getElementById('reserveTimes');container.replaceChildren();
+        for(const time of serverTimes){const b=document.createElement('button');b.type='button';b.className='time';b.textContent=time;b.addEventListener('click',()=>{if(b.disabled)return;container.querySelectorAll('.time').forEach(x=>x.classList.remove('active'));b.classList.add('active');syncSelectedTime();});container.append(b);}
+        buttons=[...container.querySelectorAll('.time')];
+        if(typeof window.setRestaurantTimes==='function')window.setRestaurantTimes(serverTimes);
+      }
       const now=new Date(), localDate=today();
       const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Istanbul',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);
       const localTime=parts.find(p=>p.type==='hour').value+':'+parts.find(p=>p.type==='minute').value;
