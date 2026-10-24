@@ -450,6 +450,7 @@ const TIMES=[...document.querySelectorAll('#reserveTimes .time')].map(b=>b.inner
 let staffTab='requests';
 
 function show(id){
+  if(id==='staff'){window.location.href='/staff';return;}
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
