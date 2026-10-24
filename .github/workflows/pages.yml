@@ -27,7 +27,7 @@ jobs:
           import fs from 'node:fs';
           import assert from 'node:assert/strict';
           const report = JSON.parse(fs.readFileSync('dist/build-info.json','utf8'));
-          assert.equal(report.dishCount,51);
+          assert.equal(report.dishCount,72);
           assert.equal(report.photoCount,72);
           assert.equal(fs.readdirSync('dist/assets/menu').length,51);
           const menu = fs.readFileSync('dist/menu.html','utf8');
