@@ -1,6 +1,6 @@
 {
-  "name": "Sushi Club",
-  "short_name": "Sushi Club",
+  "name": "Restaurant App",
+  "short_name": "Restaurant App",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
