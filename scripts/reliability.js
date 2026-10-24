@@ -58,9 +58,7 @@
         buttons=[...container.querySelectorAll('.time')];
         if(typeof window.setRestaurantTimes==='function')window.setRestaurantTimes(serverTimes);
       }
-      const now=new Date(), localDate=today();
-      const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Istanbul',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);
-      const localTime=parts.find(p=>p.type==='hour').value+':'+parts.find(p=>p.type==='minute').value;
+      const localDate=data.now?.date||today(), localTime=data.now?.time||'00:00';
       for(const b of buttons){const time=b.textContent.trim(),slot=data.slots.find(s=>s.time===time);const past=date<localDate||(date===localDate&&time<=localTime);const available=slot?.available===true&&!past;b.disabled=!available;b.style.opacity=available?'1':'.35';b.style.cursor=available?'pointer':'not-allowed';}
       const choose=buttons.find(b=>!b.disabled&&b.textContent.trim()===selected)||buttons.find(b=>!b.disabled);
       if(choose)choose.classList.add('active');
