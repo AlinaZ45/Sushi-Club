@@ -9,17 +9,17 @@
     zh:'无法查询空位，请重试。'
   };
   const closed={
-    en:'Sushi Club is closed on Mondays. Please choose another date.',
-    tr:'Sushi Club pazartesi günleri kapalıdır. Lütfen başka bir tarih seçin.',
-    ru:'По понедельникам Sushi Club закрыт. Пожалуйста, выберите другую дату.',
-    de:'Sushi Club ist montags geschlossen. Bitte wählen Sie ein anderes Datum.',
-    fr:'Sushi Club est fermé le lundi. Veuillez choisir une autre date.',
-    zh:'Sushi Club 周一休息，请选择其他日期。'
+    en:'Restaurant App is closed on Mondays. Please choose another date.',
+    tr:'Restaurant App pazartesi günleri kapalıdır. Lütfen başka bir tarih seçin.',
+    ru:'По понедельникам Restaurant App закрыт. Пожалуйста, выберите другую дату.',
+    de:'Restaurant App ist montags geschlossen. Bitte wählen Sie ein anderes Datum.',
+    fr:'Restaurant App est fermé le lundi. Veuillez choisir une autre date.',
+    zh:'Restaurant App 周一休息，请选择其他日期。'
   };
-  const isMonday=date=>/^\d{4}-\d{2}-\d{2}$/.test(date)&&new Date(date+'T00:00:00Z').getUTCDay()===1;
+  const isMonday=date=>false;
   const lang=()=>typeof currentLanguage==='string'?currentLanguage:'en';
   const errorText=()=>errors[lang()]||errors.en;
-  const api='https://poxuyzcaejbqouelzwob.supabase.co/functions/v1/guest-reservations';
+  const api='https://fkztipofuahmxenisayd.supabase.co/functions/v1/guest-reservations';
   let sequence=0, submitting=false, checked='';
   function notice(text,retry) {
     let n=document.getElementById('availabilityMessage');
@@ -45,18 +45,19 @@
     notice('...',false);
     const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),12000);
     try {
-      const url=new URL(api);url.search=new URLSearchParams({action:'availability',date,party:String(party)});
+      const url=new URL(api);url.search=new URLSearchParams({action:'availability',date,party:String(party),restaurant:(new URLSearchParams(location.search).get('restaurant')||'my-restaurant')});
       const response=await fetch(url,{signal:abort.signal,cache:'no-store'});
       const data=await response.json();
       if(!response.ok||data.ok!==true||!Array.isArray(data.slots)||!data.slots.length)throw new Error('Invalid availability response');
       if(mine!==sequence)return;
+      if(data.restaurant?.name){const title=document.querySelector('.future-home-kicker');if(title)title.textContent=data.restaurant.name;document.title=data.restaurant.name+' · Reservations';}
       const now=new Date(), localDate=today();
       const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Istanbul',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);
       const localTime=parts.find(p=>p.type==='hour').value+':'+parts.find(p=>p.type==='minute').value;
       for(const b of buttons){const time=b.textContent.trim(),slot=data.slots.find(s=>s.time===time);const past=date<localDate||(date===localDate&&time<=localTime);const available=slot?.available===true&&!past;b.disabled=!available;b.style.opacity=available?'1':'.35';b.style.cursor=available?'pointer':'not-allowed';}
       const choose=buttons.find(b=>!b.disabled&&b.textContent.trim()===selected)||buttons.find(b=>!b.disabled);
       if(choose)choose.classList.add('active');
-      checked=key;notice('',false);syncSelectedTime();
+      checked=key;notice(data.closed?(closed[lang()]||closed.en):'',false);syncSelectedTime();
     }catch(e){if(mine===sequence){checked='';notice(errorText(),true);}}
     finally{clearTimeout(timer);}
   };
