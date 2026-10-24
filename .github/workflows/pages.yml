@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Check sources and build approved menu
+      - name: Check universal app sources and build
         run: node scripts/build.mjs
       - name: Verify build output
         run: |
@@ -29,8 +29,8 @@ jobs:
           const report = JSON.parse(fs.readFileSync('dist/build-info.json','utf8'));
           assert.equal(report.dishCount,0);
           assert.equal(report.photoCount,0);
-          assert(menu.includes("action:'menu'"));
           const menu = fs.readFileSync('dist/menu.html','utf8');
+          assert(menu.includes("action:'menu'"));
           assert(menu.includes('</body>'));
           assert(menu.includes('This restaurant has not published its menu yet.'));
           assert(!menu.includes('menu-images-lite.js'));
