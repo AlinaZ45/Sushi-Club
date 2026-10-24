@@ -6,8 +6,12 @@ import assert from 'node:assert/strict';
 
 const root = process.cwd();
 const out = path.join(root, 'dist');
-const names = ['index.html', 'menu.html', 'guest-core.js', 'guest-live.js', 'staff.html', 'staff.js', 'reliability.js'];
+const names = ['index.html', 'menu.html', 'guest-core.js', 'guest-live.js', 'staff.html', 'staff.js'];
 const source = Object.fromEntries(names.map(name => [name, fs.readFileSync(path.join(root, name), 'utf8')]));
+const reliability = fs.readFileSync(path.join(root, 'scripts', 'reliability.js'), 'utf8');
+assert(reliability.length > 100, 'reliability.js: empty or incomplete source');
+new vm.Script(reliability, {filename:'reliability.js'});
+assert(!/sb_secret_[A-Za-z0-9_-]+/.test(reliability), 'reliability.js: private key in client source');
 
 for (const name of names) {
   assert(source[name].length > 100, `${name}: empty or incomplete source`);
@@ -45,7 +49,7 @@ const output = {
   'guest-live.js':source['guest-live.js'],
   'staff.html':stamp(staff),
   'staff.js':source['staff.js'],
-  'reliability.js':source['reliability.js']
+  'reliability.js':reliability
 };
 for (const [name, content] of Object.entries(output)) {
   if (name.endsWith('.js')) new vm.Script(content,{filename:name});
