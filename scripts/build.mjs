@@ -6,170 +6,71 @@ import assert from 'node:assert/strict';
 
 const root = process.cwd();
 const out = path.join(root, 'dist');
-const names = ['index.html', 'menu.html', 'guest-core.js', 'guest-live.js', 'staff.html', 'staff.js', 'menu-images-lite.js'];
+const names = ['index.html', 'menu.html', 'guest-core.js', 'guest-live.js', 'staff.html', 'staff.js', 'reliability.js'];
 const source = Object.fromEntries(names.map(name => [name, fs.readFileSync(path.join(root, name), 'utf8')]));
+
 for (const name of names) {
   assert(source[name].length > 100, `${name}: empty or incomplete source`);
   if (name.endsWith('.html')) {
-    assert(/<body[\s>]/i.test(source[name]) && /<\/body>\s*<\/html>\s*$/i.test(source[name]), `${name}: incomplete HTML`);
-    assert.equal((source[name].match(/<style[\s>]/gi)||[]).length, (source[name].match(/<\/style>/gi)||[]).length, `${name}: unclosed stylesheet`);
+    assert(/<body[\\s>]/i.test(source[name]) && /<\\/body>\\s*<\\/html>\\s*$/i.test(source[name]), `${name}: incomplete HTML`);
+    assert.equal((source[name].match(/<style[\\s>]/gi)||[]).length, (source[name].match(/<\\/style>/gi)||[]).length, `${name}: unclosed stylesheet`);
   } else {
-    new vm.Script(source[name], {filename: name});
+    new vm.Script(source[name], {filename:name});
   }
   assert(!/sb_secret_[A-Za-z0-9_-]+/.test(source[name]), `${name}: private key in client source`);
 }
-assert.equal((source['menu.html'].match(/<article\b[^>]*class="lux-menu-item"/g)||[]).length, 72, 'The approved menu must contain 72 dishes');
-
-// Decode the existing approved photos at build time. No photo JS is required in a guest browser.
-const images = new Map();
-for (const block of source['menu-images-lite.js'].split('(function(){')) {
-  const data = block.match(/const d='data:image\/(webp|png|jpeg);base64,([A-Za-z0-9+/=]+)'/);
-  const key = block.match(/data-menu-img=\\?"([^"\\]+)\\?"/);
-  if (!data && !key) continue;
-  assert(data && key, 'Incomplete photo block');
-  assert(/^[a-z0-9-]+$/.test(key[1]) && !images.has(key[1]), 'Invalid or duplicated photo key');
-  const bytes = Buffer.from(data[2], 'base64');
-  assert(bytes.length > 100, `Missing photo: ${key[1]}`);
-  if (data[1] === 'webp') assert(bytes.subarray(0,4).toString() === 'RIFF' && bytes.subarray(8,12).toString() === 'WEBP', `Corrupt photo: ${key[1]}`);
-  const hash = crypto.createHash('sha256').update(bytes).digest('hex').slice(0,12);
-  images.set(key[1], {bytes, file: `assets/menu/${key[1]}.${hash}.${data[1]}`});
-}
-assert.equal(images.size, 51, 'All 51 approved photos must be present');
-let menu = source['menu.html'];
-let attached = 0;
-menu = menu.replace(/<img\b[^>]*data-menu-img="[^"]+"[^>]*>/g, tag => {
-  const key = tag.match(/data-menu-img="([^"]+)"/);
-  assert(key, 'Menu image key missing');
-  attached++;
-  if (key[1] === 'peach-lipton' || key[1] === 'lemon-lipton' || key[1] === 'coca-cola-original-330' || key[1] === 'schweppes-tonic-250' || key[1] === 'tomato-juice' || key[1] === 'uludag-sparkling-water-750' || key[1] === 'still-water-330' || key[1] === 'still-water-750' || key[1] === 'americano' || key[1] === 'latte' || key[1] === 'latte-macchiato' || key[1] === 'hot-chocolate' || key[1] === 'turkish-traditional-coffee' || key[1] === 'espresso' || key[1] === 'double-espresso' || key[1] === 'corona-beer-330' || key[1] === 'bomonti-not-filtered-500' || key[1] === 'efes-330' || key[1] === 'becks-330' || key[1] === 'carlsberg' || key[1] === 'miller-330') {
-    const drinkFile = key[1] === 'peach-lipton' ? 'assets/menu/peach-lipton-clean.png.png' : key[1] === 'lemon-lipton' ? 'assets/Premium%20Lemon%20Iced%20Tea%20Duo.png'  : key[1] === 'coca-cola-original-330' ? 'assets/Coca-Cola%20Glow%20on%20Marble.png' : key[1] === 'schweppes-tonic-250' ? 'assets/menu/Schweppes-Tonic-Water-clean.png.png' : key[1] === 'tomato-juice' ? 'assets/menu/Tomato-Juice-clean.png.png' : key[1] === 'uludag-sparkling-water-750' ? 'assets/menu/Uludağ-Blue-Bottle-Sparkling-clean.png.png' : key[1] === 'americano' ? 'assets/menu/Americano-clean.png.png' : key[1] === 'latte' ? 'assets/menu/Latte-clean.png.png' : key[1] === 'latte-macchiato' ? 'assets/Latte-Macchiato-clean.png.png' : key[1] === 'hot-chocolate' ? 'assets/menu/Hot-Chocolate-clean.png.png' : key[1] === 'turkish-traditional-coffee' ? 'assets/Turkish-Coffee-Ritual-clean.png.png' : key[1] === 'espresso' ? 'assets/menu/Espresso-clean.png.png' : key[1] === 'double-espresso' ? 'assets/menu/Espresso-clean.png.png' : key[1] === 'corona-beer-330' ? 'assets/menu/Corona-clean.png.png' : key[1] === 'bomonti-not-filtered-500' ? 'assets/menu/Bomonti-clean.png.png' : key[1] === 'efes-330' ? 'assets/menu/Efes-clean.png.png' : key[1] === 'becks-330' ? 'assets/menu/Beck’s-clean.png.png' : key[1] === 'carlsberg' ? 'assets/menu/Carlsberg-clean.png.png' : key[1] === 'miller-330' ? 'assets/menu/Miller-clean.png.png' : 'assets/menu/Uludağ-Suyu-clean.png.png';
-    assert(tag.includes(`src="${drinkFile}"`), `${key[1]} photo missing`);
-    return tag.replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
-  }
-  assert(images.has(key[1]), 'Dish has no matching approved photo');
-  const src = images.get(key[1]).file;
-  return tag.replace(/\s+src="[^"]*"/, ` src="${src}"`).replace(/\s+loading="[^"]*"/, '').replace(/\/>$/, ' loading="lazy" decoding="async"/>');
-});
-// All approved menu items have dedicated photos.
-const emptyPhotoNames = [...menu.matchAll(/<article\b[^>]*class="lux-menu-item"[^>]*>[\s\S]*?<\/article>/g)]
-  .filter(match => /<div class="lux-item-photo"><\/div>/.test(match[0]))
-  .map(match => (match[0].match(/<h3>([^<]+)<\/h3>/) || [])[1]);
-assert.deepEqual(emptyPhotoNames, [], 'Unexpected menu cards without photos');
-assert.equal(attached + emptyPhotoNames.length, 72, 'Menu/photo count mismatch');
-menu = menu.replace(/<script\b[^>]*src="\/?menu-images(?:-lite)?\.js"[^>]*><\/script>/g, '');
-assert(!menu.includes('menu-images'), 'Unresolved photo script');
-menu = menu.replaceAll('href="/"', 'href="index.html"').replaceAll('href="/#reserve"', 'href="index.html#reserve"');
 
 let index = source['index.html'];
-index = index.replace(/<script src="https:\/\/cdn\.jsdelivr\.net\/npm\/@supabase\/supabase-js@2"><\/script>/g, '');
-for (const name of ['menu.html', 'staff.html', 'guest-core.js', 'guest-live.js']) {
+let menu = source['menu.html'];
+let staff = source['staff.html'];
+index = index.replace(/<script src="https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/@supabase\\/supabase-js@2"><\\/script>/g, '');
+for (const name of ['menu.html','staff.html','guest-core.js','guest-live.js','reliability.js','manifest.webmanifest','staff.js','staff-manifest.webmanifest','staff-icon.svg','staff-sw.js']) {
   index = index.replaceAll(`"/${name}"`, `"${name}"`).replaceAll(`'/${name}'`, `'${name}'`);
 }
-const oldContact = "const email=guestType==='outside'?outsideEmail:'',contact=guestType==='hotel'?hotelContact:outsidePhone";
-assert(source['guest-live.js'].includes(oldContact), 'Guest form changed; review email patch');
-const live = source['guest-live.js'].replace(oldContact, "const hotelEmail=/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(hotelContact),email=guestType==='outside'?outsideEmail:(hotelEmail?hotelContact:''),contact=guestType==='hotel'?(hotelEmail?'':hotelContact):outsidePhone");
-const dateFn = "function today(){return new Date().toISOString().slice(0,10)}";
-assert(source['guest-core.js'].includes(dateFn), 'Review restaurant date patch');
-const core = source['guest-core.js'].replace(dateFn, "function today(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return g('year')+'-'+g('month')+'-'+g('day')}");
-let staff = source['staff.html'].replace('supabase-js@2"','supabase-js@2.57.4"').replace('src="/staff.js"','src="staff.js"').replace('href="/"','href="index.html"');
-const fix = fs.readFileSync(path.join(root, 'scripts/reliability.js'), 'utf8');
-new vm.Script(fix, {filename: 'reliability.js'});
-if (!index.includes('src="reliability.js"')) index = index.replace('</body>', '<script src="reliability.js"></script>\n</body>');
-const revision = /^[a-f0-9]{40}$/i.test(process.env.VERCEL_GIT_COMMIT_SHA||'') ? process.env.VERCEL_GIT_COMMIT_SHA : 'local-verification';
-const stamp = s => s.replace('</head>', `<meta name="sushi-build" content="${revision}"></head>`);
-const output = {'index.html':stamp(index),'menu.html':stamp(menu),'guest-core.js':core,'guest-live.js':live,'staff.html':stamp(staff),'staff.js':source['staff.js'],'reliability.js':fix};
-for (const [name, text] of Object.entries(output)) {
-  if (name.endsWith('.js')) new vm.Script(text, {filename:name});
-  if (name.endsWith('.html')) for (const m of text.matchAll(/<script(\s[^>]*)?>([\s\S]*?)<\/script>/g)) if (!/\bsrc=/.test(m[1]||'')) new vm.Script(m[2],{filename:name+' inline'});
+menu = menu.replaceAll('href="/"','href="index.html"').replaceAll('href="/#reserve"','href="index.html#reserve"');
+staff = staff.replace('supabase-js@2"','supabase-js@2.57.4"')
+  .replaceAll('src="/staff.js"','src="staff.js"')
+  .replaceAll('href="/staff-manifest.webmanifest"','href="staff-manifest.webmanifest"')
+  .replaceAll('href="/staff-icon.svg"','href="staff-icon.svg"')
+  .replaceAll('href="/"','href="index.html"');
+index = index.replace(/<link rel="preload" as="image" href="\\/assets\\/sushi-intro-approved\\.webp">/g, '');
+if (!index.includes('src="reliability.js"')) index = index.replace('</body>', '<script src="reliability.js"></script>\\n</body>');
+
+const revision = /^[a-f0-9]{40}$/i.test(process.env.GITHUB_SHA||'') ? process.env.GITHUB_SHA : 'local-verification';
+const stamp = html => html.replace('</head>', `<meta name="restaurant-app-build" content="${revision}"></head>`);
+const output = {
+  'index.html':stamp(index),
+  'menu.html':stamp(menu),
+  'guest-core.js':source['guest-core.js'],
+  'guest-live.js':source['guest-live.js'],
+  'staff.html':stamp(staff),
+  'staff.js':source['staff.js'],
+  'reliability.js':source['reliability.js']
+};
+for (const [name, content] of Object.entries(output)) {
+  if (name.endsWith('.js')) new vm.Script(content,{filename:name});
+  if (name.endsWith('.html')) {
+    for (const m of content.matchAll(/<script(\\s[^>]*)?>([\\s\\S]*?)<\\/script>/g)) {
+      if (!/\\bsrc=/.test(m[1]||'')) new vm.Script(m[2],{filename:name+' inline'});
+    }
+  }
 }
-fs.mkdirSync(out, {recursive:true});
-fs.mkdirSync(path.join(out, 'assets/menu'), {recursive:true});
-fs.mkdirSync(path.join(out, 'assets'), {recursive:true});
-const introHero = path.join(root, 'assets', 'sushi-intro-approved.webp');
-assert(fs.existsSync(introHero), 'Missing Sushi Club intro hero');
-fs.copyFileSync(introHero, path.join(out, 'assets', 'sushi-intro-approved.webp'));
-const peachAsset = path.join(root, 'assets', 'menu', 'peach-lipton-clean.png.png');
-assert(fs.existsSync(peachAsset), 'Missing Peach Lipton asset');
-fs.copyFileSync(peachAsset, path.join(out, 'assets', 'menu', 'peach-lipton-clean.png.png'));
-
-const lemonLiptonAsset = path.join(root, 'assets', 'Premium Lemon Iced Tea Duo.png');
-assert(fs.existsSync(lemonLiptonAsset), 'Missing Lemon Lipton full-resolution photo');
-fs.copyFileSync(lemonLiptonAsset, path.join(out, 'assets', 'Premium Lemon Iced Tea Duo.png'));
-
-const cocaOriginalAsset = path.join(root, 'assets', 'Coca-Cola Glow on Marble.png');
-assert(fs.existsSync(cocaOriginalAsset), 'Missing Coca Cola Original full-resolution photo');
-fs.copyFileSync(cocaOriginalAsset, path.join(out, 'assets', 'Coca-Cola Glow on Marble.png'));
-
-const schweppesAsset = path.join(root, 'assets', 'menu', 'Schweppes-Tonic-Water-clean.png.png');
-assert(fs.existsSync(schweppesAsset), 'Missing Schweppes Tonic asset');
-fs.copyFileSync(schweppesAsset, path.join(out, 'assets', 'menu', 'Schweppes-Tonic-Water-clean.png.png'));
-
-const tomatoAsset = path.join(root, 'assets', 'menu', 'Tomato-Juice-clean.png.png');
-assert(fs.existsSync(tomatoAsset), 'Missing Tomato Juice asset');
-fs.copyFileSync(tomatoAsset, path.join(out, 'assets', 'menu', 'Tomato-Juice-clean.png.png'));
-
-const uludagAsset = path.join(root, 'assets', 'menu', 'Uludağ-Blue-Bottle-Sparkling-clean.png.png');
-assert(fs.existsSync(uludagAsset), 'Missing Uludag Sparkling Water asset');
-fs.copyFileSync(uludagAsset, path.join(out, 'assets', 'menu', 'Uludağ-Blue-Bottle-Sparkling-clean.png.png'));
-
-const stillWaterAsset = path.join(root, 'assets', 'menu', 'Uludağ-Suyu-clean.png.png');
-assert(fs.existsSync(stillWaterAsset), 'Missing Still Water asset');
-fs.copyFileSync(stillWaterAsset, path.join(out, 'assets', 'menu', 'Uludağ-Suyu-clean.png.png'));
-
-const americanoAsset = path.join(root, 'assets', 'menu', 'Americano-clean.png.png');
-assert(fs.existsSync(americanoAsset), 'Missing Americano asset');
-fs.copyFileSync(americanoAsset, path.join(out, 'assets', 'menu', 'Americano-clean.png.png'));
-
-const latteAsset = path.join(root, 'assets', 'menu', 'Latte-clean.png.png');
-assert(fs.existsSync(latteAsset), 'Missing Latte asset');
-fs.copyFileSync(latteAsset, path.join(out, 'assets', 'menu', 'Latte-clean.png.png'));
-
-const latteMacchiatoAsset = path.join(root, 'assets', 'Latte-Macchiato-clean.png.png');
-assert(fs.existsSync(latteMacchiatoAsset), 'Missing Latte Macchiato asset');
-fs.copyFileSync(latteMacchiatoAsset, path.join(out, 'assets', 'Latte-Macchiato-clean.png.png'));
-
-const hotChocolateAsset = path.join(root, 'assets', 'menu', 'Hot-Chocolate-clean.png.png');
-assert(fs.existsSync(hotChocolateAsset), 'Missing Hot Chocolate asset');
-fs.copyFileSync(hotChocolateAsset, path.join(out, 'assets', 'menu', 'Hot-Chocolate-clean.png.png'));
-
-const turkishCoffeeAsset = path.join(root, 'assets', 'Turkish-Coffee-Ritual-clean.png.png');
-assert(fs.existsSync(turkishCoffeeAsset), 'Missing Turkish Traditional Coffee asset');
-fs.copyFileSync(turkishCoffeeAsset, path.join(out, 'assets', 'Turkish-Coffee-Ritual-clean.png.png'));
-
-const espressoAsset = path.join(root, 'assets', 'menu', 'Espresso-clean.png.png');
-assert(fs.existsSync(espressoAsset), 'Missing Espresso asset');
-fs.copyFileSync(espressoAsset, path.join(out, 'assets', 'menu', 'Espresso-clean.png.png'));
-
-const coronaAsset = path.join(root, 'assets', 'menu', 'Corona-clean.png.png');
-assert(fs.existsSync(coronaAsset), 'Missing Corona Beer asset');
-fs.copyFileSync(coronaAsset, path.join(out, 'assets', 'menu', 'Corona-clean.png.png'));
-
-const bomontiAsset = path.join(root, 'assets', 'menu', 'Bomonti-clean.png.png');
-assert(fs.existsSync(bomontiAsset), 'Missing Bomonti asset');
-fs.copyFileSync(bomontiAsset, path.join(out, 'assets', 'menu', 'Bomonti-clean.png.png'));
-
-const efesAsset = path.join(root, 'assets', 'menu', 'Efes-clean.png.png');
-assert(fs.existsSync(efesAsset), 'Missing Efes asset');
-fs.copyFileSync(efesAsset, path.join(out, 'assets', 'menu', 'Efes-clean.png.png'));
-
-const becksAsset = path.join(root, 'assets', 'menu', 'Beck’s-clean.png.png');
-assert(fs.existsSync(becksAsset), 'Missing Becks asset');
-fs.copyFileSync(becksAsset, path.join(out, 'assets', 'menu', 'Beck’s-clean.png.png'));
-
-const carlsbergAsset = path.join(root, 'assets', 'menu', 'Carlsberg-clean.png.png');
-assert(fs.existsSync(carlsbergAsset), 'Missing Carlsberg asset');
-fs.copyFileSync(carlsbergAsset, path.join(out, 'assets', 'menu', 'Carlsberg-clean.png.png'));
-
-const millerAsset = path.join(root, 'assets', 'menu', 'Miller-clean.png.png');
-assert(fs.existsSync(millerAsset), 'Missing Miller asset');
-fs.copyFileSync(millerAsset, path.join(out, 'assets', 'menu', 'Miller-clean.png.png'));
-for (const [name,text] of Object.entries(output)) fs.writeFileSync(path.join(out,name),text);
-for (const staticName of ['manifest.webmanifest','staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
-  const src = path.join(root, staticName);
-  assert(fs.existsSync(src), `Missing staff app asset: ${staticName}`);
-  fs.copyFileSync(src, path.join(out, staticName));
+fs.rmSync(out,{recursive:true,force:true});
+fs.mkdirSync(out,{recursive:true});
+for (const [name,content] of Object.entries(output)) fs.writeFileSync(path.join(out,name),content);
+for (const name of ['manifest.webmanifest','staff-manifest.webmanifest','staff-sw.js','staff-icon.svg']) {
+  const src=path.join(root,name);
+  assert(fs.existsSync(src), `Missing app asset: ${name}`);
+  fs.copyFileSync(src,path.join(out,name));
 }
-for (const {file,bytes} of images.values()) fs.writeFileSync(path.join(out,file),bytes);
-const report = {revision, menuSource:'approved v13.49',dishCount:72,photoCount:attached,files:Object.entries(output).map(([name,text])=>({name,bytes:Buffer.byteLength(text),sha256:crypto.createHash('sha256').update(text).digest('hex')}))};
+const report = {
+  revision,
+  product:'Restaurant App',
+  tenantAware:true,
+  menuMode:'database',
+  dishCount:0,
+  photoCount:0,
+  files:Object.entries(output).map(([name,content])=>({name,bytes:Buffer.byteLength(content),sha256:crypto.createHash('sha256').update(content).digest('hex')}))
+};
 fs.writeFileSync(path.join(out,'build-info.json'),JSON.stringify(report,null,2));
-console.log(JSON.stringify({ok:true, dishes:72,photos:attached,output:'dist',revision}));
+console.log(JSON.stringify({ok:true,tenantAware:true,menuMode:'database',files:Object.keys(output).length,revision}));
