@@ -446,7 +446,8 @@ function setLanguage(lang){
   if(typeof window.refreshGuestLiveLanguage==='function')window.refreshGuestLiveLanguage();
 }
 
-const TIMES=[...document.querySelectorAll('#reserveTimes .time')].map(b=>b.innerText);
+let TIMES=[...document.querySelectorAll('#reserveTimes .time')].map(b=>b.innerText);
+window.setRestaurantTimes=function(times){TIMES=Array.isArray(times)?times.slice():TIMES;};
 let staffTab='requests';
 
 function show(id){
