@@ -74,7 +74,7 @@ const core = source['guest-core.js'].replace(dateFn, "function today(){const p=n
 let staff = source['staff.html'].replace('supabase-js@2"','supabase-js@2.57.4"').replace('src="/staff.js"','src="staff.js"').replace('href="/"','href="index.html"');
 const fix = fs.readFileSync(path.join(root, 'scripts/reliability.js'), 'utf8');
 new vm.Script(fix, {filename: 'reliability.js'});
-index = index.replace('</body>', '<script src="reliability.js"></script>\n</body>');
+if (!index.includes('src="reliability.js"')) index = index.replace('</body>', '<script src="reliability.js"></script>\n</body>');
 const revision = /^[a-f0-9]{40}$/i.test(process.env.VERCEL_GIT_COMMIT_SHA||'') ? process.env.VERCEL_GIT_COMMIT_SHA : 'local-verification';
 const stamp = s => s.replace('</head>', `<meta name="sushi-build" content="${revision}"></head>`);
 const output = {'index.html':stamp(index),'menu.html':stamp(menu),'guest-core.js':core,'guest-live.js':live,'staff.html':stamp(staff),'staff.js':source['staff.js'],'reliability.js':fix};
