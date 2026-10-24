@@ -936,7 +936,7 @@ input,select,textarea{
           <div><label data-i18n="status">STATUS</label><select id="status"><option value="all" data-i18n="all">All</option><option value="pending" data-i18n="pending">Pending</option><option value="confirmed" data-i18n="confirmed">Confirmed</option><option value="reconfirmed" data-i18n="reconfirmed">Reconfirmed</option><option value="seated" data-i18n="seated">Seated</option><option value="completed" data-i18n="completed">Completed</option><option value="no_show" data-i18n="noShow">No-show</option><option value="declined" data-i18n="declined">Declined</option><option value="cancelled" data-i18n="cancelled">Cancelled</option></select></div>
         </div>
         <div class="stats"><div class="stat"><b id="totalStat">0</b><span data-i18n="total">Total</span></div><div class="stat"><b id="pendingStat">0</b><span data-i18n="pending">Pending</span></div><div class="stat"><b id="confirmedStat">0</b><span data-i18n="confirmed">Confirmed</span></div><div class="stat"><b id="paxStat">0</b><span data-i18n="guests">Guests</span></div></div>
-        <div class="tabs"><button id="reqTab" class="on" data-i18n="reservations">RESERVATIONS</button><button id="tableTab" data-i18n="tables">TABLES</button><button id="slotTab" data-i18n="availability">AVAILABILITY</button><button id="settingsTab">SETTINGS</button></div>
+        <div class="tabs"><button id="reqTab" class="on" data-i18n="reservations">RESERVATIONS</button><button id="tableTab" data-i18n="tables">TABLES</button><button id="slotTab" data-i18n="availability">AVAILABILITY</button><button id="menuTab">MENU</button><button id="settingsTab">SETTINGS</button></div>
       </section>
 
       <section id="requestsCard" class="card"><div id="requests"></div></section>
@@ -980,7 +980,25 @@ input,select,textarea{
   </div>
 </section>
       <section id="slotsCard" class="card hidden"><div id="slots"></div></section>
-      <section id="settingsCard" class="card hidden">
+      <section id="menuCard" class="card hidden">
+ <div class="eyebrow">MENU MANAGEMENT</div>
+ <p class="note">Add and update the items shown on this restaurant's public menu. Image URLs must use HTTPS.</p>
+ <input id="menuItemId" type="hidden">
+ <div class="row">
+  <div><label for="menuItemName">ITEM NAME</label><input id="menuItemName" maxlength="120" placeholder="e.g. House Special"></div>
+  <div><label for="menuItemCategory">CATEGORY</label><input id="menuItemCategory" maxlength="80" value="Main" placeholder="e.g. Starters"></div>
+  <div><label for="menuItemPrice">PRICE</label><input id="menuItemPrice" type="number" min="0" step="0.01" placeholder="0.00"></div>
+  <div><label for="menuItemCurrency">CURRENCY</label><input id="menuItemCurrency" maxlength="3" value="TRY"></div>
+ </div>
+ <label for="menuItemDescription">DESCRIPTION</label><textarea id="menuItemDescription" maxlength="1000" rows="3" placeholder="Dish description or ingredients"></textarea>
+ <label for="menuItemImage">IMAGE URL (OPTIONAL)</label><input id="menuItemImage" type="url" placeholder="https://…">
+ <label style="display:flex;align-items:center;gap:8px"><input id="menuItemActive" type="checkbox" checked style="width:auto"> Show this item on the guest menu</label>
+ <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="saveMenuItemBtn" class="btn dark" type="button">ADD MENU ITEM</button><button id="cancelMenuEditBtn" class="btn light hidden" type="button">CANCEL EDIT</button></div>
+ <div id="menuMessage" class="message"></div>
+ <div class="eyebrow" style="margin-top:26px">PUBLISHED ITEMS</div>
+ <div id="menuItemsList"></div>
+</section>
+<section id="settingsCard" class="card hidden">
   <div class="eyebrow">RESTAURANT SETTINGS</div>
   <p class="note">Configure the restaurant name, time zone, booking hours and closed days. These settings apply to this restaurant only.</p>
   <div class="row">
