@@ -432,6 +432,10 @@ input:focus,select:focus,textarea:focus{outline:1px solid var(--gold);border-col
  .choice .btn{width:100%}
 }
 
+
+/* Universal restaurant mode: no hotel-specific guest flow. */
+#hotelGuestBtn,#hotelGuestPanel,.guestTypeTitle,.guestTypeGrid{display:none!important}
+#outsideGuestPanel{display:block!important}
 </style>
 
 <style>
@@ -2701,8 +2705,8 @@ main.phone > #myReservations.section.active > .inner {
 
     <div class="future-home-footer">
       <span id="myBookingEyebrow">YOUR BOOKING</span>
-      <b>RESTAURANT APP · 2ND FLOOR</b>
-      <small>Main hotel building · External entrance on the left side.</small>
+      <b>RESTAURANT APP</b>
+      <small>Independent restaurant booking platform · © 2026</small>
     </div>
   </div>
 </section>
@@ -2719,7 +2723,7 @@ main.phone > #myReservations.section.active > .inner {
     <div class="card" style="margin-top:14px">
       <div class="eyebrow">FIND A BOOKING</div>
       <h3 style="font-family:Georgia,serif;font-weight:400;margin:6px 0 8px">Reservation not shown?</h3>
-      <p class="smallnote">Enter your Reservation ID and room number, phone or e-mail.</p>
+      <p class="smallnote">Enter your Reservation ID and phone or e-mail.</p>
       <div class="find-grid">
         <input id="findRef" placeholder="Reservation ID · SC-123456">
         <input id="findIdentity" placeholder="Room / phone / e-mail">
@@ -2783,15 +2787,15 @@ main.phone > #myReservations.section.active > .inner {
       <label class="guestTypeTitle">I AM...</label>
       <div class="guestTypeGrid">
         <button type="button" id="hotelGuestBtn" class="guestType active" onclick="setGuestType('hotel')">
-          <b>HOTEL GUEST</b><span>I am staying at Restaurant Restaurant</span>
+          <b>HOTEL GUEST</b><span>I am making a reservation at this restaurant</span>
         </button>
         <button type="button" id="outsideGuestBtn" class="guestType" onclick="setGuestType('outside')">
-          <b>OUTSIDE GUEST</b><span>I am visiting Restaurant App without a hotel stay</span>
+          <b>OUTSIDE GUEST</b><span>I am making a restaurant reservation</span>
         </button>
       </div>
 
       <div id="hotelGuestPanel" class="typePanel">
-        <p class="panelHint">Please enter your room number so our team can identify your reservation quickly.</p>
+        <p class="panelHint">Please leave a contact so our team can reach you if needed.</p>
         <label>ROOM NUMBER</label>
         <input id="rroom" inputmode="numeric" placeholder="e.g. 512">
         <label>WHATSAPP OR E-MAIL <span class="required" aria-label="required">*</span></label>
