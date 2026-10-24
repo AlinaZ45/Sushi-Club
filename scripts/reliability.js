@@ -9,12 +9,12 @@
     zh:'无法查询空位，请重试。'
   };
   const closed={
-    en:'Restaurant App is closed on Mondays. Please choose another date.',
-    tr:'Restaurant App pazartesi günleri kapalıdır. Lütfen başka bir tarih seçin.',
-    ru:'По понедельникам Restaurant App закрыт. Пожалуйста, выберите другую дату.',
-    de:'Restaurant App ist montags geschlossen. Bitte wählen Sie ein anderes Datum.',
-    fr:'Restaurant App est fermé le lundi. Veuillez choisir une autre date.',
-    zh:'Restaurant App 周一休息，请选择其他日期。'
+    en:'This restaurant is closed on the selected date.',
+    tr:'Restoran seçilen tarihte kapalıdır.',
+    ru:'Ресторан закрыт в выбранную дату.',
+    de:'Dieses Restaurant ist am ausgewählten Datum geschlossen.',
+    fr:'Ce restaurant est fermé à la date sélectionnée.',
+    zh:'餐厅在所选日期休息。'
   };
   const isMonday=date=>false;
   const lang=()=>typeof currentLanguage==='string'?currentLanguage:'en';
