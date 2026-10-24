@@ -1,839 +1,93 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Restaurant App · Menu</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet"><style id="approved-light-glass-menu">
-:root{
-  --white:#fffdf9;
-  --ivory:#f8f2ec;
-  --glass:rgba(255,255,255,.16);
-  --glass-strong:rgba(255,255,255,.24);
-  --glass-soft:rgba(246,233,221,.15);
-  --line:rgba(255,255,255,.48);
-  --line-strong:rgba(255,255,255,.70);
-  --warm:rgba(184,145,114,.22);
-  --shadow:rgba(112,82,62,.12);
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{min-height:100%;margin:0}
-body{
-  color:#fff;
-  font-family:"Manrope","Helvetica Neue",Arial,sans-serif;
-  background:#eadfd5;
-  position:relative;
-}
-body:before{
-  content:"";
-  position:fixed;
-  inset:-7%;
-  z-index:-3;
-  background-image:url("data:image/webp;base64,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");
-  background-size:cover;
-  background-position:center center;
-  filter:blur(28px) brightness(1.46) saturate(.58) contrast(.78);
-  transform:scale(1.08);
-}
-body:after{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-2;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 20% 18%,rgba(255,255,255,.40),transparent 35%),
-    radial-gradient(circle at 80% 75%,rgba(224,197,174,.42),transparent 42%),
-    linear-gradient(180deg,rgba(246,237,229,.50),rgba(224,201,182,.40));
-}
-.wrap{
-  width:min(1120px,calc(100% - 36px));
-  margin:0 auto;
-  min-height:100vh;
-  padding:30px 0 44px;
-  background:transparent;
-}
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-bottom:28px;
-}
-.back,.reserve,.footer a{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:48px;
-  padding:0 20px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:rgba(255,255,255,.15);
-  color:#fff;
-  text-decoration:none;
-  font-weight:600;
-  font-size:11px;
-  letter-spacing:.4px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 10px 28px rgba(111,82,62,.07);
-  backdrop-filter:blur(20px) saturate(.9);
-  -webkit-backdrop-filter:blur(20px) saturate(.9);
-  text-shadow:0 1px 12px rgba(105,78,59,.18);
-}
-.back:active,.reserve:active,.footer a:active{transform:scale(.985);background:rgba(255,255,255,.23)}
-
-.brand{
-  text-align:center;
-  margin:20px auto 28px;
-  max-width:760px;
-  color:#fff;
-}
-.brand small{
-  display:block;
-  letter-spacing:3.2px;
-  color:rgba(255,255,255,.90);
-  font-size:8px;
-  font-weight:600;
-  text-shadow:0 1px 14px rgba(105,77,58,.19);
-}
-.brand h1{
-  font-family:"Cormorant Garamond","Bodoni 72","Didot",Georgia,serif;
-  font-weight:500;
-  font-size:58px;
-  line-height:.92;
-  letter-spacing:1px;
-  margin:14px 0 10px;
-  color:#fff;
-  text-shadow:0 2px 24px rgba(108,79,59,.20);
-}
-.brand p{
-  color:rgba(255,255,255,.91);
-  margin:0;
-  font-size:13px;
-  line-height:1.6;
-  text-shadow:0 1px 14px rgba(104,77,59,.17);
-}
-
-.cats{
-  display:flex;
-  gap:9px;
-  overflow:auto;
-  padding:10px 4px 13px;
-  margin:0 0 11px;
-  position:sticky;
-  top:0;
-  z-index:8;
-  scrollbar-width:none;
-  background:linear-gradient(180deg,rgba(238,223,210,.34),rgba(238,223,210,.08));
-  backdrop-filter:blur(22px) saturate(.9);
-  -webkit-backdrop-filter:blur(22px) saturate(.9);
-  border-radius:24px;
-}
-.cats::-webkit-scrollbar{display:none}
-.cats button{
-  flex:0 0 auto;
-  white-space:nowrap;
-  min-height:42px;
-  padding:0 17px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:rgba(255,255,255,.14);
-  color:#fff;
-  font-family:"Manrope","Helvetica Neue",Arial,sans-serif;
-  font-size:11px;
-  font-weight:600;
-  letter-spacing:.1px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.30),0 8px 20px rgba(111,82,62,.05);
-  backdrop-filter:blur(18px) saturate(.9);
-  -webkit-backdrop-filter:blur(18px) saturate(.9);
-  text-shadow:0 1px 10px rgba(105,77,59,.17);
-}
-.cats button.active{
-  background:rgba(255,255,255,.31);
-  color:#fff;
-  border-color:var(--line-strong);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.52),0 10px 24px rgba(111,82,62,.08);
-}
-
-.search{
-  width:100%;
-  min-height:56px;
-  padding:0 20px;
-  margin:0 0 20px;
-  border:1px solid var(--line);
-  border-radius:24px;
-  outline:none;
-  background:rgba(255,255,255,.16);
-  color:#fff;
-  font-family:"Manrope","Helvetica Neue",Arial,sans-serif;
-  font-size:12px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.31),0 12px 30px rgba(111,82,62,.07);
-  backdrop-filter:blur(22px) saturate(.9);
-  -webkit-backdrop-filter:blur(22px) saturate(.9);
-}
-.search::placeholder{color:rgba(255,255,255,.78)}
-.search:focus{
-  border-color:rgba(255,255,255,.80);
-  background:rgba(255,255,255,.22);
-  box-shadow:0 0 0 3px rgba(255,255,255,.09),inset 0 1px 0 rgba(255,255,255,.40);
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-}
-.lux-menu-item{
-  display:grid;
-  grid-template-columns:44% 56%;
-  gap:14px;
-  min-height:212px;
-  padding:11px;
-  align-items:stretch;
-  overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:30px;
-  background:
-    linear-gradient(145deg,rgba(255,255,255,.21),rgba(247,236,227,.10));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 18px 44px rgba(111,82,62,.09);
-  backdrop-filter:blur(24px) saturate(.9);
-  -webkit-backdrop-filter:blur(24px) saturate(.9);
-  transition:transform .22s ease,background .22s ease;
-}
-.lux-menu-item:hover{transform:translateY(-2px);background:linear-gradient(145deg,rgba(255,255,255,.25),rgba(247,236,227,.13))}
-.lux-item-photo{
-  min-height:190px;
-  overflow:hidden;
-  border-radius:23px;
-  background:rgba(255,255,255,.13);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.30);
-}
-.lux-item-photo img{
-  width:100%;
-  height:100%;
-  min-height:190px;
-  object-fit:cover;
-  object-position:center;
-  display:block;
-  border-radius:23px;
-  image-rendering:auto;
-  -webkit-font-smoothing:antialiased;
-  backface-visibility:hidden;
-}
-.lux-item-info{
-  min-width:0;
-  padding:13px 12px 10px 2px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-  text-align:left;
-}
-.lux-item-kicker{
-  font-size:7px;
-  color:rgba(255,255,255,.80);
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  text-shadow:0 1px 10px rgba(105,77,59,.15);
-}
-.lux-menu-item h3{
-  font-family:"Cormorant Garamond","Bodoni 72","Didot",Georgia,serif;
-  font-size:27px;
-  line-height:.96;
-  font-weight:500;
-  margin:11px 0 9px;
-  color:#fff;
-  text-shadow:0 2px 16px rgba(105,77,59,.17);
-}
-.lux-menu-item p{
-  font-size:10.5px;
-  line-height:1.55;
-  color:rgba(255,255,255,.86);
-  margin:0 0 12px;
-  text-shadow:0 1px 9px rgba(105,77,59,.13);
-}
-.lux-item-bottom{margin-top:auto;display:flex;align-items:end;justify-content:space-between;gap:8px}
-.lux-price{
-  font-family:"Cormorant Garamond","Bodoni 72","Didot",Georgia,serif;
-  font-size:25px;
-  line-height:1;
-  font-weight:500;
-  color:#fff;
-  text-shadow:0 2px 14px rgba(105,77,59,.17);
-}
-.lux-view-dish{display:none}
-.empty{
-  margin:18px 0;
-  padding:30px;
-  text-align:center;
-  color:#fff;
-  border:1px solid var(--line);
-  border-radius:26px;
-  background:rgba(255,255,255,.15);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-}
-.footer{text-align:center;padding:30px 0 6px}
-.footer a{min-height:54px;padding:0 28px}
-
-@media(max-width:760px){
-  .wrap{width:calc(100% - 24px);padding:18px 0 32px}
-  .top{margin-bottom:22px}
-  .back,.reserve{min-height:43px;padding:0 15px;font-size:9px}
-  .brand{margin:14px auto 23px}
-  .brand h1{font-size:48px}
-  .brand p{font-size:11px}
-  .cats{margin-left:-2px;margin-right:-2px;border-radius:21px}
-  .cats button{min-height:39px;padding:0 14px;font-size:10px}
-  .search{min-height:52px;border-radius:22px}
-  .grid{grid-template-columns:1fr;gap:13px}
-  .lux-menu-item{grid-template-columns:42% 58%;gap:10px;min-height:175px;padding:8px;border-radius:24px}
-  .lux-item-photo{min-height:159px;border-radius:19px}
-  .lux-item-photo img{min-height:159px;border-radius:19px}
-  .lux-item-info{padding:9px 8px 8px 1px}
-  .lux-menu-item h3{font-size:23px;margin:8px 0 7px}
-  .lux-menu-item p{font-size:9.5px;line-height:1.45}
-  .lux-price{font-size:22px}
-}
-@media(max-width:380px){
-  .wrap{width:calc(100% - 18px)}
-  .back,.reserve{padding:0 12px;font-size:8px}
-  .brand h1{font-size:43px}
-  .brand small{font-size:7px;letter-spacing:2.4px}
-  .lux-menu-item{grid-template-columns:41% 59%}
-  .lux-menu-item h3{font-size:21px}
-}
-
-/* Tap-to-enlarge menu photos */
-.lux-item-photo{cursor:zoom-in}
-.lux-item-photo:empty{cursor:default}
-.menu-lightbox{
-  position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
-  padding:18px;background:rgba(15,12,10,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)
-}
-.menu-lightbox.open{display:flex}
-.menu-lightbox-inner{position:relative;width:min(96vw,980px);max-height:94vh;display:flex;align-items:center;justify-content:center}
-.menu-lightbox-image{
-  display:block;max-width:92vw;max-height:86vh;width:auto;height:auto;border-radius:24px;
-  background:rgba(255,255,255,.08);
-  box-shadow:0 24px 80px rgba(0,0,0,.42);touch-action:pinch-zoom;
-  object-fit:contain;image-rendering:auto;
-  -webkit-user-drag:none;
-  backface-visibility:hidden;
-  filter:contrast(1.015) saturate(1.01);
-}
-.menu-lightbox-close{
-  position:absolute;top:-10px;right:-6px;width:44px;height:44px;border:0;border-radius:50%;
-  background:rgba(255,255,255,.93);color:#1b1714;font-size:25px;line-height:1;cursor:pointer;
-  box-shadow:0 8px 26px rgba(0,0,0,.22)
-}
-@media(max-width:760px){
-  .menu-lightbox{padding:10px}
-  .menu-lightbox-image{max-width:94vw;max-height:88vh;border-radius:18px}
-  .menu-lightbox-close{top:8px;right:8px}
-}
-
-</style></head><body><main class="wrap"><div class="top"><a class="back" href="/">← BACK</a><a class="reserve" href="index.html#reserve">RESERVE A TABLE</a></div><div class="brand"><small>RESTAURANT APP · SAMPLE MENU</small><h1>RESTAURANT APP</h1><p>Sample menu template. Replace example dishes, photos and prices before using it for a restaurant.</p></div><div class="cats"><button class="active" data-cat="All">All</button><button data-cat="Rolls">Rolls</button><button data-cat="Maki">Maki</button><button data-cat="Nigiri">Nigiri</button><button data-cat="Sashimi">Sashimi</button><button data-cat="Gunkan">Gunkan</button><button data-cat="Sets">Sets</button><button data-cat="Carpaccio">Carpaccio</button><button data-cat="Snacks">Snacks</button><button data-cat="Desserts">Desserts</button><button data-cat="Hot Food">Hot Food</button><button data-cat="Cold Non-Alcoholic Drinks">Cold Non-Alcoholic Drinks</button><button data-cat="Non-Alcoholic Hot Drinks">Non-Alcoholic Hot Drinks</button><button data-cat="Alcoholic Beer">Alcoholic Beer</button></div><input id="search" class="search" type="search" placeholder="Search menu"><div id="grid" class="grid"><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="shrimp crunch 8 pcs. tempura shrimps, cream cheese, avocado, panko.">
-<div class="lux-item-photo"><img alt="Shrimp Crunch 8 Pcs." data-menu-img="shrimp-crunch-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Shrimp Crunch 8 Pcs.</h3>
-<p>Tempura shrimps, cream cheese, avocado, panko.</p>
-<div class="lux-item-bottom"><span class="lux-price">920 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="spicy sake roll 8 pcs. salmon, cream cheese, cucumber, avocado, hot sauce.">
-<div class="lux-item-photo"><img alt="Spicy Sake Roll 8 Pcs." data-menu-img="spicy-sake-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Spicy Sake Roll 8 Pcs.</h3>
-<p>Salmon, cream cheese, cucumber, avocado, hot sauce.</p>
-<div class="lux-item-bottom"><span class="lux-price">960 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="spicy tuna roll 8 pcs. tuna fish, cream cheese, cucumber, avocado, hot sauce.">
-<div class="lux-item-photo"><img alt="Spicy Tuna Roll 8 Pcs." data-menu-img="spicy-tuna-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Spicy Tuna Roll 8 Pcs.</h3>
-<p>Tuna fish, cream cheese, cucumber, avocado, hot sauce.</p>
-<div class="lux-item-bottom"><span class="lux-price">1020 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="hayabusa roll 8 pcs. sea bass, cream cheese, cucumber, tempura sea bass.">
-<div class="lux-item-photo"><img alt="Hayabusa Roll 8 Pcs." data-menu-img="hayabusa-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Hayabusa Roll 8 Pcs.</h3>
-<p>Sea bass, cream cheese, cucumber, tempura sea bass.</p>
-<div class="lux-item-bottom"><span class="lux-price">980 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="vegetarian roll 8 pcs. rice with wakame, avocado, sesame and cucumber.">
-<div class="lux-item-photo"><img alt="Vegetarian Roll 8 Pcs." data-menu-img="vegetarian-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Vegetarian Roll 8 Pcs.</h3>
-<p>Rice with wakame, avocado, sesame and cucumber.</p>
-<div class="lux-item-bottom"><span class="lux-price">780 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="crunch sake roll 8 pcs. cream cheese, avocado, cucumber, salmon, panko.">
-<div class="lux-item-photo"><img alt="Crunch Sake Roll 8 Pcs." data-menu-img="crunch-sake-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Crunch Sake Roll 8 Pcs.</h3>
-<p>Cream cheese, avocado, cucumber, salmon, panko.</p>
-<div class="lux-item-bottom"><span class="lux-price">920 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="california roll 8 pcs. tobiko, surimi, cucumber, avocado, mayonnaise.">
-<div class="lux-item-photo"><img alt="California Roll 8 Pcs." data-menu-img="california-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>California Roll 8 Pcs.</h3>
-<p>Tobiko, surimi, cucumber, avocado, mayonnaise.</p>
-<div class="lux-item-bottom"><span class="lux-price">1080 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="philadelphia tuna roll 8 pcs. tuna fish, cream cheese, cucumber, avocado.">
-<div class="lux-item-photo"><img alt="Philadelphia Tuna Roll 8 Pcs." data-menu-img="philadelphia-tuna-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Philadelphia Tuna Roll 8 Pcs.</h3>
-<p>Tuna fish, cream cheese, cucumber, avocado.</p>
-<div class="lux-item-bottom"><span class="lux-price">1020 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="philadelphia roll 8 pcs. salmon, cream cheese, cucumber, avocado.">
-<div class="lux-item-photo"><img alt="Philadelphia Roll 8 Pcs." data-menu-img="philadelphia-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Philadelphia Roll 8 Pcs.</h3>
-<p>Salmon, cream cheese, cucumber, avocado.</p>
-<div class="lux-item-bottom"><span class="lux-price">980 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="rainbow roll 8 pcs. tuna fish, salmon, sea bass, eel fish, cream cheese, avocado.">
-<div class="lux-item-photo"><img alt="Rainbow Roll 8 Pcs." data-menu-img="rainbow-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Rainbow Roll 8 Pcs.</h3>
-<p>Tuna fish, salmon, sea bass, eel fish, cream cheese, avocado.</p>
-<div class="lux-item-bottom"><span class="lux-price">1050 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="dragon roll 8 pcs. eel fish, teriyaki sauce, cream cheese, avocado.">
-<div class="lux-item-photo"><img alt="Dragon Roll 8 Pcs." data-menu-img="dragon-roll-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Dragon Roll 8 Pcs.</h3>
-<p>Eel fish, teriyaki sauce, cream cheese, avocado.</p>
-<div class="lux-item-bottom"><span class="lux-price">1300 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Rolls" data-menu-search="suzuki avocado maki 8 pcs. sea bass, avocado.">
-<div class="lux-item-photo"><img alt="Suzuki Avocado Maki 8 Pcs." data-menu-img="suzuki-avocado-maki-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Rolls</div>
-<h3>Suzuki Avocado Maki 8 Pcs.</h3>
-<p>Sea bass, avocado.</p>
-<div class="lux-item-bottom"><span class="lux-price">650 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Maki" data-menu-search="tuna maki 8 pcs. tuna fish.">
-<div class="lux-item-photo"><img alt="Tuna Maki 8 Pcs." data-menu-img="tuna-maki-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Maki</div>
-<h3>Tuna Maki 8 Pcs.</h3>
-<p>Tuna fish.</p>
-<div class="lux-item-bottom"><span class="lux-price">650 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Maki" data-menu-search="kappa maki 8 pcs. cucumber.">
-<div class="lux-item-photo"><img alt="Kappa Maki 8 Pcs." data-menu-img="kappa-maki-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Maki</div>
-<h3>Kappa Maki 8 Pcs.</h3>
-<p>Cucumber.</p>
-<div class="lux-item-bottom"><span class="lux-price">520 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Maki" data-menu-search="avocado maki 8 pcs. avocado.">
-<div class="lux-item-photo"><img alt="Avocado Maki 8 Pcs." data-menu-img="avocado-maki-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Maki</div>
-<h3>Avocado Maki 8 Pcs.</h3>
-<p>Avocado.</p>
-<div class="lux-item-bottom"><span class="lux-price">580 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Maki" data-menu-search="sake avocado 8 pcs. salmon, avocado.">
-<div class="lux-item-photo"><img alt="Sake Avocado 8 Pcs." data-menu-img="sake-avocado-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Maki</div>
-<h3>Sake Avocado 8 Pcs.</h3>
-<p>Salmon, avocado.</p>
-<div class="lux-item-bottom"><span class="lux-price">650 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Maki" data-menu-search="sake maki 8 pcs. salmon.">
-<div class="lux-item-photo"><img alt="Sake Maki 8 Pcs." data-menu-img="sake-maki-8" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Maki</div>
-<h3>Sake Maki 8 Pcs.</h3>
-<p>Salmon.</p>
-<div class="lux-item-bottom"><span class="lux-price">610 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Nigiri" data-menu-search="sake nigiri 1 pcs. salmon.">
-<div class="lux-item-photo"><img alt="Sake Nigiri 1 Pcs." data-menu-img="sake-nigiri-1" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Nigiri</div>
-<h3>Sake Nigiri 1 Pcs.</h3>
-<p>Salmon.</p>
-<div class="lux-item-bottom"><span class="lux-price">780 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Nigiri" data-menu-search="suzuki nigiri 1 pcs. sea bass.">
-<div class="lux-item-photo"><img alt="Suzuki Nigiri 1 Pcs." data-menu-img="suzuki-nigiri-1" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Nigiri</div>
-<h3>Suzuki Nigiri 1 Pcs.</h3>
-<p>Sea bass.</p>
-<div class="lux-item-bottom"><span class="lux-price">780 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Nigiri" data-menu-search="tuna nigiri 1 pcs. tuna fish.">
-<div class="lux-item-photo"><img alt="Tuna Nigiri 1 Pcs." data-menu-img="tuna-nigiri-1" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Nigiri</div>
-<h3>Tuna Nigiri 1 Pcs.</h3>
-<p>Tuna fish.</p>
-<div class="lux-item-bottom"><span class="lux-price">980 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Nigiri" data-menu-search="unagi nigiri 1 pcs. eel fish.">
-<div class="lux-item-photo"><img alt="Unagi Nigiri 1 Pcs." data-menu-img="unagi-nigiri-1" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Nigiri</div>
-<h3>Unagi Nigiri 1 Pcs.</h3>
-<p>Eel fish.</p>
-<div class="lux-item-bottom"><span class="lux-price">920 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Sashimi" data-menu-search="ebi sashimi 4 pcs. shrimp sashimi, 4 slices.">
-<div class="lux-item-photo"><img alt="Ebi Sashimi 4 Pcs." data-menu-img="ebi-sashimi-4" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Sashimi</div>
-<h3>Ebi Sashimi 4 Pcs.</h3>
-<p>Shrimp sashimi, 4 slices.</p>
-<div class="lux-item-bottom"><span class="lux-price">840 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Sashimi" data-menu-search="sake sashimi 4 pcs. salmon sashimi, 4 slices.">
-<div class="lux-item-photo"><img alt="Sake Sashimi 4 Pcs." data-menu-img="sake-sashimi-4" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Sashimi</div>
-<h3>Sake Sashimi 4 Pcs.</h3>
-<p>Salmon sashimi, 4 slices.</p>
-<div class="lux-item-bottom"><span class="lux-price">820 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Sashimi" data-menu-search="suzuki sashimi 4 pcs. sea bass sashimi, 4 slices.">
-<div class="lux-item-photo"><img alt="Suzuki Sashimi 4 Pcs." data-menu-img="suzuki-sashimi-4" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Sashimi</div>
-<h3>Suzuki Sashimi 4 Pcs.</h3>
-<p>Sea bass sashimi, 4 slices.</p>
-<div class="lux-item-bottom"><span class="lux-price">780 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Sashimi" data-menu-search="tuna sashimi 4 pcs. tuna sashimi, 4 slices.">
-<div class="lux-item-photo"><img alt="Tuna Sashimi 4 Pcs." data-menu-img="tuna-sashimi-4" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Sashimi</div>
-<h3>Tuna Sashimi 4 Pcs.</h3>
-<p>Tuna sashimi, 4 slices.</p>
-<div class="lux-item-bottom"><span class="lux-price">1040 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Sashimi" data-menu-search="unagi sashimi 4 pcs. eel sashimi, 4 slices.">
-<div class="lux-item-photo"><img alt="Unagi Sashimi 4 Pcs." data-menu-img="unagi-sashimi-4" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Sashimi</div>
-<h3>Unagi Sashimi 4 Pcs.</h3>
-<p>Eel sashimi, 4 slices.</p>
-<div class="lux-item-bottom"><span class="lux-price">980 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Sashimi" data-menu-search="sashimi set 13 slices 3 sake sashimi, 3 suzuki sashimi, 3 tuna sashimi, 2 unagi sashimi, 2 ebi sashimi.">
-<div class="lux-item-photo"><img alt="Sashimi Set 13 Slices" data-menu-img="sashimi-set-13-slices" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Sashimi</div>
-<h3>Sashimi Set 13 Slices</h3>
-<p>3 Sake Sashimi, 3 Suzuki Sashimi, 3 Tuna Sashimi, 2 Unagi Sashimi, 2 Ebi Sashimi.</p>
-<div class="lux-item-bottom"><span class="lux-price">3450 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Gunkan" data-menu-search="sake gunkan 1 pcs. salmon gunkan."><div class="lux-item-photo"><img alt="Sake Gunkan 1 Pcs." data-menu-img="sake-gunkan-1" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div><div class="lux-item-info"><div class="lux-item-kicker">Gunkan</div><h3>Sake Gunkan 1 Pcs.</h3><p>Salmon gunkan.</p><div class="lux-item-bottom"><span class="lux-price">900 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Gunkan" data-menu-search="suzuki gunkan 1 pcs. sea bass gunkan."><div class="lux-item-photo"><img alt="Suzuki Gunkan 1 Pcs." data-menu-img="suzuki-gunkan-1" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div><div class="lux-item-info"><div class="lux-item-kicker">Gunkan</div><h3>Suzuki Gunkan 1 Pcs.</h3><p>Sea bass gunkan.</p><div class="lux-item-bottom"><span class="lux-price">980 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Gunkan" data-menu-search="tuna gunkan 1 pcs. tuna fish gunkan."><div class="lux-item-photo"><img alt="Tuna Gunkan 1 Pcs." data-menu-img="tuna-gunkan-1" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div><div class="lux-item-info"><div class="lux-item-kicker">Gunkan</div><h3>Tuna Gunkan 1 Pcs.</h3><p>Tuna fish gunkan.</p><div class="lux-item-bottom"><span class="lux-price">980 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Gunkan" data-menu-search="unagi gunkan 1 pcs. eel fish gunkan."><div class="lux-item-photo"><img alt="Unagi Gunkan 1 Pcs." data-menu-img="unagi-gunkan-1" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div><div class="lux-item-info"><div class="lux-item-kicker">Gunkan</div><h3>Unagi Gunkan 1 Pcs.</h3><p>Eel fish gunkan.</p><div class="lux-item-bottom"><span class="lux-price">980 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Sets" data-menu-search="delta multi set 70 pcs. ">
-<div class="lux-item-photo"><img alt="Delta Multi Set 70 Pcs." data-menu-img="delta-multi-set-70" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Sets</div><h3>Delta Multi Set 70 Pcs.</h3><p></p><div class="lux-item-bottom"><span class="lux-price">8100 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Sets" data-menu-search="restaurant app set 26 pcs. philadelphia tuna roll 8, hayabusa roll 8, spicy sake roll 8, sake nigiri 2.">
-<div class="lux-item-photo"><img alt="Restaurant App Set 26 Pcs." data-menu-img="sushi-club-set-26" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Sets</div><h3>Restaurant App Set 26 Pcs.</h3><p>Philadelphia Tuna Roll 8, Hayabusa Roll 8, Spicy Sake Roll 8, Sake Nigiri 2.</p><div class="lux-item-bottom"><span class="lux-price">3450 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Sets" data-menu-search="delta set 32 pcs. philadelphia roll 8, california roll 8, crunch sake roll 8, avocado maki 8.">
-<div class="lux-item-photo"><img alt="Delta Set 32 Pcs." data-menu-img="delta-set-32" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Sets</div><h3>Delta Set 32 Pcs.</h3><p>Philadelphia Roll 8, California Roll 8, Crunch Sake Roll 8, Avocado Maki 8.</p><div class="lux-item-bottom"><span class="lux-price">3250 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Sets" data-menu-search="tokyo hot set 32 pcs. dragon roll 8, crunch sake roll 8, shrimp crunch roll 8, suzuki roll 8.">
-<div class="lux-item-photo"><img alt="Tokyo Hot Set 32 Pcs." data-menu-img="tokyo-hot-set-32" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Sets</div><h3>Tokyo Hot Set 32 Pcs.</h3><p>Dragon Roll 8, Crunch Sake Roll 8, Shrimp Crunch Roll 8, Suzuki Roll 8.</p><div class="lux-item-bottom"><span class="lux-price">3850 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Carpaccio" data-menu-search="sea bass carpaccio sea bass, greens, sriracha sauce.">
-<div class="lux-item-photo"><img alt="Sea Bass Carpaccio" data-menu-img="sea-bass-carpaccio" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Carpaccio</div><h3>Sea Bass Carpaccio</h3><p>Sea bass, greens, sriracha sauce.</p><div class="lux-item-bottom"><span class="lux-price">810 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Carpaccio" data-menu-search="salmon carpaccio salmon, greens, purple onion, balsamic vinegar, ponzu.">
-<div class="lux-item-photo"><img alt="Salmon Carpaccio" data-menu-img="salmon-carpaccio" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Carpaccio</div><h3>Salmon Carpaccio</h3><p>Salmon, greens, purple onion, balsamic vinegar, ponzu.</p><div class="lux-item-bottom"><span class="lux-price">810 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Carpaccio" data-menu-search="tuna fish carpaccio tuna fish, greens, purple onion, balsamic vinegar, ponzu.">
-<div class="lux-item-photo"><img alt="Tuna Fish Carpaccio" data-menu-img="tuna-fish-carpaccio" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Carpaccio</div><h3>Tuna Fish Carpaccio</h3><p>Tuna fish, greens, purple onion, balsamic vinegar, ponzu.</p><div class="lux-item-bottom"><span class="lux-price">860 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Hot Food" data-menu-search="truffle mushroom risotto truffle mushroom, risotto rice, parmesan cheese, tomato sauce.">
-<div class="lux-item-photo"><img alt="Truffle Mushroom Risotto" data-menu-img="truffle-mushroom-risotto" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Carpaccio</div><h3>Truffle Mushroom Risotto</h3><p>Truffle mushroom, risotto rice, parmesan cheese, tomato sauce.</p><div class="lux-item-bottom"><span class="lux-price">680 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Snacks" data-menu-search="wakame salad wakame seaweed salad.">
-<div class="lux-item-photo"><img alt="Wakame Salad" data-menu-img="wakame-salad" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Snacks</div><h3>Wakame Salad</h3><p>Wakame seaweed salad.</p><div class="lux-item-bottom"><span class="lux-price">650 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Snacks" data-menu-search="edamame steamed edamame.">
-<div class="lux-item-photo"><img alt="Edamame" data-menu-img="edamame" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Snacks</div><h3>Edamame</h3><p>Steamed edamame.</p><div class="lux-item-bottom"><span class="lux-price">460 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Snacks" data-menu-search="shrimp chips crispy shrimp chips.">
-<div class="lux-item-photo"><img alt="Shrimp Chips" data-menu-img="shrimp-chips" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info"><div class="lux-item-kicker">Snacks</div><h3>Shrimp Chips</h3><p>Crispy shrimp chips.</p><div class="lux-item-bottom"><span class="lux-price">300 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Desserts" data-menu-search="strawberry ice cream scoop strawberry ice cream scoop."><div class="lux-item-photo"><img alt="Strawberry Ice Cream Scoop" data-menu-img="strawberry-ice-cream-scoop" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div><div class="lux-item-info"><div class="lux-item-kicker">Desserts</div><h3>Strawberry Ice Cream Scoop</h3><p>Strawberry ice cream scoop.</p><div class="lux-item-bottom"><span class="lux-price">190 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Desserts" data-menu-search="mochi mochi."><div class="lux-item-photo"><img alt="Mochi" data-menu-img="mochi" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div><div class="lux-item-info"><div class="lux-item-kicker">Desserts</div><h3>Mochi</h3><p>Mochi.</p><div class="lux-item-bottom"><span class="lux-price">360 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Desserts" data-menu-search="pistachio soufflé pistachio soufflé."><div class="lux-item-photo"><img alt="Pistachio Soufflé" data-menu-img="pistachio-souffle" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div><div class="lux-item-info"><div class="lux-item-kicker">Desserts</div><h3>Pistachio Soufflé</h3><p>Pistachio soufflé.</p><div class="lux-item-bottom"><span class="lux-price">660 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div></div></article><article class="lux-menu-item" data-menu-category="Hot Food" data-menu-search="chicken robatayaki chicken robatayaki.">
-<div class="lux-item-photo"><img alt="Chicken Robatayaki" data-menu-img="chicken-robatayaki" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Hot Food</div>
-<h3>Chicken Robatayaki</h3>
-<p>Chicken robatayaki.</p>
-<div class="lux-item-bottom"><span class="lux-price">1020 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Hot Food" data-menu-search="beef gyoza beef gyoza.">
-<div class="lux-item-photo"><img alt="Beef Gyoza" data-menu-img="beef-gyoza" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Hot Food</div>
-<h3>Beef Gyoza</h3>
-<p>Beef gyoza.</p>
-<div class="lux-item-bottom"><span class="lux-price">820 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Hot Food" data-menu-search="meat robatayaki meat robatayaki.">
-<div class="lux-item-photo"><img alt="Meat Robatayaki" data-menu-img="meat-robatayaki" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Hot Food</div>
-<h3>Meat Robatayaki</h3>
-<p>Meat robatayaki.</p>
-<div class="lux-item-bottom"><span class="lux-price">1820 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Hot Food" data-menu-search="shrimp tempura 4 pcs. crispy shrimp tempura, 4 pieces.">
-<div class="lux-item-photo"><img alt="Shrimp Tempura 4 Pcs." data-menu-img="shrimp-tempura-4" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Hot Food</div>
-<h3>Shrimp Tempura 4 Pcs.</h3>
-<p>Crispy shrimp tempura, 4 pieces.</p>
-<div class="lux-item-bottom"><span class="lux-price">940 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Hot Food" data-menu-search="dynamite shrimp 4 pcs. dynamite shrimp, 4 pieces.">
-<div class="lux-item-photo"><img alt="Dynamite Shrimp 4 Pcs." data-menu-img="dynamite-shrimp-4" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Hot Food</div>
-<h3>Dynamite Shrimp</h3>
-<p>Dynamite shrimp.</p>
-<div class="lux-item-bottom"><span class="lux-price">940 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Hot Food" data-menu-search="shrimp robatayaki shrimp robatayaki.">
-<div class="lux-item-photo"><img alt="Shrimp Robatayaki" data-menu-img="shrimp-robatayaki" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="/></div>
-<div class="lux-item-info">
-<div class="lux-item-kicker">Hot Food</div>
-<h3>Shrimp Robatayaki</h3>
-<p>Shrimp robatayaki.</p>
-<div class="lux-item-bottom"><span class="lux-price">1520 ₺</span><button class="lux-view-dish" type="button">VIEW</button></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Cold Non-Alcoholic Drinks" data-menu-search="peach lipton peach iced tea cold drink">
-<div class="lux-item-photo"><img alt="Peach Lipton" data-menu-img="peach-lipton" loading="lazy" src="assets/menu/peach-lipton-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Cold Non-Alcoholic Drinks</div>
-  <h3>Peach Lipton</h3>
-  <p>Peach-flavored iced tea.</p>
-  <div class="lux-item-bottom"><span class="lux-price">180 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Cold Non-Alcoholic Drinks" data-menu-search="lemon lipton lemon iced tea cold drink">
-<div class="lux-item-photo"><img alt="Lemon Lipton" data-menu-img="lemon-lipton" loading="lazy" src="assets/Premium%20Lemon%20Iced%20Tea%20Duo.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Cold Non-Alcoholic Drinks</div>
-  <h3>Lemon Lipton</h3>
-  <p>Lemon-flavored iced tea.</p>
-  <div class="lux-item-bottom"><span class="lux-price">180 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Cold Non-Alcoholic Drinks" data-menu-search="coca cola original 330 ml coke original cold drink">
-<div class="lux-item-photo"><img alt="Coca Cola Original 330 ml" data-menu-img="coca-cola-original-330" loading="lazy" src="assets/Coca-Cola%20Glow%20on%20Marble.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Cold Non-Alcoholic Drinks</div>
-  <h3>Coca Cola Original 330 ml</h3>
-  <p>Coca-Cola Original Taste, 330 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">180 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Cold Non-Alcoholic Drinks" data-menu-search="schweppes tonic 250 ml tonic water cold drink">
-<div class="lux-item-photo"><img alt="Schweppes Tonic 250 ml" data-menu-img="schweppes-tonic-250" loading="lazy" src="assets/menu/Schweppes-Tonic-Water-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Cold Non-Alcoholic Drinks</div>
-  <h3>Schweppes Tonic 250 ml</h3>
-  <p>Schweppes Tonic Water, 250 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">200 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Cold Non-Alcoholic Drinks" data-menu-search="tomato juice cold drink">
-<div class="lux-item-photo"><img alt="Tomato Juice" data-menu-img="tomato-juice" loading="lazy" src="assets/menu/Tomato-Juice-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Cold Non-Alcoholic Drinks</div>
-  <h3>Tomato Juice</h3>
-  <p>Chilled tomato juice.</p>
-  <div class="lux-item-bottom"><span class="lux-price">180 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Cold Non-Alcoholic Drinks" data-menu-search="uludag sparkling water 750 ml mineral water cold drink">
-<div class="lux-item-photo"><img alt="Uludağ Sparkling Water 750 ml" data-menu-img="uludag-sparkling-water-750" loading="lazy" src="assets/menu/Uludağ-Blue-Bottle-Sparkling-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Cold Non-Alcoholic Drinks</div>
-  <h3>Uludağ Sparkling Water 750 ml</h3>
-  <p>Uludağ sparkling mineral water, 750 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">270 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Cold Non-Alcoholic Drinks" data-menu-search="still water 330 ml uludag natural spring water cold drink">
-<div class="lux-item-photo"><img alt="Still Water 330 ml" data-menu-img="still-water-330" loading="lazy" src="assets/menu/Uludağ-Suyu-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Cold Non-Alcoholic Drinks</div>
-  <h3>Still Water 330 ml</h3>
-  <p>Still natural spring water, 330 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">90 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Cold Non-Alcoholic Drinks" data-menu-search="still water 750 ml uludag natural spring water cold drink">
-<div class="lux-item-photo"><img alt="Still Water 750 ml" data-menu-img="still-water-750" loading="lazy" src="assets/menu/Uludağ-Suyu-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Cold Non-Alcoholic Drinks</div>
-  <h3>Still Water 750 ml</h3>
-  <p>Still natural spring water, 750 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">140 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Non-Alcoholic Hot Drinks" data-menu-search="americano coffee hot drink">
-<div class="lux-item-photo"><img alt="Americano" data-menu-img="americano" loading="lazy" src="assets/menu/Americano-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Non-Alcoholic Hot Drinks</div>
-  <h3>Americano</h3>
-  <p>Freshly brewed Americano coffee.</p>
-  <div class="lux-item-bottom"><span class="lux-price">230 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Non-Alcoholic Hot Drinks" data-menu-search="latte coffee hot drink">
-<div class="lux-item-photo"><img alt="Latte" data-menu-img="latte" loading="lazy" src="assets/menu/Latte-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Non-Alcoholic Hot Drinks</div>
-  <h3>Latte</h3>
-  <p>Espresso with steamed milk and silky foam.</p>
-  <div class="lux-item-bottom"><span class="lux-price">250 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Non-Alcoholic Hot Drinks" data-menu-search="latte macchiato coffee hot drink">
-<div class="lux-item-photo"><img alt="Latte Macchiato" data-menu-img="latte-macchiato" loading="lazy" src="assets/Latte-Macchiato-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Non-Alcoholic Hot Drinks</div>
-  <h3>Latte Macchiato</h3>
-  <p>Layered espresso with steamed milk and milk foam.</p>
-  <div class="lux-item-bottom"><span class="lux-price">250 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Non-Alcoholic Hot Drinks" data-menu-search="hot chocolate cocoa hot drink">
-<div class="lux-item-photo"><img alt="Hot Chocolate" data-menu-img="hot-chocolate" loading="lazy" src="assets/menu/Hot-Chocolate-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Non-Alcoholic Hot Drinks</div>
-  <h3>Hot Chocolate</h3>
-  <p>Rich hot chocolate topped with cream.</p>
-  <div class="lux-item-bottom"><span class="lux-price">250 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Non-Alcoholic Hot Drinks" data-menu-search="turkish traditional coffee turkish coffee hot drink">
-<div class="lux-item-photo"><img alt="Turkish Traditional Coffee" data-menu-img="turkish-traditional-coffee" loading="lazy" src="assets/Turkish-Coffee-Ritual-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Non-Alcoholic Hot Drinks</div>
-  <h3>Turkish Traditional Coffee</h3>
-  <p>Traditional Turkish coffee served with water and Turkish delight.</p>
-  <div class="lux-item-bottom"><span class="lux-price">180 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Non-Alcoholic Hot Drinks" data-menu-search="espresso coffee hot drink">
-<div class="lux-item-photo"><img alt="Espresso" data-menu-img="espresso" loading="lazy" src="assets/menu/Espresso-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Non-Alcoholic Hot Drinks</div>
-  <h3>Espresso</h3>
-  <p>Freshly brewed espresso.</p>
-  <div class="lux-item-bottom"><span class="lux-price">220 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Non-Alcoholic Hot Drinks" data-menu-search="double espresso coffee hot drink">
-<div class="lux-item-photo"><img alt="Double Espresso" data-menu-img="double-espresso" loading="lazy" src="assets/menu/Espresso-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Non-Alcoholic Hot Drinks</div>
-  <h3>Double Espresso</h3>
-  <p>Double shot of freshly brewed espresso.</p>
-  <div class="lux-item-bottom"><span class="lux-price">230 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Alcoholic Beer" data-menu-search="corona beer 330 ml alcoholic cold drink">
-<div class="lux-item-photo"><img alt="Corona Beer 330 ml" data-menu-img="corona-beer-330" loading="lazy" src="assets/menu/Corona-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Alcoholic Beer</div>
-  <h3>Corona Beer 330 ml</h3>
-  <p>Corona Extra lager beer, 330 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">550 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Alcoholic Beer" data-menu-search="bomonti not filtered 500 ml beer alcoholic cold drink">
-<div class="lux-item-photo"><img alt="Bomonti Not Filtered 500 ml" data-menu-img="bomonti-not-filtered-500" loading="lazy" src="assets/menu/Bomonti-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Alcoholic Beer</div>
-  <h3>Bomonti Not Filtered 500 ml</h3>
-  <p>Bomonti unfiltered malt beer, 500 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">430 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Alcoholic Beer" data-menu-search="efes 330 ml beer alcoholic cold drink">
-<div class="lux-item-photo"><img alt="Efes 330 ml" data-menu-img="efes-330" loading="lazy" src="assets/menu/Efes-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Alcoholic Beer</div>
-  <h3>Efes 330 ml</h3>
-  <p>Efes Pilsen lager beer, 330 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">420 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Alcoholic Beer" data-menu-search="becks 330 ml beer alcoholic cold drink">
-<div class="lux-item-photo"><img alt="Becks 330 ml" data-menu-img="becks-330" loading="lazy" src="assets/menu/Beck’s-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Alcoholic Beer</div>
-  <h3>Becks 330 ml</h3>
-  <p>Beck’s lager beer, 330 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">460 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Alcoholic Beer" data-menu-search="carlsberg beer alcoholic cold drink">
-<div class="lux-item-photo"><img alt="Carlsberg" data-menu-img="carlsberg" loading="lazy" src="assets/menu/Carlsberg-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Alcoholic Beer</div>
-  <h3>Carlsberg</h3>
-  <p>Carlsberg lager beer.</p>
-  <div class="lux-item-bottom"><span class="lux-price">420 ₺</span></div>
-</div>
-</article><article class="lux-menu-item" data-menu-category="Alcoholic Beer" data-menu-search="miller 330 ml beer alcoholic cold drink">
-<div class="lux-item-photo"><img alt="Miller 330 ml" data-menu-img="miller-330" loading="lazy" src="assets/menu/Miller-clean.png.png"/></div>
-<div class="lux-item-info">
-  <div class="lux-item-kicker">Alcoholic Beer</div>
-  <h3>Miller 330 ml</h3>
-  <p>Miller Genuine Draft lager beer, 330 ml.</p>
-  <div class="lux-item-bottom"><span class="lux-price">460 ₺</span></div>
-</div>
-</article></div><div id="empty" class="empty" style="display:none">No dishes found.</div><div class="footer"><a href="/#reserve">RESERVE A TABLE</a></div></main>
-<div id="menuLightbox" class="menu-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged menu image" aria-hidden="true">
-  <div class="menu-lightbox-inner">
-    <img id="menuLightboxImage" class="menu-lightbox-image" alt="" decoding="async"/>
-    <button id="menuLightboxClose" class="menu-lightbox-close" type="button" aria-label="Close enlarged image">×</button>
-  </div>
-</div>
-<script src="menu-images-lite.js"></script><script>
-let active='All';const cards=[...document.querySelectorAll('.lux-menu-item')];function apply(){const q=document.getElementById('search').value.trim().toLowerCase();let n=0;cards.forEach(c=>{const cat=c.dataset.menuCategory||'';const txt=(c.dataset.menuSearch||c.innerText).toLowerCase();const ok=(active==='All'||cat===active)&&(!q||txt.includes(q));c.style.display=ok?'grid':'none';if(ok)n++});document.getElementById('empty').style.display=n?'none':'block'}document.querySelectorAll('.cats button').forEach(b=>b.onclick=()=>{active=b.dataset.cat;document.querySelectorAll('.cats button').forEach(x=>x.classList.toggle('active',x===b));apply()});document.getElementById('search').addEventListener('input',apply);apply();
-
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#e8dfd4">
+<title>Restaurant Menu</title>
+<style>
+:root{--paper:#fbf7f0;--ink:#2c2925;--muted:#756c62;--line:#ddd0c0;--accent:#94764e}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(145deg,#eee5da,#d9c8b6);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+.wrap{max-width:1040px;margin:auto;padding:24px 18px 56px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.pill{border:1px solid #ffffffa8;border-radius:999px;padding:11px 17px;background:#ffffff42;color:var(--ink);text-decoration:none;font-size:12px}
+header{padding:42px 0 26px}
+.eyebrow{text-transform:uppercase;letter-spacing:3px;color:var(--accent);font-size:10px;font-weight:700}
+h1{font:400 clamp(34px,7vw,58px)/1.05 Georgia,serif;margin:12px 0}
+.lead{color:var(--muted);line-height:1.65;font-size:14px;max-width:560px}
+.tools{display:grid;gap:12px;margin:20px 0}
+#search{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#fffdf8;font:inherit}
+#categories{display:flex;gap:8px;flex-wrap:wrap}
+.cat{border:1px solid var(--line);background:#ffffff6b;border-radius:999px;padding:9px 13px;font-size:12px;color:var(--ink)}
+.cat.active{background:var(--ink);border-color:var(--ink);color:white}
+#grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
+.item{border:1px solid #ffffffb0;border-radius:20px;background:#fffaf2cc;overflow:hidden;box-shadow:0 14px 34px #51402a0b}
+.item img{display:block;width:100%;height:190px;object-fit:cover;background:#e5d9cb}
+.item-body{padding:17px}
+.item-category{font-size:9px;text-transform:uppercase;letter-spacing:1.8px;color:var(--accent);font-weight:700}
+.item h2{font:400 23px/1.15 Georgia,serif;margin:9px 0}
+.item p{font-size:12px;line-height:1.6;color:var(--muted);margin:0}
+.price{margin-top:15px;font-size:13px;font-weight:700}
+.state{padding:30px 18px;border:1px dashed var(--line);border-radius:18px;text-align:center;color:var(--muted);line-height:1.7}
+footer{margin-top:36px;padding-top:20px;border-top:1px solid #ffffffa8;color:var(--muted);font-size:11px;line-height:1.7}
+@media(max-width:520px){.wrap{padding:16px 14px 40px}.item img{height:170px}.top .pill{flex:1;text-align:center}}
+</style>
+</head>
+<body>
+<main class="wrap">
+ <nav class="top">
+  <a id="backLink" class="pill" href="index.html">← Back to restaurant</a>
+  <a id="reserveLink" class="pill" href="index.html#reserve">Reserve a table</a>
+ </nav>
+ <header>
+  <div class="eyebrow">Restaurant App · Menu</div>
+  <h1 id="restaurantName">Restaurant Menu</h1>
+  <p class="lead">Explore the dishes and drinks offered by this restaurant. Menu items and prices are managed by the restaurant owner.</p>
+ </header>
+ <div class="tools">
+  <input id="search" type="search" placeholder="Search menu">
+  <div id="categories"></div>
+ </div>
+ <div id="grid"><div class="state">Loading menu…</div></div>
+ <footer>© 2026 Restaurant App · Independent restaurant booking platform</footer>
+</main>
+<script>
 (function(){
-  const box=document.getElementById('menuLightbox');
-  const big=document.getElementById('menuLightboxImage');
-  const close=document.getElementById('menuLightboxClose');
-  if(!box||!big||!close)return;
-
-  function openImage(img){
-    if(!img||!img.src)return;
-    const fullSrc=img.dataset.menuFullSrc||img.currentSrc||img.src;
-    big.decoding='sync';
-    big.fetchPriority='high';
-    big.src=fullSrc;
-    big.alt=img.alt||'Menu image';
-    box.classList.add('open');
-    box.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
-    close.focus();
+ const API='https://fkztipofuahmxenisayd.supabase.co/functions/v1/guest-reservations';
+ const params=new URLSearchParams(location.search);
+ const slug=params.get('restaurant')||'my-restaurant';
+ const valid=/^[a-z0-9][a-z0-9-]{1,48}$/.test(slug)?slug:'my-restaurant';
+ document.getElementById('backLink').href='index.html?restaurant='+encodeURIComponent(valid);
+ document.getElementById('reserveLink').href='index.html?restaurant='+encodeURIComponent(valid)+'#reserve';
+ const grid=document.getElementById('grid'),cats=document.getElementById('categories'),search=document.getElementById('search');
+ let items=[],selected='All',currency='TRY';
+ const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n};
+ function render(){
+  const q=search.value.trim().toLowerCase();
+  const filtered=items.filter(x=>(selected==='All'||x.category===selected)&&[x.name,x.description,x.category].join(' ').toLowerCase().includes(q));
+  grid.replaceChildren();
+  if(!filtered.length){grid.append(el('div','state',items.length?'No menu items match your search.':'This restaurant has not published its menu yet.'));return}
+  for(const item of filtered){
+   const card=el('article','item');
+   if(item.image_url){const image=el('img');image.src=item.image_url;image.alt=item.name;image.loading='lazy';card.append(image)}
+   const body=el('div','item-body');body.append(el('div','item-category',item.category||'Menu'));
+   body.append(el('h2','',item.name));if(item.description)body.append(el('p','',item.description));
+   const price=el('div','price',new Intl.NumberFormat(undefined,{style:'currency',currency:item.currency||currency}).format(Number(item.price||0)));
+   body.append(price);card.append(body);grid.append(card);
   }
-  function closeImage(){
-    box.classList.remove('open');
-    box.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-    big.removeAttribute('src');
-    big.alt='';
-  }
-
-  document.querySelectorAll('.lux-item-photo img').forEach(img=>{
-    img.decoding='async';
-    img.addEventListener('load',()=>{
-      if(img.naturalWidth&&img.naturalHeight){
-        img.dataset.nativeWidth=String(img.naturalWidth);
-        img.dataset.nativeHeight=String(img.naturalHeight);
-      }
-    },{once:true});
-    img.setAttribute('tabindex','0');
-    img.setAttribute('role','button');
-    img.setAttribute('aria-label',(img.alt||'Menu image')+' — tap to enlarge');
-    img.addEventListener('click',()=>openImage(img));
-    img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openImage(img)}});
-  });
-
-  close.addEventListener('click',closeImage);
-  box.addEventListener('click',e=>{if(e.target===box)closeImage()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&box.classList.contains('open'))closeImage()});
+ }
+ function renderCategories(){
+  const values=['All',...new Set(items.map(x=>x.category).filter(Boolean))];
+  cats.replaceChildren();
+  for(const value of values){const b=el('button','cat'+(value===selected?' active':''),value);b.type='button';b.addEventListener('click',()=>{selected=value;renderCategories();render()});cats.append(b)}
+ }
+ search.addEventListener('input',render);
+ fetch(API+'?'+new URLSearchParams({action:'menu',restaurant:valid}),{cache:'no-store'})
+  .then(async response=>{const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||'Menu unavailable');return data})
+  .then(data=>{items=data.items||[];currency=data.restaurant?.currency||'TRY';const name=data.restaurant?.name||'Restaurant Menu';document.getElementById('restaurantName').textContent=name;document.title=name+' · Menu';renderCategories();render()})
+  .catch(()=>{grid.replaceChildren(el('div','state','The menu could not be loaded. Please try again later.'));});
 })();
-
-</script></body></html>
+</script>
+</body>
+</html>
