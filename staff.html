@@ -936,7 +936,7 @@ input,select,textarea{
           <div><label data-i18n="status">STATUS</label><select id="status"><option value="all" data-i18n="all">All</option><option value="pending" data-i18n="pending">Pending</option><option value="confirmed" data-i18n="confirmed">Confirmed</option><option value="reconfirmed" data-i18n="reconfirmed">Reconfirmed</option><option value="seated" data-i18n="seated">Seated</option><option value="completed" data-i18n="completed">Completed</option><option value="no_show" data-i18n="noShow">No-show</option><option value="declined" data-i18n="declined">Declined</option><option value="cancelled" data-i18n="cancelled">Cancelled</option></select></div>
         </div>
         <div class="stats"><div class="stat"><b id="totalStat">0</b><span data-i18n="total">Total</span></div><div class="stat"><b id="pendingStat">0</b><span data-i18n="pending">Pending</span></div><div class="stat"><b id="confirmedStat">0</b><span data-i18n="confirmed">Confirmed</span></div><div class="stat"><b id="paxStat">0</b><span data-i18n="guests">Guests</span></div></div>
-        <div class="tabs"><button id="reqTab" class="on" data-i18n="reservations">RESERVATIONS</button><button id="tableTab" data-i18n="tables">TABLES</button><button id="slotTab" data-i18n="availability">AVAILABILITY</button></div>
+        <div class="tabs"><button id="reqTab" class="on" data-i18n="reservations">RESERVATIONS</button><button id="tableTab" data-i18n="tables">TABLES</button><button id="slotTab" data-i18n="availability">AVAILABILITY</button><button id="settingsTab">SETTINGS</button></div>
       </section>
 
       <section id="requestsCard" class="card"><div id="requests"></div></section>
@@ -980,6 +980,29 @@ input,select,textarea{
   </div>
 </section>
       <section id="slotsCard" class="card hidden"><div id="slots"></div></section>
+      <section id="settingsCard" class="card hidden">
+  <div class="eyebrow">RESTAURANT SETTINGS</div>
+  <p class="note">Configure the restaurant name, time zone, booking hours and closed days. These settings apply to this restaurant only.</p>
+  <div class="row">
+    <div><label for="settingsName">RESTAURANT NAME</label><input id="settingsName" maxlength="120" autocomplete="organization"></div>
+    <div><label for="settingsTimezone">TIME ZONE (IANA)</label><input id="settingsTimezone" value="Europe/Istanbul" placeholder="Europe/Istanbul"></div>
+    <div><label for="settingsStart">FIRST RESERVATION</label><input id="settingsStart" type="time" value="17:00"></div>
+    <div><label for="settingsEnd">LAST RESERVATION</label><input id="settingsEnd" type="time" value="22:00"></div>
+    <div><label for="settingsStep">TIME SLOT INTERVAL</label><select id="settingsStep"><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="60">60 minutes</option></select></div>
+  </div>
+  <label>CLOSED DAYS</label>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 16px">
+    <label><input type="checkbox" name="closedWeekdays" value="0" style="width:auto"> Sun</label>
+    <label><input type="checkbox" name="closedWeekdays" value="1" style="width:auto"> Mon</label>
+    <label><input type="checkbox" name="closedWeekdays" value="2" style="width:auto"> Tue</label>
+    <label><input type="checkbox" name="closedWeekdays" value="3" style="width:auto"> Wed</label>
+    <label><input type="checkbox" name="closedWeekdays" value="4" style="width:auto"> Thu</label>
+    <label><input type="checkbox" name="closedWeekdays" value="5" style="width:auto"> Fri</label>
+    <label><input type="checkbox" name="closedWeekdays" value="6" style="width:auto"> Sat</label>
+  </div>
+  <button id="saveSettingsBtn" class="btn dark" type="button">SAVE SETTINGS</button>
+  <div id="settingsMessage" class="message"></div>
+</section>
     </section>
   </div>
 </main>
