@@ -2840,50 +2840,6 @@ main.phone > #myReservations.section.active > .inner {
 </section>
 
 
-<section id="staff" class="section">
-  <div class="inner">
-    <button class="back" onclick="show('home')">← Back</button>
-    <div class="eyebrow">SUSHI CLUB · STAFF</div>
-    <div class="staff-head">
-      <h2>Reservations Overview</h2>
-      <p>Manage requests, availability and the flow of the evening from one screen.</p>
-    </div>
-
-    <div class="staff-note">Demo version: data is stored only in this browser. In the live system, all guest phones and staff devices will use one shared database.</div>
-
-    <div class="staff-filter">
-      <div><label>DATE</label><input id="staffDate" type="date" onchange="renderStaff()"></div>
-      <div><label>STATUS</label><select id="staffFilter" onchange="renderStaff()"><option value="all">All</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="rejected">Declined</option></select></div>
-    </div>
-
-    <div class="staff-grid" id="staffStats"></div>
-
-    <div class="staff-tabs">
-      <button id="staffTabRequests" class="active" onclick="setStaffTab('requests')">REQUESTS</button>
-      <button id="staffTabTimeline" onclick="setStaffTab('timeline')">TIMELINE</button>
-      <button id="staffTabAvailability" onclick="setStaffTab('availability')">AVAILABILITY</button>
-    </div>
-
-    <div id="staffRequestsPanel">
-      <div class="card"><div id="staffRequests"></div></div>
-    </div>
-
-    <div id="staffTimelinePanel" style="display:none">
-      <div id="staffTimeline"></div>
-    </div>
-
-    <div id="staffAvailabilityPanel" style="display:none">
-      <div class="card">
-        <div class="capacity-line">
-          <label>DEMO MAX GUESTS PER TIME SLOT<input id="slotCapacity" type="number" min="1" value="20"></label>
-          <button class="btn light" onclick="saveCapacity()">SAVE</button>
-        </div>
-        <div class="staff-note">This is only a demo capacity. Later we can replace it with the real table layout and exact restaurant capacity.</div>
-        <div id="staffSlots"></div>
-      </div>
-    </div>
-  </div>
-</section>
 <section id="success" class="section success">
   <div class="successbox">
     <div class="check">✓</div>
