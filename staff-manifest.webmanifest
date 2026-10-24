@@ -1,7 +1,7 @@
 {
-  "name": "Sushi Club Staff",
+  "name": "Restaurant App Staff",
   "short_name": "Sushi Staff",
-  "description": "Staff reservations, table plan and live availability for Sushi Club.",
+  "description": "Staff reservations, table plan and live availability for Restaurant App.",
   "start_url": "/staff",
   "scope": "/staff",
   "display": "standalone",
