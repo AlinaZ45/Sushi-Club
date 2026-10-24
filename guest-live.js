@@ -71,6 +71,6 @@ window.refreshGuestLiveLanguage=function(){
 };
 const oldShow=window.show;
 window.show=function(id){oldShow(id);if(id==='myReservations')refreshRemoteMyReservations();if(id==='reserve')renderGuestTimes();};
-document.addEventListener('DOMContentLoaded',()=>{refreshRemoteMyReservations();renderGuestTimes();handleReservationDeepLink();});
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('a[href="menu.html"]').forEach(a=>a.href='menu.html?restaurant='+encodeURIComponent(restaurantSlug()));refreshRemoteMyReservations();renderGuestTimes();handleReservationDeepLink();});
 setTimeout(()=>{refreshRemoteMyReservations();renderGuestTimes();handleReservationDeepLink()},300);
 })();
