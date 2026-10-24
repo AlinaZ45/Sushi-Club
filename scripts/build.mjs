@@ -12,8 +12,8 @@ const source = Object.fromEntries(names.map(name => [name, fs.readFileSync(path.
 for (const name of names) {
   assert(source[name].length > 100, `${name}: empty or incomplete source`);
   if (name.endsWith('.html')) {
-    assert(/<body[\\s>]/i.test(source[name]) && /<\\/body>\\s*<\\/html>\\s*$/i.test(source[name]), `${name}: incomplete HTML`);
-    assert.equal((source[name].match(/<style[\\s>]/gi)||[]).length, (source[name].match(/<\\/style>/gi)||[]).length, `${name}: unclosed stylesheet`);
+    assert(/<body[\s>]/i.test(source[name]) && /<\/body>\s*<\/html>\s*$/i.test(source[name]), `${name}: incomplete HTML`);
+    assert.equal((source[name].match(/<style[\s>]/gi)||[]).length, (source[name].match(/<\/style>/gi)||[]).length, `${name}: unclosed stylesheet`);
   } else {
     new vm.Script(source[name], {filename:name});
   }
@@ -23,7 +23,7 @@ for (const name of names) {
 let index = source['index.html'];
 let menu = source['menu.html'];
 let staff = source['staff.html'];
-index = index.replace(/<script src="https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/@supabase\\/supabase-js@2"><\\/script>/g, '');
+index = index.replace(/<script src="https:\/\/cdn\.jsdelivr\.net\/npm\/@supabase\/supabase-js@2"><\/script>/g, '');
 for (const name of ['menu.html','staff.html','guest-core.js','guest-live.js','reliability.js','manifest.webmanifest','staff.js','staff-manifest.webmanifest','staff-icon.svg','staff-sw.js']) {
   index = index.replaceAll(`"/${name}"`, `"${name}"`).replaceAll(`'/${name}'`, `'${name}'`);
 }
@@ -33,8 +33,8 @@ staff = staff.replace('supabase-js@2"','supabase-js@2.57.4"')
   .replaceAll('href="/staff-manifest.webmanifest"','href="staff-manifest.webmanifest"')
   .replaceAll('href="/staff-icon.svg"','href="staff-icon.svg"')
   .replaceAll('href="/"','href="index.html"');
-index = index.replace(/<link rel="preload" as="image" href="\\/assets\\/sushi-intro-approved\\.webp">/g, '');
-if (!index.includes('src="reliability.js"')) index = index.replace('</body>', '<script src="reliability.js"></script>\\n</body>');
+index = index.replace(/<link rel="preload" as="image" href="\/assets\/sushi-intro-approved\.webp">/g, '');
+if (!index.includes('src="reliability.js"')) index = index.replace('</body>', '<script src="reliability.js"></script>\n</body>');
 
 const revision = /^[a-f0-9]{40}$/i.test(process.env.GITHUB_SHA||'') ? process.env.GITHUB_SHA : 'local-verification';
 const stamp = html => html.replace('</head>', `<meta name="restaurant-app-build" content="${revision}"></head>`);
@@ -50,8 +50,8 @@ const output = {
 for (const [name, content] of Object.entries(output)) {
   if (name.endsWith('.js')) new vm.Script(content,{filename:name});
   if (name.endsWith('.html')) {
-    for (const m of content.matchAll(/<script(\\s[^>]*)?>([\\s\\S]*?)<\\/script>/g)) {
-      if (!/\\bsrc=/.test(m[1]||'')) new vm.Script(m[2],{filename:name+' inline'});
+    for (const m of content.matchAll(/<script(\s[^>]*)?>([\s\S]*?)<\/script>/g)) {
+      if (!/\bsrc=/.test(m[1]||'')) new vm.Script(m[2],{filename:name+' inline'});
     }
   }
 }
