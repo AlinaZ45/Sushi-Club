@@ -8,9 +8,10 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
 const RESEND_FROM_EMAIL = Deno.env.get("RESEND_FROM_EMAIL") || "";
 const META_TOKEN = Deno.env.get("META_WHATSAPP_TOKEN") || "";
 const META_PHONE_ID = Deno.env.get("META_WHATSAPP_PHONE_NUMBER_ID") || "";
-const META_TEMPLATE_NAME = Deno.env.get("META_WHATSAPP_TEMPLATE_NAME") || "sushi_reservation_update";
+const META_TEMPLATE_NAME = Deno.env.get("META_WHATSAPP_TEMPLATE_NAME") || "reservation_update";
 const META_TEMPLATE_LANG = Deno.env.get("META_WHATSAPP_TEMPLATE_LANG") || "en";
-const APP_URL = "https://reserve.sushiclublara.com";
+const APP_URL = (Deno.env.get("APP_URL") || "").replace(/\\/+$/, "");
+const BRAND_NAME = Deno.env.get("RESTAURANT_NAME") || "Restaurant";
 
 const sb = createClient(SUPABASE_URL, SERVICE_KEY, {
   auth: { persistSession: false, autoRefreshToken: false }
@@ -24,10 +25,10 @@ function prettyStatus(s: string) {
   return ({pending:"Pending",confirmed:"Confirmed",reconfirmed:"Reconfirmed",declined:"Declined",cancelled:"Cancelled"} as Record<string,string>)[s] || s;
 }
 function emailSubject(type:string,p:any) {
-  if (type==="staff_new_reservation") return `New Sushi Club reservation · ${p.reservation_code}`;
-  if (type==="staff_reservation_updated") return `Sushi Club reservation updated · ${p.reservation_code}`;
-  if (type==="staff_reservation_cancelled") return `Sushi Club reservation cancelled · ${p.reservation_code}`;
-  return `Sushi Club reservation · ${p.reservation_code} · ${prettyStatus(p.status)}`;
+  if (type==="staff_new_reservation") return `New ${BRAND_NAME} reservation · ${p.reservation_code}`;
+  if (type==="staff_reservation_updated") return `${BRAND_NAME} reservation updated · ${p.reservation_code}`;
+  if (type==="staff_reservation_cancelled") return `${BRAND_NAME} reservation cancelled · ${p.reservation_code}`;
+  return `${BRAND_NAME} reservation · ${p.reservation_code} · ${prettyStatus(p.status)}`;
 }
 function emailHtml(type:string,p:any) {
   const isStaff = String(type).startsWith("staff_");
@@ -54,7 +55,7 @@ function emailHtml(type:string,p:any) {
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f1e9e2"><tr><td align="center" style="padding:26px 14px;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#fbf7f2" style="max-width:600px;border-radius:28px;overflow:hidden;border:1px solid #eaded4;">
 <tr><td style="padding:32px 28px;text-align:center;">
-<div style="font-size:11px;letter-spacing:3px;font-weight:700;color:#967d6d;">SUSHI CLUB · DELTA HOTELS</div>
+<div style="font-size:11px;letter-spacing:3px;font-weight:700;color:#967d6d;">${esc(BRAND_NAME)}</div>
 <h1 style="font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:32px;line-height:1.2;margin:16px 0 20px;color:#4f423a;">${esc(headline)}</h1>
 <p style="margin:8px 0;"><b>Reservation:</b> ${esc(p.reservation_code)}</p>
 <p style="margin:8px 0;"><b>Guest:</b> ${esc(p.lead_guest_name)}</p>
@@ -93,7 +94,7 @@ ${p.special_request ? `<p style="margin:8px 0;"><b>Request:</b> ${esc(p.special_
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="guest-card" bgcolor="#dfc9b7" style="width:100%;max-width:600px;border-radius:34px;overflow:hidden;border:1px solid rgba(255,255,255,.68);background:#dfc9b7;background-image:linear-gradient(145deg,#ead9ca 0%,#d8bfaa 100%);box-shadow:0 24px 58px rgba(120,93,73,.12);">
           <tr>
             <td style="padding:38px 28px 10px;text-align:center;">
-              <div style="font-size:10px;line-height:1.55;letter-spacing:3.4px;font-weight:700;color:#ffffff;text-shadow:0 2px 16px rgba(101,76,58,.20);">DELTA HOTELS · SUSHI CLUB</div>
+              <div style="font-size:10px;line-height:1.55;letter-spacing:3.4px;font-weight:700;color:#ffffff;text-shadow:0 2px 16px rgba(101,76,58,.20);"> · ${esc(BRAND_NAME).toUpperCase()}</div>
               <div style="font-size:8px;line-height:1.6;letter-spacing:2.2px;font-weight:700;color:rgba(255,255,255,.90);margin-top:4px;">MARRIOTT · ANTALYA LARA</div>
             </td>
           </tr>
