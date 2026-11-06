@@ -14,7 +14,7 @@ let assigningId=null;
 let selectedTables=new Set();
 let selectedInventoryTables=new Set();
 const $=id=>document.getElementById(id);
-let staffLang=localStorage.getItem('sushiStaffLang')||'en';
+let staffLang='en';
 const I18N={
  en:{
   staffApp:'Staff App',headerSubtitle:'Reservations, table plan and live availability.',backGuest:'← Back to Guest App',staffEyebrow:'STAFF MANAGEMENT',welcomeBack:'Welcome back',signInSub:'Sign in to manage reservations, tables and live availability.',email:'E-MAIL',password:'PASSWORD',signIn:'SIGN IN',showPassword:'SHOW',hidePassword:'HIDE',invalidCredentials:'Incorrect e-mail or password.',forgotPassword:'FORGOT PASSWORD?',firstSetup:'FIRST-TIME SETUP',signedIn:'SIGNED IN',security:'SECURITY',signOut:'SIGN OUT',date:'DATE',time:'TIME',status:'STATUS',all:'All',pending:'Pending',confirmed:'Confirmed',reconfirmed:'Reconfirmed',seated:'Seated',completed:'Completed',noShow:'No-show',declined:'Declined',cancelled:'Cancelled',total:'Total',guests:'Guests',reservations:'RESERVATIONS',tables:'TABLES',chooseTable:'CHOOSE TABLE',availability:'AVAILABILITY',free:'Free',assigned:'Assigned',addTable:'ADD TABLE',tableCode:'TABLE CODE',tableName:'TABLE NAME / CODE',area:'AREA',seats:'SEATS',quantity:'QUANTITY',inside:'Inside',terrace:'Terrace',manageTables:'MANAGE TABLES',manageNote:'Edit the table name/code, area or seats. A table can be temporarily disabled without deleting its history.',accountRecovery:'ACCOUNT RECOVERY',resetPassword:'Reset password',resetHelp:'Enter your approved staff e-mail. We will send a secure password-reset link.',sendResetLink:'SEND RESET LINK',accountSecurity:'ACCOUNT SECURITY',changePassword:'Change password',changePasswordHelp:'Confirm your current password, then choose a new one.',recoveryPasswordHelp:'Choose a new password for your staff account.',currentPassword:'CURRENT PASSWORD',newPassword:'NEW PASSWORD',confirmNewPassword:'CONFIRM NEW PASSWORD',updatePassword:'UPDATE PASSWORD',securityNote:'Use at least 8 characters. Do not share staff passwords between personal accounts.',tableAssignment:'TABLE ASSIGNMENT',assignTables:'Assign tables',autoSelect:'AUTO SELECT',saveTables:'SAVE TABLES',clearAssignment:'CLEAR ASSIGNMENT',allTimes:'All times',notAssigned:'Not assigned',confirm:'CONFIRM',decline:'DECLINE',declineReasonPrompt:'Reason for declining (for example: no tables available):',declineReasonRequired:'Please enter a reason for declining the reservation.',noShowBtn:'NO-SHOW',complete:'COMPLETE',room:'Room',table:'Table',selectTime:'Select a time',slotBlocked:'Slot blocked',available:'Available',chooseTime:'Choose a time above to see the live table plan.',blockedNew:'{time} is blocked for new reservations.',closedNew:'Closed for new reservations',confirmedGuests:'{confirmed} / {capacity} confirmed guests · {tables} tables assigned',open:'OPEN',block:'BLOCK',usedBy:'Used by {name}',selected:'Selected',seatsSelected:'{seats} seats selected',forGuests:'for {guests} guest(s)',capacityOk:'capacity OK',selectMoreSeats:'select more seats',noReservations:'No reservations in this view.',guestCount:'{n} guest(s)',seatCount:'{n} seats',active:'Active',inactive:'Inactive',save:'SAVE',activate:'ACTIVATE',disable:'DISABLE',delete:'DELETE',noTables:'No tables configured.',liveTablePlan:'LIVE TABLE PLAN',currentTables:'CURRENT TABLES',currentTablesNote:'All configured restaurant tables are listed here.',addTableNote:'Choose any table name/code, area, seats and quantity. If quantity is more than 1, tables are numbered automatically.',tablesSummary:'{tables} tables · {seats} seats',removeSelectedTables:'REMOVE SELECTED TABLES',selectedTablesCount:'{count} selected',selectTablesToRemove:'Select the tables you want to remove.',bulkRemoveConfirm:'Remove {count} selected table(s)? Tables with reservation history will be disabled instead of deleted.',bulkRemoveDone:'{deleted} deleted · {disabled} disabled',tableNameHint:'Enter a table name/code from 1 to 30 characters.',invalidQuantity:'Quantity must be between 1 and 20.',tableAddedMany:'{count} table(s) added.',
@@ -37,17 +37,8 @@ function statusLabel(status){
 function applyStaticLanguage(){
  document.documentElement.lang=staffLang==='tr'?'tr':'en';
  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)});
- document.querySelectorAll('.staff-lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===staffLang));document.querySelectorAll('.password-toggle').forEach(b=>{const input=$(b.dataset.target);b.textContent=input&&input.type==='text'?t('hidePassword'):t('showPassword')});
+ document.querySelectorAll('.password-toggle').forEach(b=>{const input=$(b.dataset.target);b.textContent=input&&input.type==='text'?t('hidePassword'):t('showPassword')});
 }
-function setStaffLanguage(lang){
- staffLang=lang==='tr'?'tr':'en';
- localStorage.setItem('sushiStaffLang',staffLang);
- applyStaticLanguage();
- populateTimeFilter();
- renderAll();
- if(assigningId!==null)renderAssignModal();
-}
-
 function today(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:restaurantTimezone,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return g('year')+'-'+g('month')+'-'+g('day')}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function authMsg(t,ok=false){$('authMessage').textContent=t||'';$('authMessage').className='message '+(ok?'ok':'err')}
@@ -308,8 +299,6 @@ window.staffDeleteTable=async function(id){
 
 function closeAssign(){$('assignModal').classList.add('hidden');assigningId=null;selectedTables=new Set()}
 function setTab(which){for(const [tab,card] of [['req','requestsCard'],['table','tablesCard'],['slot','slotsCard']]){$(tab+'Tab').classList.toggle('on',tab===which);$(card).classList.toggle('hidden',tab!==which)}if(which==='table'&&$('timeFilter').value==='all'){$('timeFilter').value=currentServiceTime();renderRequests();renderTables()}}
-$('staffLangEn').addEventListener('click',()=>setStaffLanguage('en'));
-$('staffLangTr').addEventListener('click',()=>setStaffLanguage('tr'));
 document.querySelectorAll('.password-toggle').forEach(btn=>btn.addEventListener('click',()=>{const input=$(btn.dataset.target);if(!input)return;input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='text'?t('hidePassword'):t('showPassword')}));
 $('loginBtn').addEventListener('click',login);
 $('password').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
