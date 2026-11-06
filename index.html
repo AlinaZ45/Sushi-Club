@@ -9,6 +9,45 @@
 <meta name="apple-mobile-web-app-title" content="Sushi Club">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Sushi Club · Menu & Reservation</title>
+<script id="sc-runtime-diagnostics">
+(function(){
+  function report(message){
+    try{
+      var box=document.getElementById('scRuntimeDiagnostic');
+      if(!box){
+        box=document.createElement('div');box.id='scRuntimeDiagnostic';
+        box.style.cssText='position:fixed;z-index:2147483647;inset:12px;padding:18px;background:#fff8f1;color:#392b22;border:2px solid #a98345;border-radius:12px;font:14px/1.5 Arial,sans-serif;white-space:pre-wrap;overflow:auto;box-shadow:0 8px 40px #0004';
+        (document.body||document.documentElement).appendChild(box);
+      }
+      box.textContent='Sushi Club could not finish loading.\n\n'+String(message).slice(0,1800)+'\n\nPlease tell support this exact message.';
+    }catch(e){}
+  }
+  window.addEventListener('error',function(e){
+    var target=e.target;
+    if(target&&target!==window){
+      report('Resource failed: '+(target.src||target.href||target.tagName||'unknown'));
+    }else{
+      report((e.message||'JavaScript error')+'\n'+(e.filename||'')+':'+(e.lineno||''));
+    }
+  },true);
+  window.addEventListener('unhandledrejection',function(e){
+    var reason=e.reason;
+    report('Unhandled promise rejection: '+(reason&&reason.stack||reason&&reason.message||reason||'unknown'));
+  });
+  window.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){
+      var phone=document.querySelector('.phone');
+      var home=document.getElementById('home');
+      if(!phone||!home){report('Required page container is missing.');return;}
+      var cs=getComputedStyle(home);
+      if(cs.display==='none'||cs.visibility==='hidden'){
+        report('Home section is hidden by CSS. display='+cs.display+', visibility='+cs.visibility);
+      }
+    },1800);
+  });
+})();
+</script>
+
 <style>
 :root{
   --ivory:#f7f2ea;
