@@ -39,25 +39,23 @@ async function inventory(date,excludeId=null){
    db.from('blocked_slots').select('reservation_time').eq('reservation_date',date).eq('active',true)
  ]);
  for(const r of results)if(r.error)throw r.error;
- const occupiedByTime=new Map();
- for(const x of results[1].data||[]){
-   const time=String(x.service_time||'').slice(0,5);
-   if(!occupiedByTime.has(time))occupiedByTime.set(time,new Set());
-   occupiedByTime.get(time).add(String(x.table_id));
- }
  return {
    tables:results[0].data||[],
-   occupiedByTime,
+   assignments:results[1].data||[],
    blocked:new Set((results[2].data||[]).map(x=>String(x.reservation_time).slice(0,5)))
  };
 }
-function hasCapacity(inv,n,time){
- const occupied=inv.occupiedByTime.get(time)||new Set();
+function hasCapacity(inv,n,time,duration=90){
+ const start=minutes(time),end=start+Number(duration||90),occupied=new Set();
+ for(const a of inv.assignments){
+   const assignedStart=minutes(String(a.service_time||'').slice(0,5));
+   if(assignedStart>=0&&assignedStart<end&&assignedStart+Number(duration||90)>start)occupied.add(String(a.table_id));
+ }
  return inv.tables.filter(t=>!occupied.has(String(t.id))).reduce((s,t)=>s+Number(t.seats),0)>=n;
 }
-async function available(date,time,n,excludeId=null){
+async function available(date,time,n,excludeId=null,cfg=null){
  const inv=await inventory(date,excludeId);
- if(inv.blocked.has(time)||!hasCapacity(inv,n,time))fail('unavailable',409);
+ if(inv.blocked.has(time)||!hasCapacity(inv,n,time,cfg?.booking_duration_minutes))fail('unavailable',409);
 }
 async function byToken(c,t){
  c=clean(c,40).toUpperCase();t=clean(t,256);
@@ -110,7 +108,7 @@ Deno.serve(async req=>{
    if(action==='health')return json({ok:true,version:'9',chat:true,capacityMode:'time_slot_release'});
    if(action==='availability'){
     const cfg=await restaurantSettings(),date=validateDate(url.searchParams.get('date')),n=party(url.searchParams.get('party')||cfg.min_party_size,cfg),inv=await inventory(date),now=localNow(cfg.timezone);
-    return json({ok:true,capacityMode:'time_slot_release',slots:slots(cfg).map(time=>({time,available:(date>now.date||(date===now.date&&time>now.time))&&!inv.blocked.has(time)&&hasCapacity(inv,n,time)}))});
+    return json({ok:true,capacityMode:'time_slot_release',slots:slots(cfg).map(time=>({time,available:(date>now.date||(date===now.date&&time>now.time))&&!inv.blocked.has(time)&&hasCapacity(inv,n,time,cfg.booking_duration_minutes)}))});
    }
    if(action==='get'){const r=await byToken(url.searchParams.get('code'),url.searchParams.get('token'));return json({ok:true,reservation:{...publicRow(r),messages:await chatHistory(r.id)}});}
    if(action==='staff_messages'){await staffIdentity(req);const date=validateDate(url.searchParams.get('date'));const {data,error}=await db.from('reservations').select('id').eq('reservation_date',date);if(error)throw error;const ids=(data||[]).map(x=>x.id);if(!ids.length)return json({ok:true,messages:[]});const {data:messages,error:me}=await db.from('reservation_messages').select('id,reservation_id,sender,body,created_at').in('reservation_id',ids).order('id',{ascending:true}).limit(500);if(me)throw me;return json({ok:true,messages:messages||[]});}
@@ -129,7 +127,7 @@ Deno.serve(async req=>{
    const cfg=await restaurantSettings();const x=input(b,null,cfg);
    const openingMessage=clean(b.message,2000);
    if(b.rulesAccepted!==true||String(b.rulesVersion||'')!=='1.0')fail('rules_required');
-   await available(x.date,x.time,x.guests);
+   await available(x.date,x.time,x.guests,null,cfg);
    const manageToken=token(),manageHash=await sha(manageToken);
    for(let attempt=0;attempt<4;attempt++){
     const reservationCode=code();
@@ -155,7 +153,7 @@ Deno.serve(async req=>{
   if(b.action==='update'){
    const r=await byToken(b.code,b.token);manageable(r);const cfg=await restaurantSettings();const x=input(b,r,cfg);
    const changed=x.date!==r.reservation_date||x.time!==String(r.reservation_time).slice(0,5)||x.guests!==r.party_size;
-   if(changed)await available(x.date,x.time,x.guests,r.id);
+   if(changed)await available(x.date,x.time,x.guests,r.id,cfg);
    const updated=await patch(r,{reservation_date:x.date,reservation_time:x.time+':00',party_size:x.guests,lead_guest_name:x.name,room_number:x.room||null,phone:x.contact||null,email:x.email||null,special_request:x.request||null,status:changed?'pending':r.status});
    await audit(updated,'GUEST_EDIT',r.status,{changed_capacity:changed});return json({ok:true,reservation:publicRow(updated)});
   }
