@@ -128,7 +128,7 @@ Deno.serve(async req=>{
   if(b.action==='create'){
    const cfg=await restaurantSettings();const x=input(b,null,cfg);
    const openingMessage=clean(b.message,2000);
-   if(b.rulesAccepted===false||String(b.rulesVersion||'')!=='1.0')fail('rules_required');
+   if(b.rulesAccepted!==true||String(b.rulesVersion||'')!=='1.0')fail('rules_required');
    await available(x.date,x.time,x.guests);
    const manageToken=token(),manageHash=await sha(manageToken);
    for(let attempt=0;attempt<4;attempt++){
