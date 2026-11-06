@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 
 const root = process.cwd();
 const out = path.join(root, 'dist');
-const names = ['index.html', 'menu.html', 'guest-core.js', 'guest-live.js', 'staff.html', 'staff.js', 'menu-images-lite.js'];
+const names = ['index.html', 'generic-guest.html', 'menu.html', 'guest-core.js', 'guest-live.js', 'staff.html', 'staff.js', 'menu-images-lite.js'];
 const source = Object.fromEntries(names.map(name => [name, fs.readFileSync(path.join(root, name), 'utf8')]));
 for (const name of names) {
   assert(source[name].length > 100, `${name}: empty or incomplete source`);
@@ -60,7 +60,7 @@ menu = menu.replace(/<script\b[^>]*src="\/?menu-images(?:-lite)?\.js"[^>]*><\/sc
 assert(!menu.includes('menu-images'), 'Unresolved photo script');
 menu = menu.replaceAll('href="/"', 'href="index.html"').replaceAll('href="/#reserve"', 'href="index.html#reserve"');
 
-let index = source['index.html'];
+let index = source['generic-guest.html'];
 index = index.replace(/<script src="https:\/\/cdn\.jsdelivr\.net\/npm\/@supabase\/supabase-js@2"><\/script>/g, '');
 for (const name of ['menu.html', 'staff.html', 'guest-core.js', 'guest-live.js']) {
   index = index.replaceAll(`"/${name}"`, `"${name}"`).replaceAll(`'/${name}'`, `'${name}'`);
