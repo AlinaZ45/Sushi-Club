@@ -531,7 +531,8 @@ document.querySelectorAll('#reserveTimes .time').forEach(b=>{
 });
 document.getElementById('rdate').value=today();
 document.getElementById('rdate').min=today();
-document.getElementById('staffDate').value=today();
+const staffDateInput=document.getElementById('staffDate');
+if(staffDateInput)staffDateInput.value=today();
 
 ['rdate','guests'].forEach(id=>document.getElementById(id).addEventListener('change',renderGuestTimes));
 
