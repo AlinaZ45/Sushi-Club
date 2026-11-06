@@ -1,6 +1,8 @@
 (function(){
-const SB_URL='https://poxuyzcaejbqouelzwob.supabase.co';
-const SB_KEY='sb_publishable_0Mo43IoJgWOu-7_Vps-BEw_e64ucHKI';
+const cfg=window.PLATFORM_CONFIG||{};
+const SB_URL=String(cfg.supabaseUrl||'').replace(/\/+$/,'');
+const SB_KEY=String(cfg.supabasePublishableKey||'');
+if(!SB_URL||!SB_KEY){const m=document.getElementById('authMessage');if(m){m.textContent='Platform setup is incomplete. Configure SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY.';m.className='message err';}return;}
 const GUEST_API=SB_URL+'/functions/v1/guest-reservations';
 const sb=window.supabase.createClient(SB_URL,SB_KEY);
 const TIMES=[];for(let h=17;h<=22;h++){for(const m of [0,15,30,45]){if(h===22&&m>0)continue;TIMES.push(String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'))}}
