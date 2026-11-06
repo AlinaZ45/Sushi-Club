@@ -5,7 +5,7 @@ const SB_KEY=String(cfg.supabasePublishableKey||'');
 if(!SB_URL||!SB_KEY){const m=document.getElementById('authMessage');if(m){m.textContent='Platform setup is incomplete. Configure SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY.';m.className='message err';}return;}
 const GUEST_API=SB_URL+'/functions/v1/guest-reservations';
 const sb=window.supabase.createClient(SB_URL,SB_KEY);
-const TIMES=[];for(let h=17;h<=22;h++){for(const m of [0,15,30,45]){if(h===22&&m>0)continue;TIMES.push(String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'))}}
+let TIMES=[];let restaurantTimezone='Europe/Istanbul';
 const ACTIVE_FOR_TABLES=['pending','confirmed','reconfirmed','seated'];
 const ACTIVE_FOR_CAPACITY=['confirmed','reconfirmed','seated'];
 let rows=[],blocked=[],tables=[],allTables=[],assignments=[];
@@ -48,7 +48,7 @@ function setStaffLanguage(lang){
  if(assigningId!==null)renderAssignModal();
 }
 
-function today(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
+function today(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:restaurantTimezone,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return g('year')+'-'+g('month')+'-'+g('day')}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function authMsg(t,ok=false){$('authMessage').textContent=t||'';$('authMessage').className='message '+(ok?'ok':'err')}
 function row(r){return{id:Number(r.id),code:r.reservation_code,date:r.reservation_date,time:String(r.reservation_time||'').slice(0,5),guests:Number(r.party_size||0),name:r.lead_guest_name||'',room:r.room_number||'',phone:r.phone||'',email:r.email||'',request:r.special_request||'',status:r.status||'',staffNote:r.staff_note||''}}
@@ -59,7 +59,7 @@ function assignedTables(reservationId){return assignmentIds(reservationId).map(t
 function assignedCodes(reservationId){const x=assignedTables(reservationId);return x.length?x.map(t=>t.table_code).join(' + '):t('notAssigned')}
 function assignedSeats(reservationId){return assignedTables(reservationId).reduce((n,t)=>n+Number(t.seats||0),0)}
 function isBlocked(time){return blocked.some(x=>String(x.reservation_time||x.block_time||'').slice(0,5)===time)}
-function currentServiceTime(){const d=new Date(),mins=d.getHours()*60+d.getMinutes();let best='17:00';for(const t of TIMES){const [h,m]=t.split(':').map(Number),v=h*60+m;if(v>=mins){best=t;break}best=t}return best}
+function currentServiceTime(){const p=new Intl.DateTimeFormat('en-GB',{timeZone:restaurantTimezone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());const mins=Number(p.find(x=>x.type==='hour').value)*60+Number(p.find(x=>x.type==='minute').value);let best=TIMES[0]||'00:00';for(const t of TIMES){const [h,m]=t.split(':').map(Number),v=h*60+m;if(v>=mins){best=t;break}best=t}return best}
 async function apiGet(params){const u=new URL(GUEST_API);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,String(v)));const r=await fetch(u);const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Request failed');return j}
 async function staffSession(){const {data:{session}}=await sb.auth.getSession();if(!session)return null;const {data,error}=await sb.from('staff_profiles').select('*').eq('user_id',session.user.id).eq('active',true).maybeSingle();if(error||!data)return null;return {session,profile:data}}
 async function refreshAuth(){const s=await staffSession();$('authCard').classList.toggle('hidden',!!s);$('dashboard').classList.toggle('hidden',!s);if(s){$('staffName').textContent=s.profile.full_name||s.session.user.email;await loadData()}return s}
@@ -98,7 +98,7 @@ async function updatePassword(){
   try{history.replaceState({},'',location.pathname)}catch(e){}
   setTimeout(()=>closeModal('passwordModal'),900);
 }
-function populateTimeFilter(){const cur=$('timeFilter').value;$('timeFilter').innerHTML='<option value="all">'+t('allTimes')+'</option>'+TIMES.map(x=>'<option value="'+x+'">'+x+'</option>').join('');if(cur&&[...TIMES,'all'].includes(cur))$('timeFilter').value=cur;else $('timeFilter').value='all'}
+async function loadPlatformSettings(){const r=await fetch(GUEST_API+'?action=configuration',{headers:{apikey:SB_KEY,'Cache-Control':'no-store'}});const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok||!j.restaurant)throw new Error(j.error||'Restaurant settings unavailable');const c=j.restaurant;restaurantTimezone=c.timezone||'UTC';const open=String(c.openingTime||'').slice(0,5),close=String(c.closingTime||'').slice(0,5),toMin=v=>{const a=v.split(':').map(Number);return a.length===2&&a.every(Number.isFinite)?a[0]*60+a[1]:-1};const start=toMin(open),end=toMin(close),step=Number(c.slotIntervalMinutes),duration=Number(c.bookingDurationMinutes);if(start<0||end<=start||step<1||duration<1)throw new Error('Restaurant opening hours are not configured');TIMES=[];for(let m=start;m+duration<=end;m+=step)TIMES.push(String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'));}
 async function loadData(){const date=$('date').value||today();$('date').value=date;const [{data:rr,error:re},{data:bb,error:be},{data:tt,error:te}]=await Promise.all([
   sb.from('reservations').select('*').eq('reservation_date',date).order('reservation_time'),
   sb.from('blocked_slots').select('*').eq('active',true).or('reservation_date.eq.'+date+',block_date.eq.'+date),
