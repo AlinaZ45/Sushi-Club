@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#F5F2EC">
+<title>Sushi Club · Questions & Answers</title>
+<style>
+:root{--bg:#F5F2EC;--paper:#FFFCF7;--ink:#18313B;--muted:#716C64;--gold:#A77B38;--line:#DDD3C4}
+*{box-sizing:border-box}body{margin:0;background:#EDE8DF;color:var(--ink);font-family:"Avenir Next","Helvetica Neue",Arial,sans-serif}
+main{width:min(760px,100%);min-height:100vh;margin:auto;background:var(--bg);padding:30px 24px 60px}
+a.back{display:inline-block;color:var(--gold);text-decoration:none;font-size:12px;font-weight:700;margin:2px 0 28px}
+.brand{font-size:9px;letter-spacing:3px;font-weight:800;color:var(--gold)}
+h1{font:400 42px/1.05 Baskerville,Georgia,serif;margin:12px 0 8px}
+.intro{color:var(--muted);font-size:13px;line-height:1.65;margin:0 0 22px}
+.languages{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 24px}
+.languages button{border:1px solid var(--line);background:transparent;border-radius:2px;padding:8px 11px;color:var(--muted);font-size:10px;cursor:pointer}
+.languages button.active{border-color:var(--gold);color:var(--ink);background:#F0E9DC}
+.faq{border-top:1px solid var(--line)}
+details{border-bottom:1px solid var(--line);padding:17px 2px}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px;align-items:center;font:400 19px/1.35 Baskerville,Georgia,serif}
+summary::-webkit-details-marker{display:none}summary:after{content:"+";font:400 20px Arial;color:var(--gold)}details[open] summary:after{content:"−"}
+.answer{color:var(--muted);font-size:12px;line-height:1.75;padding:12px 22px 0 0}
+.note{margin-top:24px;padding:15px 17px;background:#EEE9DF;border-left:2px solid var(--gold);color:var(--muted);font-size:11px;line-height:1.65}
+@media(max-width:480px){main{padding:24px 19px 44px}h1{font-size:36px}summary{font-size:18px}}
+</style>
+</head>
+<body><main>
+<a class="back" href="index.html" id="back">← Back to Sushi Club</a>
+<div class="brand">SUSHI CLUB · GUEST INFORMATION</div>
+<h1 id="title">Questions & Answers</h1>
+<p class="intro" id="intro">Everything you need to know before visiting Sushi Club.</p>
+<div class="languages" id="languages">
+<button data-lang="en" class="active">EN</button><button data-lang="tr">TR</button><button data-lang="ru">RU</button><button data-lang="de">DE</button><button data-lang="fr">FR</button><button data-lang="zh">中文</button>
+</div>
+<div class="faq" id="faq"></div>
+<div class="note" id="note">Your reservation request remains pending until the Sushi Club team confirms it. You can view or manage your booking in My Reservations.</div>
+</main>
+<script>
+const COPY={
+en:{title:"Questions & Answers",intro:"Everything you need to know before visiting Sushi Club.",back:"← Back to Sushi Club",note:"Your reservation request remains pending until the Sushi Club team confirms it. You can view or manage your booking in My Reservations.",items:[
+["How do I make a reservation?","Choose Reservation on the guest website, select an available date and time, enter the number of guests and your contact details, then submit the request. Please read and accept the Reservation & Visit Rules before submitting."],
+["Is my reservation confirmed immediately?","No. Your request is first marked as Pending. Your table is reserved only after the Sushi Club team confirms the request. Please wait for the status to change to Confirmed."],
+["Can I change or cancel my reservation?","Open My Reservations on the guest website. Find your booking to edit its details or cancel it. Changes to the date, time or party size may require the team to confirm the reservation again."],
+["What if I cannot find my booking?","Open My Reservations and use Find a Booking. Enter your Reservation ID and the room number, phone number or e-mail address used for the booking."],
+["What are the opening hours?","Sushi Club is open Tuesday to Sunday from 17:00 to 22:30. The last reservation time is 22:00. The restaurant is closed on Mondays."],
+["Where is Sushi Club located?","Sushi Club is on the second floor of the main hotel building. The external entrance is on the street side, to the left when leaving the hotel."],
+["Is there an age requirement?","Sushi Club is an adults-only venue. Guests must be 18 years of age or older; children are not admitted."],
+["Is there a dress code?","Smart, appropriate attire is required. Swimwear and underwear are not permitted."],
+["What happens if I arrive late?","Please arrive on time. If you are more than 15 minutes late, the reservation may be marked as a No-show and the table may be released."]
+]},
+tr:{title:"Sorular ve Cevaplar",intro:"Sushi Club ziyaretiniz öncesinde bilmeniz gerekenler.",back:"← Sushi Club'a dön",note:"Rezervasyon talebiniz, Sushi Club ekibi onaylayana kadar Beklemede durumundadır. Rezervasyonunuzu Rezervasyonlarım bölümünden görüntüleyebilir veya yönetebilirsiniz.",items:[
+["Nasıl rezervasyon yapabilirim?","Misafir web sitesinde Rezervasyon bölümünü açın, uygun tarih ve saati seçin, kişi sayısını ve iletişim bilgilerinizi girin. Göndermeden önce Rezervasyon ve Ziyaret Kurallarını okuyup kabul edin."],
+["Rezervasyonum hemen onaylanır mı?","Hayır. Talebiniz önce Beklemede olarak kaydedilir. Masa yalnızca Sushi Club ekibi talebi onayladıktan sonra rezerve edilir."],
+["Rezervasyonumu değiştirebilir veya iptal edebilir miyim?","Misafir web sitesindeki Rezervasyonlarım bölümünü açın. Rezervasyonunuzu bulup bilgileri düzenleyebilir veya iptal edebilirsiniz. Tarih, saat ya da kişi sayısı değişiklikleri yeniden onay gerektirebilir."],
+["Rezervasyonumu bulamazsam ne yapmalıyım?","Rezervasyonlarım bölümündeki Rezervasyon Bul alanını kullanın. Rezervasyon numaranızı ve oda numarası, telefon veya e-posta bilginizi girin."],
+["Çalışma saatleri nedir?","Sushi Club salıdan pazara 17:00–22:30 saatleri arasında açıktır. Son rezervasyon saati 22:00'dir. Pazartesi günleri kapalıdır."],
+["Sushi Club nerede?","Sushi Club ana otel binasının ikinci katındadır. Dış giriş, otelden çıkınca sol tarafta, cadde yönündedir."],
+["Yaş sınırı var mı?","Sushi Club yalnızca yetişkinlere açıktır. Misafirlerin 18 yaşında veya daha büyük olması gerekir; çocuk kabul edilmez."],
+["Kıyafet kuralı var mı?","Özenli ve uygun kıyafet zorunludur. Mayo ve iç çamaşırıyla girişe izin verilmez."],
+["Geç kalırsam ne olur?","Lütfen zamanında gelin. 15 dakikadan fazla gecikme durumunda rezervasyon Gelmedi olarak işaretlenebilir ve masa başka misafirlere verilebilir."]
+]},
+ru:{title:"Вопросы и ответы",intro:"Всё, что важно знать перед посещением Sushi Club.",back:"← Вернуться в Sushi Club",note:"Заявка на бронирование остаётся в статусе «Ожидает подтверждения», пока команда Sushi Club её не подтвердит. Посмотреть или изменить бронь можно в разделе «Мои бронирования».",items:[
+["Как забронировать столик?","Откройте раздел бронирования на гостевом сайте, выберите доступные дату и время, укажите количество гостей и контактные данные. Перед отправкой прочитайте и примите Правила бронирования и посещения."],
+["Бронь подтверждается сразу?","Нет. Сначала заявка получает статус «Ожидает подтверждения». Столик считается забронированным только после подтверждения командой Sushi Club."],
+["Можно изменить или отменить бронь?","Откройте раздел «Мои бронирования» на гостевом сайте. Найдите свою бронь, чтобы изменить данные или отменить её. Изменение даты, времени или количества гостей может потребовать повторного подтверждения."],
+["Что делать, если я не вижу свою бронь?","В разделе «Мои бронирования» воспользуйтесь функцией поиска брони. Укажите номер бронирования и номер комнаты, телефон или e-mail, использованные при оформлении."],
+["Каковы часы работы?","Sushi Club открыт со вторника по воскресенье с 17:00 до 22:30. Последнее время бронирования — 22:00. По понедельникам ресторан закрыт."],
+["Где находится Sushi Club?","Ресторан находится на втором этаже главного здания отеля. Отдельный вход расположен со стороны улицы, слева при выходе из отеля."],
+["Есть ли возрастные ограничения?","Sushi Club работает в формате 18+. Посетителям должно быть не менее 18 лет; дети не допускаются."],
+["Есть ли дресс-код?","Требуется опрятная подходящая одежда. Вход в купальных костюмах и нижнем белье запрещён."],
+["Что будет, если я опоздаю?","Пожалуйста, приходите вовремя. При опоздании более чем на 15 минут бронь может получить статус «Неявка», а столик могут передать другим гостям."]
+]},
+de:{title:"Fragen & Antworten",intro:"Alles Wichtige für Ihren Besuch im Sushi Club.",back:"← Zurück zu Sushi Club",note:"Ihre Reservierungsanfrage bleibt ausstehend, bis das Sushi-Club-Team sie bestätigt. Unter „Meine Reservierungen“ können Sie Ihre Buchung ansehen oder verwalten.",items:[
+["Wie kann ich reservieren?","Öffnen Sie auf der Gästeseite den Bereich Reservierung, wählen Sie ein verfügbares Datum und eine Uhrzeit und geben Sie Gästezahl sowie Kontaktdaten ein. Lesen und akzeptieren Sie vor dem Absenden die Reservierungs- und Besuchsregeln."],
+["Ist meine Reservierung sofort bestätigt?","Nein. Ihre Anfrage erhält zunächst den Status Ausstehend. Der Tisch ist erst nach der Bestätigung durch das Sushi-Club-Team reserviert."],
+["Kann ich meine Reservierung ändern oder stornieren?","Öffnen Sie auf der Gästeseite „Meine Reservierungen“. Dort können Sie Ihre Buchung bearbeiten oder stornieren. Änderungen an Datum, Uhrzeit oder Gästezahl müssen möglicherweise erneut bestätigt werden."],
+["Was mache ich, wenn ich meine Buchung nicht finde?","Nutzen Sie unter „Meine Reservierungen“ die Funktion „Buchung finden“. Geben Sie Ihre Reservierungsnummer und Zimmernummer, Telefonnummer oder E-Mail-Adresse ein."],
+["Wie sind die Öffnungszeiten?","Sushi Club ist Dienstag bis Sonntag von 17:00 bis 22:30 Uhr geöffnet. Die letzte Reservierungszeit ist 22:00 Uhr. Montags ist das Restaurant geschlossen."],
+["Wo befindet sich Sushi Club?","Sushi Club befindet sich im zweiten Stock des Hauptgebäudes. Der externe Eingang liegt auf der Straßenseite links, wenn Sie das Hotel verlassen."],
+["Gibt es eine Altersbeschränkung?","Sushi Club ist ausschließlich für Erwachsene. Gäste müssen mindestens 18 Jahre alt sein; Kinder sind nicht zugelassen."],
+["Gibt es einen Dresscode?","Angemessene, gepflegte Kleidung ist erforderlich. Badebekleidung und Unterwäsche sind nicht gestattet."],
+["Was passiert, wenn ich zu spät komme?","Bitte erscheinen Sie pünktlich. Bei mehr als 15 Minuten Verspätung kann die Reservierung als No-show markiert und der Tisch anderweitig vergeben werden."]
+]},
+fr:{title:"Questions & réponses",intro:"Tout ce qu’il faut savoir avant votre visite au Sushi Club.",back:"← Retour à Sushi Club",note:"Votre demande reste en attente jusqu’à sa confirmation par l’équipe du Sushi Club. Vous pouvez consulter ou gérer votre réservation dans « Mes réservations ».",items:[
+["Comment réserver une table ?","Sur le site client, ouvrez la rubrique Réservation, choisissez une date et une heure disponibles, indiquez le nombre de personnes et vos coordonnées. Lisez et acceptez le règlement avant d’envoyer la demande."],
+["Ma réservation est-elle confirmée immédiatement ?","Non. Votre demande est d’abord indiquée comme En attente. La table est réservée uniquement après confirmation par l’équipe du Sushi Club."],
+["Puis-je modifier ou annuler ma réservation ?","Ouvrez « Mes réservations » sur le site client. Retrouvez votre réservation pour modifier les informations ou l’annuler. Un changement de date, d’heure ou du nombre de personnes peut nécessiter une nouvelle confirmation."],
+["Que faire si je ne trouve pas ma réservation ?","Dans « Mes réservations », utilisez la fonction Rechercher une réservation. Saisissez votre numéro de réservation et votre numéro de chambre, téléphone ou adresse e-mail."],
+["Quels sont les horaires d’ouverture ?","Le Sushi Club est ouvert du mardi au dimanche de 17 h à 22 h 30. La dernière réservation est à 22 h. Le restaurant est fermé le lundi."],
+["Où se trouve le Sushi Club ?","Le Sushi Club se trouve au deuxième étage du bâtiment principal de l’hôtel. L’entrée extérieure est côté rue, à gauche en sortant de l’hôtel."],
+["Y a-t-il une limite d’âge ?","Le Sushi Club est réservé aux adultes. Les clients doivent avoir au moins 18 ans ; les enfants ne sont pas admis."],
+["Y a-t-il un code vestimentaire ?","Une tenue soignée et appropriée est exigée. Les maillots de bain et les sous-vêtements ne sont pas autorisés."],
+["Que se passe-t-il si j’arrive en retard ?","Merci d’arriver à l’heure. Après plus de 15 minutes de retard, la réservation peut être marquée comme non honorée et la table attribuée à d’autres clients."]
+]},
+zh:{title:"常见问题",intro:"访问 Sushi Club 前需要了解的信息。",back:"← 返回 Sushi Club",note:"您的预订申请在 Sushi Club 团队确认前将保持“待确认”状态。您可以在“我的预订”中查看或管理预订。",items:[
+["如何预订餐桌？","在宾客网站打开预订页面，选择可用日期和时间，填写人数及联系方式。提交前请阅读并接受《预订与到访规则》。"],
+["提交后预订会立即确认吗？","不会。申请首先显示为“待确认”。只有 Sushi Club 团队确认后，餐桌才算预订成功。"],
+["可以修改或取消预订吗？","在宾客网站打开“我的预订”，找到您的预订后即可修改信息或取消。更改日期、时间或人数可能需要团队重新确认。"],
+["如果找不到预订怎么办？","请在“我的预订”中使用“查找预订”功能，输入预订编号以及预订时使用的房间号、电话或电子邮箱。"],
+["营业时间是什么？","Sushi Club 周二至周日 17:00–22:30 营业，最晚预订时间为 22:00。周一休息。"],
+["Sushi Club 在哪里？","餐厅位于酒店主楼二楼。外部入口在临街一侧，从酒店出来后向左。"],
+["有年龄限制吗？","Sushi Club 仅接待成年人。宾客必须年满 18 岁，不接待儿童。"],
+["有着装要求吗？","请穿着整洁得体。禁止穿泳衣或内衣入场。"],
+["迟到会怎样？","请准时到达。迟到超过 15 分钟，预订可能被标记为未到店，餐桌也可能安排给其他客人。"]
+]}
+};
+function setLang(lang){const d=COPY[lang]||COPY.en;document.documentElement.lang=lang;document.getElementById('title').textContent=d.title;document.getElementById('intro').textContent=d.intro;document.getElementById('back').textContent=d.back;document.getElementById('note').textContent=d.note;document.getElementById('faq').innerHTML=d.items.map(([q,a])=>'<details><summary>'+q+'</summary><div class="answer">'+a+'</div></details>').join('');document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));}
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));setLang('en');
+</script></body></html>
