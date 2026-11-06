@@ -133,7 +133,7 @@ Deno.serve(async req=>{
    const manageToken=token(),manageHash=await sha(manageToken);
    for(let attempt=0;attempt<4;attempt++){
     const reservationCode=code();
-    const {data,error}=await db.from('reservations').insert({reservation_code:reservationCode,request_id:reservationCode,manage_token_hash:manageHash,reservation_date:x.date,reservation_time:x.time+':00',party_size:x.guests,original_party_size:x.guests,lead_guest_name:x.name,guest_type:'standard',room_number:null,phone:x.contact||null,email:x.email||null,special_request:x.request||null,status:'pending',source:'guest',rules_accepted:true,rules_accepted_at:new Date().toISOString(),rules_version:'1.0'}).select('*').single();
+    const {data,error}=await db.from('reservations').insert({reservation_code:reservationCode,request_id:reservationCode,manage_token_hash:manageHash,reservation_date:x.date,reservation_time:x.time+':00',party_size:x.guests,original_party_size:x.guests,lead_guest_name:x.name,guest_type:'standard',room_number:x.room||null,phone:x.contact||null,email:x.email||null,special_request:x.request||null,status:'pending',source:'guest',rules_accepted:true,rules_accepted_at:new Date().toISOString(),rules_version:'1.0'}).select('*').single();
     if(error){if(error.code==='23505'&&String(error.message).includes('reservation_code'))continue;if(error.code==='23505')fail('duplicate',409);throw error;}
     await audit(data,'CREATED',null,{source:'guest'});
     let opening=null,messageSaved=true;
