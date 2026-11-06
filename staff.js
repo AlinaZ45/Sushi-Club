@@ -334,6 +334,6 @@ if(new URLSearchParams(location.search).get('recovery')==='1'){
   openModal('passwordModal');
 }
 applyStaticLanguage();
-loadPlatformSettings().then(()=>{$('date').value=today();populateTimeFilter();refreshAuth()}.catch(e=>{authMsg(e.message);populateTimeFilter();refreshAuth()});
+loadPlatformSettings().then(()=>{$('date').value=today();populateTimeFilter();refreshAuth()}).catch(e=>{authMsg(e.message);populateTimeFilter();refreshAuth()});
 setInterval(()=>{if(!$('dashboard').classList.contains('hidden'))refreshStaffChats()},20000);
 })();
