@@ -1,5 +1,7 @@
 (function(){
-const API='https://poxuyzcaejbqouelzwob.supabase.co/functions/v1/guest-reservations';
+const PLATFORM_CFG=window.PLATFORM_CONFIG||{};
+if(!PLATFORM_CFG.supabaseUrl){console.warn('Platform Supabase URL is not configured.');return;}
+const API=String(PLATFORM_CFG.supabaseUrl).replace(/\/+$/,'')+'/functions/v1/guest-reservations';
 let remoteReservations=[];
 function refs(){try{return JSON.parse(localStorage.getItem('sushiClubRemoteRefs')||'[]')}catch(e){return[]}}
 function saveRefs(v){localStorage.setItem('sushiClubRemoteRefs',JSON.stringify(v.slice(0,20)))}
