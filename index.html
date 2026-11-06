@@ -2636,6 +2636,61 @@ main.phone > #myReservations.section.active > .inner {
   box-sizing:border-box!important;
 }
 </style>
+
+<style id="reservation-rules-visibility-fix">
+/* Keep the required rules and consent control visible on every screen size. */
+#reserve #v13RulesBlock{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  position:relative!important;
+  margin:18px 0!important;
+}
+#reserve #v13RulesBlock .policyBox,
+#reserve #v13RulesBlock .sc-unified-rules{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+}
+#reserve #v13RulesBlock .sc-ack{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  align-items:flex-start!important;
+  gap:10px!important;
+  min-height:40px!important;
+  color:#67584f!important;
+  cursor:pointer!important;
+}
+#reserve #v13RulesBlock .sc-ack input[type="checkbox"]{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  flex:0 0 24px!important;
+  width:24px!important;
+  min-width:24px!important;
+  height:24px!important;
+  min-height:24px!important;
+  margin:1px 0 0!important;
+  border:1px solid #9b8778!important;
+  border-radius:5px!important;
+  background:#fffdf9!important;
+  appearance:auto!important;
+  -webkit-appearance:checkbox!important;
+  accent-color:#8b7564!important;
+}
+#reserve #v13RulesBlock .sc-ack span{
+  display:inline!important;
+  visibility:visible!important;
+  opacity:1!important;
+  color:#67584f!important;
+}
+</style>
 </head>
 <body>
 
