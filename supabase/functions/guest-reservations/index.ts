@@ -2,7 +2,8 @@ import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
 
 const HEADERS={'Content-Type':'application/json','Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'authorization,x-client-info,apikey,content-type','Access-Control-Allow-Methods':'GET,POST,OPTIONS','Cache-Control':'no-store','Referrer-Policy':'no-referrer'};
 const keys=JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS')||'{}');
-const db=createClient(Deno.env.get('SUPABASE_URL'),keys.default||Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),{auth:{persistSession:false,autoRefreshToken:false}});
+const serverKey=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')||keys.default;if(!serverKey)throw new Error('Supabase server key is not configured');
+const db=createClient(Deno.env.get('SUPABASE_URL'),serverKey,{auth:{persistSession:false,autoRefreshToken:false}});
 class Problem extends Error { constructor(code,status=400){super(code);this.status=status;this.code=code;} }
 const fail=(code,status=400)=>{throw new Problem(code,status)};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
