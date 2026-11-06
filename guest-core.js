@@ -460,7 +460,7 @@ function show(id){
   if(id==='staff') renderStaff();
 }
 
-function today(){return new Date().toISOString().slice(0,10)}
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function loadDB(){
   const base={reservations:[],blocked:{},slotCapacity:44,tableCapacity:16,tableGroups:[
   {area:'Indoor', seats:4, count:4},
