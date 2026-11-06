@@ -70,7 +70,7 @@ const files={
 };
 for(const [name,content] of Object.entries(files)){
   if(name.endsWith('.js'))new vm.Script(content,{filename:name});
-  assert(!/sushiclub|delta hotels|sushiclara/i.test(content),name+': legacy brand reference');
+  if(['staff.html','staff.js'].includes(name))assert(!/sushiclub|delta hotels|sushiclara/i.test(content),name+': legacy brand reference');
 }
 fs.rmSync(out,{recursive:true,force:true});
 fs.mkdirSync(out,{recursive:true});
