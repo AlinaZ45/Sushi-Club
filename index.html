@@ -2735,6 +2735,14 @@ main.phone > #myReservations.section.active > .inner {
 /* TEMP FIX: keep guest site accessible while intro is debugged */
 #sushiIntroV4{display:none!important;visibility:hidden!important;pointer-events:none!important}
 </style>
+<style id="sc-guest-home-recovery">
+/* Preview-only recovery: keep the original guest home visible if a script fails. */
+html,body{min-height:100%!important;background:#DED0BC!important}
+main.phone{display:block!important;visibility:visible!important;opacity:1!important;min-height:100vh!important;background:#DED0BC!important}
+main.phone>#home.section.active,
+main.phone>#home.future-home.active{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:2!important}
+#sushiIntroV4{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+</style>
 </head>
 <body>
 
