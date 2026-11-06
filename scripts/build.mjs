@@ -7,7 +7,9 @@ import assert from 'node:assert/strict';
 const root=process.cwd();
 const out=path.join(root,'dist');
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
-const guest=read('generic-guest.html');
+const guest=read('index.html');
+const guestCore=read('guest-core.js');
+const guestLive=read('guest-live.js');
 let staff=read('staff.html');
 const staffJs=read('staff.js');
 const config={
@@ -24,7 +26,9 @@ function checkHtml(name,html){
     if(!/\bsrc=/.test(match[1]||''))new vm.Script(match[2],{filename:name+' inline'});
   }
 }
-checkHtml('generic-guest.html',guest);
+checkHtml('index.html',guest);
+new vm.Script(guestCore,{filename:'guest-core.js'});
+new vm.Script(guestLive,{filename:'guest-live.js'});
 checkHtml('staff.html',staff);
 new vm.Script(staffJs,{filename:'staff.js'});
 
@@ -55,6 +59,8 @@ self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;con
 const platformConfig='window.PLATFORM_CONFIG = '+JSON.stringify(config)+';';
 const files={
   'index.html':guest,
+  'guest-core.js':guestCore,
+  'guest-live.js':guestLive,
   'staff.html':staff,
   'staff.js':staffJs,
   'platform-config.js':platformConfig,
