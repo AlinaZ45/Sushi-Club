@@ -77,7 +77,9 @@ new vm.Script(fix, {filename: 'reliability.js'});
 index = index.replace('</body>', '<script src="reliability.js"></script>\n</body>');
 const revision = /^[a-f0-9]{40}$/i.test(process.env.VERCEL_GIT_COMMIT_SHA||'') ? process.env.VERCEL_GIT_COMMIT_SHA : 'local-verification';
 const stamp = s => s.replace('</head>', `<meta name="sushi-build" content="${revision}"></head>`);
-const output = {'index.html':stamp(index),'menu.html':stamp(menu),'guest-core.js':core,'guest-live.js':live,'staff.html':stamp(staff),'staff.js':source['staff.js'],'reliability.js':fix};
+const publicConfig = {supabaseUrl: process.env.SUPABASE_URL || '', supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY || ''};
+const platformConfig = 'window.PLATFORM_CONFIG = ' + JSON.stringify(publicConfig) + ';';
+const output = {'index.html':stamp(index),'menu.html':stamp(menu),'guest-core.js':core,'guest-live.js':live,'staff.html':stamp(staff),'staff.js':source['staff.js'],'reliability.js':fix,'platform-config.js':platformConfig};
 for (const [name, text] of Object.entries(output)) {
   if (name.endsWith('.js')) new vm.Script(text, {filename:name});
   if (name.endsWith('.html')) for (const m of text.matchAll(/<script(\s[^>]*)?>([\s\S]*?)<\/script>/g)) if (!/\bsrc=/.test(m[1]||'')) new vm.Script(m[2],{filename:name+' inline'});
