@@ -1,34 +1,33 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
 
-const TIMES=Array.from({length:21},(_,i)=>`${17+Math.floor(i/4)}:${String(i%4*15).padStart(2,'0')}`);
 const HEADERS={'Content-Type':'application/json','Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'authorization,x-client-info,apikey,content-type','Access-Control-Allow-Methods':'GET,POST,OPTIONS','Cache-Control':'no-store','Referrer-Policy':'no-referrer'};
 const keys=JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS')||'{}');
 const db=createClient(Deno.env.get('SUPABASE_URL'),keys.default||Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),{auth:{persistSession:false,autoRefreshToken:false}});
 class Problem extends Error { constructor(code,status=400){super(code);this.status=status;this.code=code;} }
 const fail=(code,status=400)=>{throw new Problem(code,status)};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
-const norm=v=>String(v||'').toLowerCase().replace(/[\s()+-]/g,'');
+const norm=v=>String(v||'').toLowerCase().replace(/[\\s()+-]/g,'');
 const clean=(v,max)=>{const s=String(v??'').trim();if(s.length>max)fail('invalid_input');return s;};
 const sha=async v=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)))).map(x=>x.toString(16).padStart(2,'0')).join('');
 const token=()=>Array.from(crypto.getRandomValues(new Uint8Array(24))).map(x=>x.toString(16).padStart(2,'0')).join('');
-const code=()=>`SC-${String(crypto.getRandomValues(new Uint32Array(1))[0]%1000000).padStart(6,'0')}`;
-function localNow(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return {date:`${g('year')}-${g('month')}-${g('day')}`,time:`${g('hour')}:${g('minute')}`};}
-function validateDate(v){const s=String(v||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(s))fail('invalid_date');const d=new Date(s+'T00:00:00Z');if(!Number.isFinite(+d)||d.toISOString().slice(0,10)!==s)fail('invalid_date');if(d.getUTCDay()===1)fail('restaurant_closed');return s;}
-function party(v){const n=Number(v);if(!Number.isInteger(n)||n<1||n>20)fail('invalid_party_size');return n;}
-function future(date,time){const now=localNow();if(date<now.date)fail('date_in_past');}
+const code=()=> 'RS-'+String(crypto.getRandomValues(new Uint32Array(1))[0]%1000000).padStart(6,'0');
+async function restaurantSettings(){const {data,error}=await db.from('restaurant_settings').select('*').eq('id',1).single();if(error||!data)fail('restaurant_not_configured',503);return data;}
+function localNow(timeZone){const p=new Intl.DateTimeFormat('en-CA',{timeZone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return {date:g('year')+'-'+g('month')+'-'+g('day'),time:g('hour')+':'+g('minute')};}
+function validateDate(v){const s=String(v||'');if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(s))fail('invalid_date');const d=new Date(s+'T00:00:00Z');if(!Number.isFinite(+d)||d.toISOString().slice(0,10)!==s)fail('invalid_date');return s;}
+function party(v,cfg){const n=Number(v);if(!Number.isInteger(n)||n<cfg.min_party_size||n>cfg.max_party_size)fail('invalid_party_size');return n;}
+function minutes(v){const m=String(v||'').slice(0,5).match(/^(\\d{2}):(\\d{2})$/);return m?Number(m[1])*60+Number(m[2]):-1;}
+function slots(cfg){const open=minutes(cfg.opening_time),close=minutes(cfg.closing_time),step=Number(cfg.slot_interval_minutes),duration=Number(cfg.booking_duration_minutes);if(open<0||close<0||step<1||duration<1||close<=open)fail('restaurant_hours_not_configured',503);const out=[];for(let m=open;m+duration<=close;m+=step)out.push(String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'));return out;}
+function future(date,time,cfg){const now=localNow(cfg.timezone);if(date<now.date||(date===now.date&&time<=now.time))fail('date_in_past');}
 function publicRow(r){return r?{id:r.id,requestId:r.reservation_code,date:r.reservation_date,time:String(r.reservation_time).slice(0,5),guests:r.party_size,originalGuests:r.original_party_size,name:r.lead_guest_name,guestType:r.guest_type,room:r.room_number||'',contact:r.phone||'',email:r.email||'',request:r.special_request||'',status:r.status,declineReason:r.status==='declined'?(r.staff_note||''):'',createdAt:r.created_at,holdUntil:r.arrival_hold_until||null}:null;}
-function input(b,r=null){
- const date=validateDate(b.date??r?.reservation_date),time=String(b.time??String(r?.reservation_time||'').slice(0,5)),guests=party(b.guests??r?.party_size),name=clean(b.name??r?.lead_guest_name,120);
- if(!name||!TIMES.includes(time))fail('invalid_input');future(date,time);
- const guestType=r?.guest_type||(b.guestType==='outside'?'outside':'hotel');
- const room=guestType==='hotel'?clean(b.room??r?.room_number,20):'';
+function input(b,r,cfg){
+ const date=validateDate(b.date??r?.reservation_date),time=String(b.time??String(r?.reservation_time||'').slice(0,5)),guests=party(b.guests??r?.party_size,cfg),name=clean(b.name??r?.lead_guest_name,120);
+ if(!name||!slots(cfg).includes(time))fail('invalid_input');future(date,time,cfg);
  let contact=clean(b.contact??r?.phone,254),email=clean(b.email??r?.email,254).toLowerCase();
- if(!email&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)){email=contact.toLowerCase();contact='';}
- if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))fail('invalid_email');
- if(contact&&!/^\+?[\d\s().-]{6,40}$/.test(contact))fail('invalid_phone');
- if(guestType==='hotel'&&!room)fail('room_required');
+ if(!email&&/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(contact)){email=contact.toLowerCase();contact='';}
+ if(email&&!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))fail('invalid_email');
+ if(contact&&!/^\\+?[\\d\\s().-]{6,40}$/.test(contact))fail('invalid_phone');
  if(!contact&&!email)fail('contact_required');
- return {date,time,guests,name,guestType,room,contact,email,request:clean(b.request??r?.special_request,2000)};
+ return {date,time,guests,name,guestType:'standard',room:'',contact,email,request:clean(b.request??r?.special_request,2000)};
 }
 async function inventory(date,excludeId=null){
  let a=db.from('table_assignments').select('table_id,service_time').eq('service_date',date).eq('occupied',true);
@@ -106,10 +105,10 @@ Deno.serve(async req=>{
   const url=new URL(req.url);
   if(req.method==='GET'){
    const action=url.searchParams.get('action');
-   if(action==='health')return json({ok:true,version:'8',chat:true,capacityMode:'time_slot_release',timezone:'Europe/Istanbul'});
+   if(action==='health')return json({ok:true,version:'9',chat:true,capacityMode:'time_slot_release'});
    if(action==='availability'){
-    const date=validateDate(url.searchParams.get('date')),n=party(url.searchParams.get('party')||1),inv=await inventory(date),now=localNow();
-    return json({ok:true,capacityMode:'time_slot_release',slots:TIMES.map(time=>({time,available:date>=now.date&&!inv.blocked.has(time)&&hasCapacity(inv,n,time)}))});
+    const cfg=await restaurantSettings(),date=validateDate(url.searchParams.get('date')),n=party(url.searchParams.get('party')||cfg.min_party_size,cfg),inv=await inventory(date),now=localNow(cfg.timezone);
+    return json({ok:true,capacityMode:'time_slot_release',slots:slots(cfg).map(time=>({time,available:(date>now.date||(date===now.date&&time>now.time))&&!inv.blocked.has(time)&&hasCapacity(inv,n,time)}))});
    }
    if(action==='get'){const r=await byToken(url.searchParams.get('code'),url.searchParams.get('token'));return json({ok:true,reservation:{...publicRow(r),messages:await chatHistory(r.id)}});}
    if(action==='staff_messages'){await staffIdentity(req);const date=validateDate(url.searchParams.get('date'));const {data,error}=await db.from('reservations').select('id').eq('reservation_date',date);if(error)throw error;const ids=(data||[]).map(x=>x.id);if(!ids.length)return json({ok:true,messages:[]});const {data:messages,error:me}=await db.from('reservation_messages').select('id,reservation_id,sender,body,created_at').in('reservation_id',ids).order('id',{ascending:true}).limit(500);if(me)throw me;return json({ok:true,messages:messages||[]});}
@@ -125,14 +124,14 @@ Deno.serve(async req=>{
   if(b.action==='guest_message'){const r=await byToken(b.code,b.token);await rate('chat:'+await sha(r.reservation_code),30);return json({ok:true,message:await chatInsert(r.id,'guest',b.message)});}
   if(b.action==='staff_message'){await staffIdentity(req);const id=Number(b.reservationId);if(!Number.isSafeInteger(id)||id<1)fail('invalid_input');const {data:r,error}=await db.from('reservations').select('id').eq('id',id).maybeSingle();if(error)throw error;if(!r)fail('not_found',404);return json({ok:true,message:await chatInsert(id,'staff',b.message)});}
   if(b.action==='create'){
-   const x=input(b);
+   const cfg=await restaurantSettings();const x=input(b,null,cfg);
    const openingMessage=clean(b.message,2000);
    if(b.rulesAccepted===false||String(b.rulesVersion||'')!=='1.0')fail('rules_required');
    await available(x.date,x.time,x.guests);
    const manageToken=token(),manageHash=await sha(manageToken);
    for(let attempt=0;attempt<4;attempt++){
     const reservationCode=code();
-    const {data,error}=await db.from('reservations').insert({reservation_code:reservationCode,request_id:reservationCode,manage_token_hash:manageHash,reservation_date:x.date,reservation_time:x.time+':00',party_size:x.guests,original_party_size:x.guests,lead_guest_name:x.name,guest_type:x.guestType,room_number:x.room||null,phone:x.contact||null,email:x.email||null,special_request:x.request||null,status:'pending',source:'guest',rules_accepted:true,rules_accepted_at:new Date().toISOString(),rules_version:'1.0'}).select('*').single();
+    const {data,error}=await db.from('reservations').insert({reservation_code:reservationCode,request_id:reservationCode,manage_token_hash:manageHash,reservation_date:x.date,reservation_time:x.time+':00',party_size:x.guests,original_party_size:x.guests,lead_guest_name:x.name,guest_type:'standard',room_number:null,phone:x.contact||null,email:x.email||null,special_request:x.request||null,status:'pending',source:'guest',rules_accepted:true,rules_accepted_at:new Date().toISOString(),rules_version:'1.0'}).select('*').single();
     if(error){if(error.code==='23505'&&String(error.message).includes('reservation_code'))continue;if(error.code==='23505')fail('duplicate',409);throw error;}
     await audit(data,'CREATED',null,{source:'guest'});
     let opening=null,messageSaved=true;
@@ -152,7 +151,7 @@ Deno.serve(async req=>{
    return json({ok:true,reservation:publicRow(updated)});
   }
   if(b.action==='update'){
-   const r=await byToken(b.code,b.token);manageable(r);const x=input(b,r);
+   const r=await byToken(b.code,b.token);manageable(r);const cfg=await restaurantSettings();const x=input(b,r,cfg);
    const changed=x.date!==r.reservation_date||x.time!==String(r.reservation_time).slice(0,5)||x.guests!==r.party_size;
    if(changed)await available(x.date,x.time,x.guests,r.id);
    const updated=await patch(r,{reservation_date:x.date,reservation_time:x.time+':00',party_size:x.guests,lead_guest_name:x.name,room_number:x.room||null,phone:x.contact||null,email:x.email||null,special_request:x.request||null,status:changed?'pending':r.status});
