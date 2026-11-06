@@ -204,15 +204,12 @@ async function sendWhatsapp(row:any) {
 
 Deno.serve(async (req:Request)=>{
   if(req.method==="GET"){
-    const {data:dbSecret}=await sb.rpc("get_internal_setting",{setting_key:"dispatch_secret"});
-    return new Response(JSON.stringify({ok:true,configured:{dispatch:!!(DISPATCH_SECRET||dbSecret),email:!!RESEND_API_KEY&&!!RESEND_FROM_EMAIL,whatsapp:!!META_TOKEN&&!!META_PHONE_ID},version:"6"}),{headers:{"Content-Type":"application/json","Access-Control-Allow-Origin":"*"}});
+    return new Response(JSON.stringify({ok:true,configured:{dispatch:!!DISPATCH_SECRET,email:!!RESEND_API_KEY&&!!RESEND_FROM_EMAIL,whatsapp:!!META_TOKEN&&!!META_PHONE_ID},version:"7"}),{headers:{"Content-Type":"application/json","Access-Control-Allow-Origin":"*"}});
   }
   if(req.method!=="POST") return new Response(JSON.stringify({ok:false,error:"POST only"}),{status:405,headers:{"Content-Type":"application/json"}});
-  const {data:dbSecret}=await sb.rpc("get_internal_setting",{setting_key:"dispatch_secret"});
-  const effectiveSecret=DISPATCH_SECRET||clean(dbSecret);
-  if(!effectiveSecret) return new Response(JSON.stringify({ok:false,error:"Dispatcher is not configured"}),{status:503,headers:{"Content-Type":"application/json"}});
+  if(!DISPATCH_SECRET) return new Response(JSON.stringify({ok:false,error:"Dispatcher is not configured"}),{status:503,headers:{"Content-Type":"application/json"}});
   const supplied=req.headers.get("x-dispatch-secret")||"";
-  if(supplied!==effectiveSecret) return new Response(JSON.stringify({ok:false,error:"Unauthorized"}),{status:401,headers:{"Content-Type":"application/json"}});
+  if(supplied!==DISPATCH_SECRET) return new Response(JSON.stringify({ok:false,error:"Unauthorized"}),{status:401,headers:{"Content-Type":"application/json"}});
 
   const {data:rows,error}=await sb.from("notification_queue")
     .select("id,reservation_id,channel,notification_type,recipient,payload,status,attempt_count")
