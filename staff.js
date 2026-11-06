@@ -236,8 +236,7 @@ function renderTableInventory(){
   const host=$('tableInventory'),summary=$('tableInventorySummary'),sel=$('tableSelectionCount');
   if(!host||!summary)return;
   const ordered=[...allTables].sort((a,b)=>{
-    const areaA=a.area==='inside'?0:1,areaB=b.area==='inside'?0:1;
-    return areaA-areaB||(Number(a.sort_order)||0)-(Number(b.sort_order)||0)||String(a.table_code).localeCompare(String(b.table_code));
+    return String(a.area||'').localeCompare(String(b.area||''))||(Number(a.sort_order)||0)-(Number(b.sort_order)||0)||String(a.table_code).localeCompare(String(b.table_code));
   });
   const validIds=new Set(ordered.map(x=>Number(x.id)));
   selectedInventoryTables=new Set([...selectedInventoryTables].filter(id=>validIds.has(Number(id))));
@@ -276,7 +275,7 @@ function renderTableManagement(){
   host.innerHTML=allTables.length?allTables.map(tbl=>'<div class="table-manage-row '+(tbl.active===false?'inactive':'')+'" data-id="'+Number(tbl.id)+'">'+
     '<div><label>'+t('tableName')+'</label><input id="mtCode'+Number(tbl.id)+'" value="'+esc(tbl.table_code)+'" maxlength="30"><div class="table-manage-state">'+(tbl.active===false?t('inactive'):t('active'))+'</div></div>'+
     '<div><label>'+t('area')+'</label><input id="mtArea'+Number(tbl.id)+'" value="'+esc(tbl.area)+'" maxlength="50"></div>'+
-    '<div><label>'+t('seats')+'</label><input id="mtSeats'+Number(tbl.id)+'" type="number" min="1" max="20" value="'+Number(tbl.seats||2)+'"></div>'+
+    '<div><label>'+t('seats')+'</label><input id="mtSeats'+Number(tbl.id)+'" type="number" min="1" max="100" value="'+Number(tbl.seats||2)+'"></div>'+
     '<div class="table-manage-actions"><button class="save" onclick="window.staffSaveTable('+Number(tbl.id)+')">'+t('save')+'</button>'+
     '<button class="warn" onclick="window.staffToggleTableActive('+Number(tbl.id)+')">'+(tbl.active===false?t('activate'):t('disable'))+'</button>'+
     '<button class="danger" onclick="window.staffDeleteTable('+Number(tbl.id)+')">'+t('delete')+'</button></div></div>').join(''):'<p class="note">'+t('noTables')+'</p>';
