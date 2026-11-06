@@ -6,16 +6,16 @@ const db=createClient(Deno.env.get('SUPABASE_URL'),keys.default||Deno.env.get('S
 class Problem extends Error { constructor(code,status=400){super(code);this.status=status;this.code=code;} }
 const fail=(code,status=400)=>{throw new Problem(code,status)};
 const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:HEADERS});
-const norm=v=>String(v||'').toLowerCase().replace(/[\\s()+-]/g,'');
+const norm=v=>String(v||'').toLowerCase().replace(/[\s()+-]/g,'');
 const clean=(v,max)=>{const s=String(v??'').trim();if(s.length>max)fail('invalid_input');return s;};
 const sha=async v=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)))).map(x=>x.toString(16).padStart(2,'0')).join('');
 const token=()=>Array.from(crypto.getRandomValues(new Uint8Array(24))).map(x=>x.toString(16).padStart(2,'0')).join('');
 const code=()=> 'RS-'+String(crypto.getRandomValues(new Uint32Array(1))[0]%1000000).padStart(6,'0');
 async function restaurantSettings(){const {data,error}=await db.from('restaurant_settings').select('*').eq('id',1).single();if(error||!data)fail('restaurant_not_configured',503);return data;}
 function localNow(timeZone){const p=new Intl.DateTimeFormat('en-CA',{timeZone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return {date:g('year')+'-'+g('month')+'-'+g('day'),time:g('hour')+':'+g('minute')};}
-function validateDate(v){const s=String(v||'');if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(s))fail('invalid_date');const d=new Date(s+'T00:00:00Z');if(!Number.isFinite(+d)||d.toISOString().slice(0,10)!==s)fail('invalid_date');return s;}
+function validateDate(v){const s=String(v||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(s))fail('invalid_date');const d=new Date(s+'T00:00:00Z');if(!Number.isFinite(+d)||d.toISOString().slice(0,10)!==s)fail('invalid_date');return s;}
 function party(v,cfg){const n=Number(v);if(!Number.isInteger(n)||n<cfg.min_party_size||n>cfg.max_party_size)fail('invalid_party_size');return n;}
-function minutes(v){const m=String(v||'').slice(0,5).match(/^(\\d{2}):(\\d{2})$/);return m?Number(m[1])*60+Number(m[2]):-1;}
+function minutes(v){const m=String(v||'').slice(0,5).match(/^(\d{2}):(\d{2})$/);return m?Number(m[1])*60+Number(m[2]):-1;}
 function slots(cfg){const open=minutes(cfg.opening_time),close=minutes(cfg.closing_time),step=Number(cfg.slot_interval_minutes),duration=Number(cfg.booking_duration_minutes);if(open<0||close<0||step<1||duration<1||close<=open)fail('restaurant_hours_not_configured',503);const out=[];for(let m=open;m+duration<=close;m+=step)out.push(String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'));return out;}
 function future(date,time,cfg){const now=localNow(cfg.timezone);if(date<now.date||(date===now.date&&time<=now.time))fail('date_in_past');}
 function publicRow(r){return r?{id:r.id,requestId:r.reservation_code,date:r.reservation_date,time:String(r.reservation_time).slice(0,5),guests:r.party_size,originalGuests:r.original_party_size,name:r.lead_guest_name,guestType:r.guest_type,room:r.room_number||'',contact:r.phone||'',email:r.email||'',request:r.special_request||'',status:r.status,declineReason:r.status==='declined'?(r.staff_note||''):'',createdAt:r.created_at,holdUntil:r.arrival_hold_until||null}:null;}
@@ -23,9 +23,9 @@ function input(b,r,cfg){
  const date=validateDate(b.date??r?.reservation_date),time=String(b.time??String(r?.reservation_time||'').slice(0,5)),guests=party(b.guests??r?.party_size,cfg),name=clean(b.name??r?.lead_guest_name,120);
  if(!name||!slots(cfg).includes(time))fail('invalid_input');future(date,time,cfg);
  let contact=clean(b.contact??r?.phone,254),email=clean(b.email??r?.email,254).toLowerCase();
- if(!email&&/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(contact)){email=contact.toLowerCase();contact='';}
- if(email&&!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))fail('invalid_email');
- if(contact&&!/^\\+?[\\d\\s().-]{6,40}$/.test(contact))fail('invalid_phone');
+ if(!email&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)){email=contact.toLowerCase();contact='';}
+ if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))fail('invalid_email');
+ if(contact&&!/^\+?[\d\s().-]{6,40}$/.test(contact))fail('invalid_phone');
  if(!contact&&!email)fail('contact_required');
  return {date,time,guests,name,guestType:'standard',room:'',contact,email,request:clean(b.request??r?.special_request,2000)};
 }
