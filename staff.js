@@ -170,21 +170,7 @@ window.staffSetStatus=async function(id,status){
     if(!staffNote)return alert(t('declineReasonRequired'));
   }
 
-  if(status==='confirmed'&&r.status==='pending'){
-    const own=assignmentIds(r.id);
-    if(own.length){
-      if(assignedSeats(r.id)<r.guests)return alert(t('assignedSeatsError'));
-      for(const tableId of own){
-        const occ=occupantForTable(tableId,r.time,r.id);
-        if(occ&&ACTIVE_FOR_CAPACITY.includes(occ.status))return alert(t('assignedUsedError'));
-      }
-    }
-    try{
-      const j=await apiGet({action:'availability',date:r.date,party:r.guests});
-      const slot=(j.slots||[]).find(x=>x.time===r.time);
-      if(slot&&!slot.available)return alert(t('slotCapacityError'));
-    }catch(e){return alert(t('availabilityError'))}
-  }
+  // Capacity and overlapping table availability are enforced transactionally by database triggers.
 
   const patch={status};
   if(status==='declined')patch.staff_note=staffNote;
@@ -214,7 +200,10 @@ function tableRpcError(error){
   if(m.includes('INVALID_TABLE_AREA')||m.includes('INVALID_TABLE_SEATS'))return t('invalidAreaSeats');
   if(m.includes('INVALID_TABLE_QUANTITY'))return t('invalidQuantity');
   if(m.includes('TABLE_NAME_EXISTS:'))return t('tableCodeExists')+' '+m.split('TABLE_NAME_EXISTS:')[1];
-  if(m.includes('TABLE_HAS_HISTORY'))return t('deleteHistory');
+  if(m.includes('TABLE_HAS_HISTORY')||m.includes('TABLE_HAS_ASSIGNMENT_USE_INACTIVE'))return t('deleteHistory');
+  if(m.includes('TABLE_HAS_ACTIVE_RESERVATION'))return t('disableHistory');
+  if(m.includes('TABLE_CHANGE_BREAKS_RESERVATION_CAPACITY'))return t('assignedSeatsError');
+  if(m.includes('TABLE_TIME_OVERLAP'))return t('assignedUsedError');
   if(m.includes('SELECT_TABLES_FIRST'))return t('selectTablesToRemove');
   return m;
 }
