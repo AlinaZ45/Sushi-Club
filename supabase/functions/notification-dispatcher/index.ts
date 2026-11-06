@@ -10,7 +10,7 @@ const META_TOKEN = Deno.env.get("META_WHATSAPP_TOKEN") || "";
 const META_PHONE_ID = Deno.env.get("META_WHATSAPP_PHONE_NUMBER_ID") || "";
 const META_TEMPLATE_NAME = Deno.env.get("META_WHATSAPP_TEMPLATE_NAME") || "reservation_update";
 const META_TEMPLATE_LANG = Deno.env.get("META_WHATSAPP_TEMPLATE_LANG") || "en";
-const APP_URL = (Deno.env.get("APP_URL") || "").replace(/\\/+$/, "");
+const APP_URL = (Deno.env.get("APP_URL") || "https://example.com").replace(/\/+$/, "");
 const BRAND_NAME = Deno.env.get("RESTAURANT_NAME") || "Restaurant";
 
 const sb = createClient(SUPABASE_URL, SERVICE_KEY, {
