@@ -60,14 +60,14 @@ async function available(date,time,n,excludeId=null){
 }
 async function byToken(c,t){
  c=clean(c,40).toUpperCase();t=clean(t,256);
- if(!/^SC-\d{6}$/.test(c)||!t)fail('not_found',404);
+ if(!/^RS-\d{6}$/.test(c)||!t)fail('not_found',404);
  const {data,error}=await db.from('reservations').select('*').eq('reservation_code',c).eq('manage_token_hash',await sha(t)).maybeSingle();
  if(error)throw error;if(!data)fail('not_found',404);return data;
 }
 async function rate(key,limit){const {data,error}=await db.rpc('sushi_check_rate',{p_key:key,p_limit:limit});if(error)throw error;if(data!==true)fail('too_many_requests',429);}
 async function identityRow(c,identity){
  c=clean(c,40).toUpperCase();identity=norm(clean(identity,254));
- if(!/^SC-\d{6}$/.test(c)||!identity)fail('not_found',404);
+ if(!/^RS-\d{6}$/.test(c)||!identity)fail('not_found',404);
  await rate('claim:'+await sha(c),10);
  const {data,error}=await db.from('reservations').select('*').eq('reservation_code',c).maybeSingle();
  if(error)throw error;
