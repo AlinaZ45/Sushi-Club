@@ -105,6 +105,7 @@ Deno.serve(async req=>{
   const url=new URL(req.url);
   if(req.method==='GET'){
    const action=url.searchParams.get('action');
+   if(action==='configuration'){const cfg=await restaurantSettings();return json({ok:true,restaurant:{name:cfg.restaurant_name||'Restaurant',timezone:cfg.timezone,openingTime:cfg.opening_time,closingTime:cfg.closing_time,slotIntervalMinutes:cfg.slot_interval_minutes,bookingDurationMinutes:cfg.booking_duration_minutes,minPartySize:cfg.min_party_size,maxPartySize:cfg.max_party_size,maxAdvanceDays:cfg.max_advance_days,requireStaffConfirmation:cfg.require_staff_confirmation}});}
    if(action==='health')return json({ok:true,version:'9',chat:true,capacityMode:'time_slot_release'});
    if(action==='availability'){
     const cfg=await restaurantSettings(),date=validateDate(url.searchParams.get('date')),n=party(url.searchParams.get('party')||cfg.min_party_size,cfg),inv=await inventory(date),now=localNow(cfg.timezone);
