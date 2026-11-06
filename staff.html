@@ -964,7 +964,7 @@ input,select,textarea{
     <p class="note" data-i18n="addTableNote">Enter the table number/code, area and number of seats.</p>
     <div class="table-admin-grid table-admin-grid-four">
       <div><label data-i18n="tableName">TABLE NAME / CODE</label><input id="newTableCode" maxlength="30" placeholder="e.g. Window, VIP, I8"></div>
-      <div><label data-i18n="area">AREA</label><select id="newTableArea"><option value="inside" data-i18n="inside">Inside</option><option value="terrace" data-i18n="terrace">Terrace</option></select></div>
+      <div><label data-i18n="area">AREA</label><input id="newTableArea" value="main" maxlength="50" placeholder="e.g. Main dining, Terrace, VIP"></div>
       <div><label data-i18n="seats">SEATS</label><input id="newTableSeats" type="number" min="1" max="20" value="2"></div>
       <div><label data-i18n="quantity">QUANTITY</label><input id="newTableQuantity" type="number" min="1" max="20" value="1"></div>
     </div>
