@@ -2815,7 +2815,21 @@ main.phone > #myReservations.section.active > .inner {
       <textarea id="reservationMessage" maxlength="2000" rows="3" placeholder="Ask our team a question. You can continue the conversation in My Reservations."></textarea>
 
 
-      <button class="btn dark" onclick="confirmReservation()">SEND RESERVATION REQUEST</button>
+      <div id="v13RulesBlock">
+        <div class="policyBox sc-unified-rules">
+          <h3>Reservation &amp; Visit Rules</h3>
+          <ul>
+            <li>Your reservation is confirmed only after approval by Sushi Club.</li>
+            <li>All guests must be 18 years of age or older.</li>
+            <li>Smart casual attire is kindly requested. Swimwear, beachwear and bathrobes are not permitted.</li>
+            <li>The reservation is valid for the exact party size shown. Changes to the date, time or party size are subject to availability and require confirmation again.</li>
+            <li>Your table is held for 15 minutes after the confirmed reservation time. If you do not arrive within this period, the reservation may be marked as a No-Show and the table released.</li>
+            <li>If your plans change, you may edit or cancel your reservation through My Reservations or the link in your reservation message.</li>
+          </ul>
+        </div>
+        <label class="sc-ack"><input type="checkbox" id="v13RulesAck" onchange="v13ToggleSubmit()"><span>I have read and agree to the Reservation &amp; Visit Rules.</span></label>
+      </div>
+      <button class="btn dark" onclick="confirmReservation()" disabled>SEND RESERVATION REQUEST</button>
       <p class="smallnote">Your request will remain pending until the Sushi Club team confirms it.</p>
     </div>
   </div>
