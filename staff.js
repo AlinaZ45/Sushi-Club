@@ -334,7 +334,6 @@ if(new URLSearchParams(location.search).get('recovery')==='1'){
   openModal('passwordModal');
 }
 applyStaticLanguage();
-populateTimeFilter();
-refreshAuth();
+loadPlatformSettings().then(()=>{populateTimeFilter();refreshAuth()}).catch(e=>{authMsg(e.message);populateTimeFilter();refreshAuth()});
 setInterval(()=>{if(!$('dashboard').classList.contains('hidden'))refreshStaffChats()},20000);
 })();
