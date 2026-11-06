@@ -2925,19 +2925,11 @@ main.phone>#home.future-home.active{display:block!important;visibility:visible!i
       <textarea id="reservationMessage" maxlength="2000" rows="3" placeholder="Ask our team a question. You can continue the conversation in My Reservations."></textarea>
 
 
-      <div id="v13RulesBlock">
-        <div class="policyBox sc-unified-rules">
-          <h3>Reservation &amp; Visit Rules</h3>
-          <ul>
-            <li>Your reservation is confirmed only after approval by Sushi Club.</li>
-            <li>All guests must be 18 years of age or older.</li>
-            <li>Smart casual attire is kindly requested. Swimwear, beachwear and bathrobes are not permitted.</li>
-            <li>The reservation is valid for the exact party size shown. Changes to the date, time or party size are subject to availability and require confirmation again.</li>
-            <li>Your table is held for 15 minutes after the confirmed reservation time. If you do not arrive within this period, the reservation may be marked as a No-Show and the table released.</li>
-            <li>If your plans change, you may edit or cancel your reservation through My Reservations or the link in your reservation message.</li>
-          </ul>
-        </div>
-        <label class="sc-ack"><input type="checkbox" id="v13RulesAck" onchange="v13ToggleSubmit()"><span>I have read and agree to the Reservation &amp; Visit Rules.</span></label>
+      <div id="v13RulesBlock" class="policyBox" style="margin-top:18px">
+        <h3>Reservation &amp; Visit Rules</h3>
+        <p class="smallnote" style="text-align:left;margin:0 0 12px">Please review the rules before sending your reservation request.</p>
+        <button type="button" class="btn light" onclick="openRulesModal()">READ RULES &amp; AGREE</button>
+        <p id="rulesAgreementStatus" class="smallnote" aria-live="polite">Agreement is required to continue.</p>
       </div>
       <button class="btn dark" onclick="confirmReservation()" disabled>SEND RESERVATION REQUEST</button>
       <p class="smallnote">Your request will remain pending until the Sushi Club team confirms it.</p>
@@ -2977,6 +2969,29 @@ main.phone>#home.future-home.active{display:block!important;visibility:visible!i
 
 </main>
 
+<div id="rulesAgreementModal" class="gedit-overlay" role="dialog" aria-modal="true" aria-labelledby="rulesAgreementTitle" style="display:none">
+  <div class="gedit-modal rules-emphasis" style="background:var(--paper);color:var(--ink)">
+    <div class="eyebrow">BEFORE YOU RESERVE</div>
+    <h2 id="rulesAgreementTitle" style="margin:6px 0 12px">Reservation &amp; Visit Rules</h2>
+    <ul style="padding-left:20px;font-size:13px;line-height:1.65;color:var(--muted)">
+      <li>Your reservation is confirmed only after approval by Sushi Club.</li>
+      <li>All guests must be 18 years of age or older.</li>
+      <li>Smart casual attire is kindly requested. Swimwear, beachwear and bathrobes are not permitted.</li>
+      <li>The reservation is valid for the exact party size shown. Changes to the date, time or party size are subject to availability and require confirmation again.</li>
+      <li>Your table is held for 15 minutes after the confirmed reservation time. If you do not arrive within this period, the reservation may be marked as a No-Show and the table released.</li>
+      <li>If your plans change, you may edit or cancel your reservation through My Reservations or the link in your reservation message.</li>
+    </ul>
+    <label class="sc-ack" style="display:flex!important;align-items:flex-start!important;margin:18px 0!important;padding:12px;border:1px solid var(--line);border-radius:12px;background:#F8F5EF">
+      <input type="checkbox" id="v13RulesAck" onchange="v13ToggleSubmit();updateRulesAgreementStatus()" style="appearance:auto!important;-webkit-appearance:checkbox!important;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;flex:0 0 22px!important;accent-color:#9a6a2d!important">
+      <span>I have read and agree to the Reservation &amp; Visit Rules.</span>
+    </label>
+    <div class="gedit-actions">
+      <button type="button" class="btn light" onclick="closeRulesModal()">CLOSE</button>
+      <button type="button" id="rulesAgreeContinue" class="btn dark" onclick="confirmRulesAgreement()" disabled>CONTINUE</button>
+    </div>
+  </div>
+</div>
+
 <div id="guestEditOverlay" class="gedit-overlay">
   <div class="gedit-modal">
     <div class="eyebrow">MY RESERVATION</div>
@@ -3005,6 +3020,36 @@ main.phone>#home.future-home.active{display:block!important;visibility:visible!i
 </div>
 
 
+<script id="rules-agreement-modal-js">
+(function(){
+  function getAck(){return document.getElementById('v13RulesAck')}
+  window.openRulesModal=function(){
+    var modal=document.getElementById('rulesAgreementModal');
+    if(modal)modal.style.display='flex';
+  };
+  window.closeRulesModal=function(){
+    var modal=document.getElementById('rulesAgreementModal');
+    if(modal)modal.style.display='none';
+  };
+  window.updateRulesAgreementStatus=function(){
+    var ack=getAck(),btn=document.getElementById('rulesAgreeContinue');
+    if(btn)btn.disabled=!(ack&&ack.checked);
+  };
+  window.confirmRulesAgreement=function(){
+    var ack=getAck();
+    if(!ack||!ack.checked)return;
+    if(typeof window.v13ToggleSubmit==='function')window.v13ToggleSubmit();
+    var status=document.getElementById('rulesAgreementStatus');
+    if(status)status.textContent='✓ You have agreed to the Reservation & Visit Rules.';
+    window.closeRulesModal();
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var modal=document.getElementById('rulesAgreementModal');
+    if(modal)modal.addEventListener('click',function(e){if(e.target===modal)window.closeRulesModal()});
+    updateRulesAgreementStatus();
+  });
+})();
+</script>
 <script src="guest-core.js"></script>
 <script src="platform-config.js"></script>
 <script src="guest-live.js"></script>
