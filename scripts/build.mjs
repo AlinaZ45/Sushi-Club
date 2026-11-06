@@ -10,6 +10,8 @@ const read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const guest=read('index.html');
 const guestCore=read('guest-core.js');
 const guestLive=read('guest-live.js');
+const menu=read('menu.html');
+const menuImages=read('menu-images-lite.js');
 let staff=read('staff.html');
 const staffJs=read('staff.js');
 const config={
@@ -30,7 +32,9 @@ checkHtml('index.html',guest);
 new vm.Script(guestCore,{filename:'guest-core.js'});
 new vm.Script(guestLive,{filename:'guest-live.js'});
 checkHtml('staff.html',staff);
+checkHtml('menu.html',menu);
 new vm.Script(staffJs,{filename:'staff.js'});
+new vm.Script(menuImages,{filename:'menu-images-lite.js'});
 
 staff=staff
   .replaceAll('Sushi Staff','Restaurant Staff')
@@ -61,6 +65,8 @@ const files={
   'index.html':guest,
   'guest-core.js':guestCore,
   'guest-live.js':guestLive,
+  'menu.html':menu,
+  'menu-images-lite.js':menuImages,
   'staff.html':staff,
   'staff.js':staffJs,
   'platform-config.js':platformConfig,
@@ -75,6 +81,8 @@ for(const [name,content] of Object.entries(files)){
 fs.rmSync(out,{recursive:true,force:true});
 fs.mkdirSync(out,{recursive:true});
 for(const [name,content] of Object.entries(files))fs.writeFileSync(path.join(out,name),content);
+const assetsDir=path.join(root,'assets');
+if(fs.existsSync(assetsDir))fs.cpSync(assetsDir,path.join(out,'assets'),{recursive:true});
 fs.writeFileSync(path.join(out,'build-info.json'),JSON.stringify({
   product:'generic-restaurant-booking-platform',
   generatedAt:new Date().toISOString(),
